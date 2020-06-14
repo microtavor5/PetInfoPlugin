@@ -135,7 +135,7 @@ public interface PetsConfig extends Config
 			position = 9,
 			keyName = "petInfo",
 			name = "Right click menu",
-			description = "Show pet Info option on right click"
+			description = "Show pet Info and Owner option on right click"
 	)
 	default boolean showMenu()
 	{

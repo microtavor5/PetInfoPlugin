@@ -22,6 +22,9 @@
 
 package com.micro.petinfo;
 
+/**
+ * Groups based on different methods of obtaining pets.
+ */
 public enum PetGroup
 {
 	BOSS,

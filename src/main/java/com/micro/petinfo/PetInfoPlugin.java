@@ -48,11 +48,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.activity.ActivityRequiredException;
 import javax.inject.Inject;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,12 +61,13 @@ import java.util.List;
 public class PetInfoPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
-	private final List<NPC> pets = new ArrayList<>();
+	private final List<NPC> pets = new ArrayList<>();	// Used to keep track of the current pets in the game
 
 	@Getter(AccessLevel.PACKAGE)
-	private final List<String> owners = new ArrayList<>();
+	private final List<String> owners = new ArrayList<>();	// Used to keep track of the owners of the pets under the menu,
+															// the ActionParam of an OWNER event corresponds to an index in this array
 
-	private final String EXAMINE = "Info";
+	private final String INFO = "Info";
 	private final String OWNER = "Owner";
 
 	@Inject
@@ -117,8 +115,8 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcChanged(NpcChanged npcCompositionChanged)
-	{
+	public void onNpcChanged(NpcChanged npcCompositionChanged)	// Do pet's compositions ever change? If they do we need to handle if they ever stop being pets,
+	{															// if they don't we don't need this at all.
 		NPC npc = npcCompositionChanged.getNpc();
 		Pet pet = Pet.findPet(npc.getId());
 
@@ -153,9 +151,14 @@ public class PetInfoPlugin extends Plugin
 		pets.remove(npc);
 	}
 
+	/**
+	 * Add the menus for the pets, must be done each tick or else they would disappear on the next tick.
+	 * This is not done in onMenuOpened because the entries are visibly added after the fact.
+	 */
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
+		// Ensure we are going to be showing the menus, that a menu can be show at all, or an existing menu is not already open
 		if (!config.showMenu() || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
 		{
 			return;
@@ -164,25 +167,31 @@ public class PetInfoPlugin extends Plugin
 		addMenus();
 	}
 
+	/**
+	 * Prints to chat the appropriate text for the given menu
+	 */
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(EXAMINE))
+		// If the player clicks on an INFO menu entry
+		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(INFO))
 		{
 			event.consume();
+			// We get the info text based off of the pet's NPCid
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getMenuTarget() + " " + Pet.getInfo(event.getId()), "");
 		}
+		// If the player clicks on an OWNER menu entry
 		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(OWNER))
 		{
-			for (String name: owners)
-			{
-				System.out.println(name);
-			}
 			event.consume();
+			// We get the owner's name from the owners array. The events ActionParam is the index in the owners array for the owner in question.
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The owner of this " + event.getMenuTarget() + " is " + owners.get(event.getActionParam()), "");
 		}
 	}
 
+	/**
+	 * Finds the {@link com.micro.petinfo.PetsConfig.PetMode} of a given NPC.
+	 */
 	PetsConfig.PetMode showNpc(NPC npc)
 	{
 		Pet pet = Pet.findPet(npc.getId());
@@ -191,12 +200,7 @@ public class PetInfoPlugin extends Plugin
 			return PetsConfig.PetMode.OFF;
 		}
 
-		return showPetGroup(pet.getPetGroup());
-	}
-
-	PetsConfig.PetMode showPetGroup(PetGroup petGroup)
-	{
-		switch (petGroup)
+		switch (pet.getPetGroup())
 		{
 			case BOSS:
 				return config.showBoss();
@@ -211,6 +215,11 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Finds the color a given NPCs {@link PetGroup} should be displayed in
+	 * @param npc
+	 * @return
+	 */
 	Color npcToColor(NPC npc)
 	{
 		Pet pet = Pet.findPet(npc.getId());
@@ -234,17 +243,23 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Finds which pets are under the users cursor.
+	 * This consults the {@link #pets} array.
+	 */
 	private List<NPC> getPetsUnderCursor()
 	{
 		ArrayList<NPC> underCursor = new ArrayList<>();
 		for (NPC npc : pets)
 		{
-			Shape npcHull = npc.getConvexHull();
+			Shape npcHull = npc.getConvexHull();	// Gets a Shape representing an outline of the npc
 
 			if (npcHull != null)
 			{
 				Point mouseCanvasPosition = client.getMouseCanvasPosition();
-				if (npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()) && Pet.findPet(npc.getId()) != null)
+
+				// Determine if the cursor is inside of the outline of the pet
+				if (npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()))
 				{
 					underCursor.add(npc);
 				}
@@ -254,52 +269,73 @@ public class PetInfoPlugin extends Plugin
 		return underCursor;
 	}
 
+	/**
+	 * Adds the menus for the the pets that are under the cursor at the time of the call.
+	 */
 	private void addMenus()
 	{
 		List<NPC> petsUnderCursor = getPetsUnderCursor();
 		if (!petsUnderCursor.isEmpty())
 		{
-			owners.clear();
+			owners.clear();	//Clear the owners array of old owners
 			for (NPC pet : petsUnderCursor)
 			{
-				addOwnerMenuEntry(pet);
-				addPetMenuEntry(pet);
+				// Owner first because the menu options are FILO
+				addPetOwnerMenu(pet);
+				addPetInfoMenu(pet);
 			}
 		}
 	}
 
-	private void addPetMenuEntry(NPC pet)
+	/**
+	 * Adds an info menu for the given pet.
+	 * The {@link MenuEntry} is built as follows:
+	 * 	* {@link MenuEntry#setOption(String)}: is {@link #INFO}
+	 * 	* {@link MenuEntry#setTarget(String)}: is the pets name, colored to match {@link #npcToColor(NPC)}
+	 * 	* {@link MenuEntry#setType(int)}: is {@link MenuAction#RUNELITE}
+	 * 	* {@link MenuEntry#setIdentifier(int)}: is the pets NPCid
+	 */
+	private void addPetInfoMenu(NPC pet)
 	{
 		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
 
-		final MenuEntry examine = new MenuEntry();
-		examine.setOption(EXAMINE);
-		examine.setTarget(petNameColored.build());
-		examine.setType(MenuAction.RUNELITE.getId());
-		examine.setIdentifier(pet.getId());
+		final MenuEntry info = new MenuEntry();
+		info.setOption(INFO);
+		info.setTarget(petNameColored.build());
+		info.setType(MenuAction.RUNELITE.getId());
+		info.setIdentifier(pet.getId());
 
-		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), examine);
+		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), info);
 		client.setMenuEntries(newMenu);
 	}
 
-	private void addOwnerMenuEntry(NPC pet)
+	/**
+	 * Adds an owner menu for the given pet.
+	 * The {@link MenuEntry} is built as follows:
+	 * 	* {@link MenuEntry#setOption(String)}: is {@link #OWNER}
+	 * 	* {@link MenuEntry#setTarget(String)}: is the pets name, colored to match {@link #npcToColor(NPC)}
+	 * 	* {@link MenuEntry#setType(int)}: is {@link MenuAction#RUNELITE}
+	 * 	* {@link MenuEntry#setIdentifier(int)}: is the pets NPCid
+	 * 	* {@link MenuEntry#setParam0(int)}: is the index in {@link #owners} represented by the pet's owner's name
+	 */
+	private void addPetOwnerMenu(NPC pet)
 	{
 		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
 
-		Actor owner = pet.getInteracting();
+		Actor owner = pet.getInteracting();	// Pets are always interacting with their owner. I think.
 
 		if(owner == null)
 		{
 			return;
 		}
-		owners.add(owner.getName());
+		owners.add(owner.getName());	// Add the owners name to the array for later retrieval
 
 		final MenuEntry examine = new MenuEntry();
 		examine.setOption(OWNER);
 		examine.setTarget(petNameColored.build());
 		examine.setType(MenuAction.RUNELITE.getId());
 		examine.setIdentifier(pet.getId());
-		examine.setParam0(owners.indexOf(owner.getName()));
+		examine.setParam0(owners.indexOf(owner.getName()));	// This becomes the MenuOptionClicked's ActionParam somehow.
 
 		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), examine);
 		client.setMenuEntries(newMenu);

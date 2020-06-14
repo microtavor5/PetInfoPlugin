@@ -57,6 +57,9 @@ public class PetsOverlay extends Overlay
 		this.plugin = plugin;
 	}
 
+	/**
+	 * Draw the appropriate highlights in the appropriate colors for the pets on screen.
+	 */
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -83,6 +86,7 @@ public class PetsOverlay extends Overlay
 			}
 
 			Color color = plugin.npcToColor(pet);
+			// Determine if we are drawing the box and the name or just the name
 			if (plugin.showNpc(pet) == PetsConfig.PetMode.HIGHLIGHT && color != null)
 			{
 				drawPet(graphics, pet, petName, color);
@@ -97,6 +101,9 @@ public class PetsOverlay extends Overlay
 		return null;
 	}
 
+	/**
+	 * Draws a square around the pet and the pet's name overhead, both in the color of the pet's group.
+	 */
 	private void drawPet(Graphics2D graphics, Actor actor, String text, Color color)
 	{
 		Polygon poly = actor.getCanvasTilePoly();
@@ -112,6 +119,9 @@ public class PetsOverlay extends Overlay
 		}
 	}
 
+	/**
+	 * Just draws the pet's name overhead, in the color of the pet's group.
+	 */
 	private void drawPetName(Graphics2D graphics, Actor actor, String text, Color color)
 	{
 		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight());

@@ -10,7 +10,7 @@ have their names displayed above their heads and even right-click for more info!
 but I can't recreate the issue.
 
 ##### Possible Issues:
-* It is possible that I have the wrong IDs for the Smokedevel and Snakeling pets.
+* It is possible that I have the wrong IDs for the Smokedevel, Snakeling, and other pets.
 Therefor it is possible that some variants of the pets might not be recognised,
 or that some actual mobs might be mistaken as a pet.
 

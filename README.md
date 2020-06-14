@@ -18,7 +18,5 @@ or that some actual mobs might be mistaken as a pet.
 * I would like to add information of pet variants,
 but don't have the pets to be able to check what NPC IDs are representative of what variants.
 Any help on this front would be greatly appreciated!
-* I would also like to add and Owner option,
-but the only potential implementation I have now is far from elegant.
 
 ###### Special thanks to the devs of the Implings and Menu Entry Swapper plugins

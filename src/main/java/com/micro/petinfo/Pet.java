@@ -421,11 +421,17 @@ public enum Pet
 		PETS = builder.build();
 	}
 
+	/**
+	 * Returns the Pet enum if the passed NPCid is a pet, null if not
+	 */
 	static Pet findPet(int npcId)
 	{
 		return PETS.get(npcId);
 	}
 
+	/**
+	 * Returns the info string for the passed NPCid
+	 */
 	static String getInfo(int npcId)
 	{
 		return PETS.get(npcId).info;

@@ -35,7 +35,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
@@ -73,7 +72,8 @@ public class PetsOverlay extends Overlay
 		for (NPC pet : pets)
 		{
 			// There were some overlays being drawn where there weren't any pets, hopefully this'll fix it.
-			// But to be honest I don't know what the cause was.
+			// But to be honest I don't know what the cause was. Perhaps pets morphing?
+			// THIS DID NOT RESOLVE THE ISSUE.
 			if (pet.getConvexHull() == null)
 			{
 				continue;

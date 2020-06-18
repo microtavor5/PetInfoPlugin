@@ -47,7 +47,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.ArrayList;
@@ -117,7 +116,7 @@ public class PetInfoPlugin extends Plugin
 
 	@Subscribe
 	public void onNpcChanged(NpcChanged npcCompositionChanged)	// Do pet's compositions ever change? If they do we need to handle if they ever stop being pets,
-	{															// if they don't we don't need this at all.
+	{															// if they don't we don't need this at all. I think this may have cause the highlight with no pet issue.
 		NPC npc = npcCompositionChanged.getNpc();
 		Pet pet = Pet.findPet(npc.getId());
 
@@ -150,6 +149,19 @@ public class PetInfoPlugin extends Plugin
 
 		NPC npc = npcDespawned.getNpc();
 		pets.remove(npc);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		List<NPC> clientNPCs = client.getNpcs();
+		for (NPC pet : pets)
+		{
+			if (!clientNPCs.contains(pet))
+			{
+				System.out.println("The pet: " + pet.getName() + " (id: " + pet.getId() + ", Index: " + pet.getIndex() + ") is not in the client's NPC array");
+			}
+		}
 	}
 
 	/**

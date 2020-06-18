@@ -151,19 +151,6 @@ public class PetInfoPlugin extends Plugin
 		pets.remove(npc);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		List<NPC> clientNPCs = client.getNpcs();
-		for (NPC pet : pets)
-		{
-			if (!clientNPCs.contains(pet))
-			{
-				System.out.println("The pet: " + pet.getName() + " (id: " + pet.getId() + ", Index: " + pet.getIndex() + ") is not in the client's NPC array");
-			}
-		}
-	}
-
 	/**
 	 * Add the menus for the pets, must be done each tick or else they would disappear on the next tick.
 	 * This is not done in onMenuOpened because the entries are visibly added after the fact.

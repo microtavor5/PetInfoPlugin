@@ -248,75 +248,75 @@ public enum Pet
 	RED(PetGroup.SKILLING, 9850, Pet.ROCKY_INFO + " " + Pet.ROCKY_RED_PANDA),
 	RED_9852(PetGroup.SKILLING, 9852, Pet.ROCKY_INFO + " " + Pet.ROCKY_RED_PANDA),
 
-	RIFT_GUARDIAN(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN, Pet.RIFT_GUARDIAN_INFO + " This is the Fire variant"),	// Fire
-	RIFT_GUARDIAN_7338(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7338, Pet.RIFT_GUARDIAN_INFO + " This is the Air variant"),	// Air
-	RIFT_GUARDIAN_7339(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7339, Pet.RIFT_GUARDIAN_INFO + " This is the Mind variant"),	// Mind
-	RIFT_GUARDIAN_7340(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7340, Pet.RIFT_GUARDIAN_INFO + " This is the Water variant"),	// Water
-	RIFT_GUARDIAN_7341(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7341, Pet.RIFT_GUARDIAN_INFO + " This is the Earth variant"),	// Earth
-	RIFT_GUARDIAN_7342(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7342, Pet.RIFT_GUARDIAN_INFO + " This is the Body variant"),	// Body
-	RIFT_GUARDIAN_7343(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7343, Pet.RIFT_GUARDIAN_INFO + " This is the Cosmic variant"),	// Cosmic
-	RIFT_GUARDIAN_7344(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7344, Pet.RIFT_GUARDIAN_INFO + " This is the Chaos variant"),	// Chaos
-	RIFT_GUARDIAN_7345(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7345, Pet.RIFT_GUARDIAN_INFO + " This is the Nature variant"),	// Nature
-	RIFT_GUARDIAN_7346(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7346, Pet.RIFT_GUARDIAN_INFO + " This is the Law variant"),	// Law
-	RIFT_GUARDIAN_7347(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7347, Pet.RIFT_GUARDIAN_INFO + " This is the Death variant"),	// Death
-	RIFT_GUARDIAN_7348(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7348, Pet.RIFT_GUARDIAN_INFO + " This is the Soul variant"),	// Soul
-	RIFT_GUARDIAN_7349(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7349, Pet.RIFT_GUARDIAN_INFO + " This is the Astral variant"),	// Astral
-	RIFT_GUARDIAN_7350(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7350, Pet.RIFT_GUARDIAN_INFO + " This is the Blood variant"),	// Blood
-	RIFT_GUARDIAN_7354(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7354, Pet.RIFT_GUARDIAN_INFO + " This is the Wrath variant"),	// Wrath
-	RIFT_GUARDIAN_7355(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7355, Pet.RIFT_GUARDIAN_INFO + " This is the Air variant"),	// Air
-	RIFT_GUARDIAN_7356(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7356, Pet.RIFT_GUARDIAN_INFO + " This is the Mind variant"),	// Mind
-	RIFT_GUARDIAN_7357(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7357, Pet.RIFT_GUARDIAN_INFO + " This is the Water variant"),	// Water
-	RIFT_GUARDIAN_7358(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7358, Pet.RIFT_GUARDIAN_INFO + " This is the Earth variant"),	// Earth
-	RIFT_GUARDIAN_7359(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7359, Pet.RIFT_GUARDIAN_INFO + " This is the Body variant"),	// Body
-	RIFT_GUARDIAN_7360(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7360, Pet.RIFT_GUARDIAN_INFO + " This is the Cosmic variant"),	// Cosmic
-	RIFT_GUARDIAN_7361(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7361, Pet.RIFT_GUARDIAN_INFO + " This is the Chaos variant"),	// Chaos
-	RIFT_GUARDIAN_7362(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7362, Pet.RIFT_GUARDIAN_INFO + " This is the Nature variant"),	// Nature
-	RIFT_GUARDIAN_7363(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7363, Pet.RIFT_GUARDIAN_INFO + " This is the Law variant"),	// Law
-	RIFT_GUARDIAN_7364(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7364, Pet.RIFT_GUARDIAN_INFO + " This is the Death variant"),	// Death
-	RIFT_GUARDIAN_7365(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7365, Pet.RIFT_GUARDIAN_INFO + " This is the Soul variant"),	// Soul
-	RIFT_GUARDIAN_7366(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7366, Pet.RIFT_GUARDIAN_INFO + " This is the Astral variant"),	// Astral
-	RIFT_GUARDIAN_7367(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7367, Pet.RIFT_GUARDIAN_INFO + " This is the Blood variant"),	// Blood
-	RIFT_GUARDIAN_8024(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_8024, Pet.RIFT_GUARDIAN_INFO + " This is the Wrath variant"),	// Wrath
-	RIFT_GUARDIAN_8028(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_8028, Pet.RIFT_GUARDIAN_INFO + " This is the Wrath variant"),	// Wrath?
+	RIFT_GUARDIAN(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN, Pet.RIFT_GUARDIAN_INFO + " This is the Fire variant."),	// Fire
+	RIFT_GUARDIAN_7338(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7338, Pet.RIFT_GUARDIAN_INFO + " This is the Air variant."),	// Air
+	RIFT_GUARDIAN_7339(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7339, Pet.RIFT_GUARDIAN_INFO + " This is the Mind variant."),	// Mind
+	RIFT_GUARDIAN_7340(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7340, Pet.RIFT_GUARDIAN_INFO + " This is the Water variant."),	// Water
+	RIFT_GUARDIAN_7341(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7341, Pet.RIFT_GUARDIAN_INFO + " This is the Earth variant."),	// Earth
+	RIFT_GUARDIAN_7342(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7342, Pet.RIFT_GUARDIAN_INFO + " This is the Body variant."),	// Body
+	RIFT_GUARDIAN_7343(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7343, Pet.RIFT_GUARDIAN_INFO + " This is the Cosmic variant."),	// Cosmic
+	RIFT_GUARDIAN_7344(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7344, Pet.RIFT_GUARDIAN_INFO + " This is the Chaos variant."),	// Chaos
+	RIFT_GUARDIAN_7345(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7345, Pet.RIFT_GUARDIAN_INFO + " This is the Nature variant."),	// Nature
+	RIFT_GUARDIAN_7346(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7346, Pet.RIFT_GUARDIAN_INFO + " This is the Law variant."),	// Law
+	RIFT_GUARDIAN_7347(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7347, Pet.RIFT_GUARDIAN_INFO + " This is the Death variant."),	// Death
+	RIFT_GUARDIAN_7348(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7348, Pet.RIFT_GUARDIAN_INFO + " This is the Soul variant."),	// Soul
+	RIFT_GUARDIAN_7349(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7349, Pet.RIFT_GUARDIAN_INFO + " This is the Astral variant."),	// Astral
+	RIFT_GUARDIAN_7350(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7350, Pet.RIFT_GUARDIAN_INFO + " This is the Blood variant."),	// Blood
+	RIFT_GUARDIAN_7354(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7354, Pet.RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath
+	RIFT_GUARDIAN_7355(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7355, Pet.RIFT_GUARDIAN_INFO + " This is the Air variant."),	// Air
+	RIFT_GUARDIAN_7356(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7356, Pet.RIFT_GUARDIAN_INFO + " This is the Mind variant."),	// Mind
+	RIFT_GUARDIAN_7357(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7357, Pet.RIFT_GUARDIAN_INFO + " This is the Water variant."),	// Water
+	RIFT_GUARDIAN_7358(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7358, Pet.RIFT_GUARDIAN_INFO + " This is the Earth variant."),	// Earth
+	RIFT_GUARDIAN_7359(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7359, Pet.RIFT_GUARDIAN_INFO + " This is the Body variant."),	// Body
+	RIFT_GUARDIAN_7360(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7360, Pet.RIFT_GUARDIAN_INFO + " This is the Cosmic variant."),	// Cosmic
+	RIFT_GUARDIAN_7361(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7361, Pet.RIFT_GUARDIAN_INFO + " This is the Chaos variant."),	// Chaos
+	RIFT_GUARDIAN_7362(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7362, Pet.RIFT_GUARDIAN_INFO + " This is the Nature variant."),	// Nature
+	RIFT_GUARDIAN_7363(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7363, Pet.RIFT_GUARDIAN_INFO + " This is the Law variant."),	// Law
+	RIFT_GUARDIAN_7364(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7364, Pet.RIFT_GUARDIAN_INFO + " This is the Death variant."),	// Death
+	RIFT_GUARDIAN_7365(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7365, Pet.RIFT_GUARDIAN_INFO + " This is the Soul variant."),	// Soul
+	RIFT_GUARDIAN_7366(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7366, Pet.RIFT_GUARDIAN_INFO + " This is the Astral variant."),	// Astral
+	RIFT_GUARDIAN_7367(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7367, Pet.RIFT_GUARDIAN_INFO + " This is the Blood variant."),	// Blood
+	RIFT_GUARDIAN_8024(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_8024, Pet.RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath
+	RIFT_GUARDIAN_8028(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_8028, Pet.RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath?
 
-	ROCK_GOLEM(PetGroup.SKILLING, NpcID.ROCK_GOLEM, Pet.ROCK_GOLEM_INFO + " This is the Amethyst variant"),	// Amethyst
+	ROCK_GOLEM(PetGroup.SKILLING, NpcID.ROCK_GOLEM, Pet.ROCK_GOLEM_INFO + " This is the Amethyst variant."),	// Amethyst
 	// ROCK_GOLEM_6725(PetGroup.SKILLING, NpcID.ROCK_GOLEM_6725, Pet.ROCK_GOLEM_INFO),	// Not the pet
 //	ROCK_GOLEM_6726(PetGroup.SKILLING, NpcID.ROCK_GOLEM_6726, Pet.ROCK_GOLEM_INFO),	// Not the pet
 //	ROCK_GOLEM_6727(PetGroup.SKILLING, NpcID.ROCK_GOLEM_6727, Pet.ROCK_GOLEM_INFO),	// Not the pet
 //	ROCK_GOLEM_6728(PetGroup.SKILLING, NpcID.ROCK_GOLEM_6728, Pet.ROCK_GOLEM_INFO),	// Not the pet
 //	ROCK_GOLEM_6729(PetGroup.SKILLING, NpcID.ROCK_GOLEM_6729, Pet.ROCK_GOLEM_INFO),	// Not the pet
 //	ROCK_GOLEM_6730(PetGroup.SKILLING, NpcID.ROCK_GOLEM_6730, Pet.ROCK_GOLEM_INFO),	// Not the pet
-	ROCK_GOLEM_7439(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7439, Pet.ROCK_GOLEM_INFO + " This is the Rock variant"),	// Rock
-	ROCK_GOLEM_7440(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7440, Pet.ROCK_GOLEM_INFO + " This is the Tin variant"),	// Tin
-	ROCK_GOLEM_7441(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7441, Pet.ROCK_GOLEM_INFO + " This is the Copper variant"),	// Copper
-	ROCK_GOLEM_7442(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7442, Pet.ROCK_GOLEM_INFO + " This is the Iron variant"),	// Iron
-	ROCK_GOLEM_7443(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7443, Pet.ROCK_GOLEM_INFO + " This is the Blurite variant"),	// Blurite
-	ROCK_GOLEM_7444(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7444, Pet.ROCK_GOLEM_INFO + " This is the Silver variant"),	// Silver
-	ROCK_GOLEM_7445(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7445, Pet.ROCK_GOLEM_INFO + " This is the Coal variant"),	// Coal
-	ROCK_GOLEM_7446(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7446, Pet.ROCK_GOLEM_INFO + " This is the Gold variant"),	// Gold
-	ROCK_GOLEM_7447(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7447, Pet.ROCK_GOLEM_INFO + " This is the Mithril variant"),	// Mithril
-	ROCK_GOLEM_7448(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7448, Pet.ROCK_GOLEM_INFO + " This is the Granite variant"),	// Granite
-	ROCK_GOLEM_7449(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7449, Pet.ROCK_GOLEM_INFO + " This is the Adamantite variant"),	// Adamantite
-	ROCK_GOLEM_7450(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7450, Pet.ROCK_GOLEM_INFO + " This is the Runite variant"),	// Runite
-	ROCK_GOLEM_7451(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7451, Pet.ROCK_GOLEM_INFO + " This is the Rock variant"),	// Rock
-	ROCK_GOLEM_7452(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7452, Pet.ROCK_GOLEM_INFO + " This is the Tin variant"),	// Tin
-	ROCK_GOLEM_7453(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7453, Pet.ROCK_GOLEM_INFO + " This is the Copper variant"),	// Copper
-	ROCK_GOLEM_7454(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7454, Pet.ROCK_GOLEM_INFO + " This is the Iron variant"),	// Iron
-	ROCK_GOLEM_7455(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7455, Pet.ROCK_GOLEM_INFO + " This is the Blurite variant"),	// Blurite
-	ROCK_GOLEM_7642(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7642, Pet.ROCK_GOLEM_INFO + " This is the Silver variant"),	// Silver
-	ROCK_GOLEM_7643(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7643, Pet.ROCK_GOLEM_INFO + " This is the Coal variant"),	// Coal
-	ROCK_GOLEM_7644(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7644, Pet.ROCK_GOLEM_INFO + " This is the Gold variant"),	// Gold
-	ROCK_GOLEM_7645(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7645, Pet.ROCK_GOLEM_INFO + " This is the Mithril variant"),	// Mithril
-	ROCK_GOLEM_7646(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7646, Pet.ROCK_GOLEM_INFO + " This is the Granite variant"),	// Granite
-	ROCK_GOLEM_7647(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7647, Pet.ROCK_GOLEM_INFO + " This is Adamantite fire variant"),	// Adamantite
-	ROCK_GOLEM_7648(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7648, Pet.ROCK_GOLEM_INFO + " This is the Runite variant"),	// Runite
-	ROCK_GOLEM_7711(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7711, Pet.ROCK_GOLEM_INFO + " This is the Amethyst variant"),	// Amethyst
-	ROCK_GOLEM_7736(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7736, Pet.ROCK_GOLEM_INFO + " This is the Lovakite variant"),	// Lovakite
-	ROCK_GOLEM_7737(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7737, Pet.ROCK_GOLEM_INFO + " This is the Elemental variant"),	// Elemental
-	ROCK_GOLEM_7738(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7738, Pet.ROCK_GOLEM_INFO + " This is the Daeyalt variant"),	// Daeyalt
-	ROCK_GOLEM_7739(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7739, Pet.ROCK_GOLEM_INFO + " This is the Lovakite variant"),	// Lovakite variant, otherplayer
-	ROCK_GOLEM_7740(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7740, Pet.ROCK_GOLEM_INFO + " This is the Elemental variant"),	// Elemental variant, other player
-	ROCK_GOLEM_7741(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7741, Pet.ROCK_GOLEM_INFO + " This is the Daeyalt variant"),	// Daeyalt
+	ROCK_GOLEM_7439(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7439, Pet.ROCK_GOLEM_INFO + " This is the Rock variant."),	// Rock
+	ROCK_GOLEM_7440(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7440, Pet.ROCK_GOLEM_INFO + " This is the Tin variant."),	// Tin
+	ROCK_GOLEM_7441(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7441, Pet.ROCK_GOLEM_INFO + " This is the Copper variant."),	// Copper
+	ROCK_GOLEM_7442(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7442, Pet.ROCK_GOLEM_INFO + " This is the Iron variant."),	// Iron
+	ROCK_GOLEM_7443(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7443, Pet.ROCK_GOLEM_INFO + " This is the Blurite variant."),	// Blurite
+	ROCK_GOLEM_7444(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7444, Pet.ROCK_GOLEM_INFO + " This is the Silver variant."),	// Silver
+	ROCK_GOLEM_7445(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7445, Pet.ROCK_GOLEM_INFO + " This is the Coal variant."),	// Coal
+	ROCK_GOLEM_7446(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7446, Pet.ROCK_GOLEM_INFO + " This is the Gold variant."),	// Gold
+	ROCK_GOLEM_7447(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7447, Pet.ROCK_GOLEM_INFO + " This is the Mithril variant."),	// Mithril
+	ROCK_GOLEM_7448(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7448, Pet.ROCK_GOLEM_INFO + " This is the Granite variant."),	// Granite
+	ROCK_GOLEM_7449(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7449, Pet.ROCK_GOLEM_INFO + " This is the Adamantite variant."),	// Adamantite
+	ROCK_GOLEM_7450(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7450, Pet.ROCK_GOLEM_INFO + " This is the Runite variant."),	// Runite
+	ROCK_GOLEM_7451(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7451, Pet.ROCK_GOLEM_INFO + " This is the Rock variant."),	// Rock
+	ROCK_GOLEM_7452(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7452, Pet.ROCK_GOLEM_INFO + " This is the Tin variant."),	// Tin
+	ROCK_GOLEM_7453(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7453, Pet.ROCK_GOLEM_INFO + " This is the Copper variant."),	// Copper
+	ROCK_GOLEM_7454(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7454, Pet.ROCK_GOLEM_INFO + " This is the Iron variant."),	// Iron
+	ROCK_GOLEM_7455(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7455, Pet.ROCK_GOLEM_INFO + " This is the Blurite variant."),	// Blurite
+	ROCK_GOLEM_7642(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7642, Pet.ROCK_GOLEM_INFO + " This is the Silver variant."),	// Silver
+	ROCK_GOLEM_7643(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7643, Pet.ROCK_GOLEM_INFO + " This is the Coal variant."),	// Coal
+	ROCK_GOLEM_7644(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7644, Pet.ROCK_GOLEM_INFO + " This is the Gold variant."),	// Gold
+	ROCK_GOLEM_7645(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7645, Pet.ROCK_GOLEM_INFO + " This is the Mithril variant."),	// Mithril
+	ROCK_GOLEM_7646(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7646, Pet.ROCK_GOLEM_INFO + " This is the Granite variant."),	// Granite
+	ROCK_GOLEM_7647(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7647, Pet.ROCK_GOLEM_INFO + " This is Adamantite fire variant."),	// Adamantite
+	ROCK_GOLEM_7648(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7648, Pet.ROCK_GOLEM_INFO + " This is the Runite variant."),	// Runite
+	ROCK_GOLEM_7711(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7711, Pet.ROCK_GOLEM_INFO + " This is the Amethyst variant."),	// Amethyst
+	ROCK_GOLEM_7736(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7736, Pet.ROCK_GOLEM_INFO + " This is the Lovakite variant."),	// Lovakite
+	ROCK_GOLEM_7737(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7737, Pet.ROCK_GOLEM_INFO + " This is the Elemental variant."),	// Elemental
+	ROCK_GOLEM_7738(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7738, Pet.ROCK_GOLEM_INFO + " This is the Daeyalt variant."),	// Daeyalt
+	ROCK_GOLEM_7739(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7739, Pet.ROCK_GOLEM_INFO + " This is the Lovakite variant."),	// Lovakite variant, otherplayer
+	ROCK_GOLEM_7740(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7740, Pet.ROCK_GOLEM_INFO + " This is the Elemental variant."),	// Elemental variant, other player
+	ROCK_GOLEM_7741(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7741, Pet.ROCK_GOLEM_INFO + " This is the Daeyalt variant."),	// Daeyalt
 
 	ROCKY(PetGroup.SKILLING, NpcID.ROCKY, Pet.ROCKY_INFO + " " + Pet.ROCKY_RACCOON),
 	ROCKY_7353(PetGroup.SKILLING, NpcID.ROCKY_7353, Pet.ROCKY_INFO + " " + Pet.ROCKY_RACCOON),
@@ -346,17 +346,17 @@ public enum Pet
 	SRARACHA_2144(PetGroup.BOSS, NpcID.SRARACHA_2144, Pet.SRARACHA_INFO),
 
 	TANGLEROOT(PetGroup.SKILLING, NpcID.TANGLEROOT, Pet.TANGLEROOT_INFO),	// Acorn
-	TANGLEROOT_7352(PetGroup.SKILLING, NpcID.TANGLEROOT_7352, Pet.TANGLEROOT_INFO + " This is the Acorn variant"),	// Acorn
-	TANGLEROOT_9492(PetGroup.SKILLING, NpcID.TANGLEROOT_9492, Pet.TANGLEROOT_INFO + " This is the Crystal variant"),	// Crystal
-	TANGLEROOT_9493(PetGroup.SKILLING, NpcID.TANGLEROOT_9493, Pet.TANGLEROOT_INFO + " This is the Dragon Fruit variant"),	// Dragon
-	TANGLEROOT_9494(PetGroup.SKILLING, NpcID.TANGLEROOT_9494, Pet.TANGLEROOT_INFO + " This is the Guam variant"),	// Guam
-	TANGLEROOT_9495(PetGroup.SKILLING, NpcID.TANGLEROOT_9495, Pet.TANGLEROOT_INFO + " This is the White Lily variant"),	// White Lily
-	TANGLEROOT_9496(PetGroup.SKILLING, NpcID.TANGLEROOT_9496, Pet.TANGLEROOT_INFO + " This is the Redwood variant"),	// Redwood
-	TANGLEROOT_9497(PetGroup.SKILLING, NpcID.TANGLEROOT_9497, Pet.TANGLEROOT_INFO + " This is the Crystal variant"),	// Crystal
-	TANGLEROOT_9498(PetGroup.SKILLING, NpcID.TANGLEROOT_9498, Pet.TANGLEROOT_INFO + " This is the Dragon Fruit variant"),	// Dragon Fruit Variant, other player
-	TANGLEROOT_9499(PetGroup.SKILLING, NpcID.TANGLEROOT_9499, Pet.TANGLEROOT_INFO + " This is the Guam variant"),	// Guam Variant, other player
-	TANGLEROOT_9500(PetGroup.SKILLING, NpcID.TANGLEROOT_9500, Pet.TANGLEROOT_INFO + " This is the White Lily variant"),	// White Lily Variant, other player
-	TANGLEROOT_9501(PetGroup.SKILLING, NpcID.TANGLEROOT_9501, Pet.TANGLEROOT_INFO + " This is the Redwood variant"),	// Redwood Variant, other player
+	TANGLEROOT_7352(PetGroup.SKILLING, NpcID.TANGLEROOT_7352, Pet.TANGLEROOT_INFO + " This is the Acorn variant."),	// Acorn
+	TANGLEROOT_9492(PetGroup.SKILLING, NpcID.TANGLEROOT_9492, Pet.TANGLEROOT_INFO + " This is the Crystal variant."),	// Crystal
+	TANGLEROOT_9493(PetGroup.SKILLING, NpcID.TANGLEROOT_9493, Pet.TANGLEROOT_INFO + " This is the Dragon Fruit variant."),	// Dragon
+	TANGLEROOT_9494(PetGroup.SKILLING, NpcID.TANGLEROOT_9494, Pet.TANGLEROOT_INFO + " This is the Guam variant."),	// Guam
+	TANGLEROOT_9495(PetGroup.SKILLING, NpcID.TANGLEROOT_9495, Pet.TANGLEROOT_INFO + " This is the White Lily variant."),	// White Lily
+	TANGLEROOT_9496(PetGroup.SKILLING, NpcID.TANGLEROOT_9496, Pet.TANGLEROOT_INFO + " This is the Redwood variant."),	// Redwood
+	TANGLEROOT_9497(PetGroup.SKILLING, NpcID.TANGLEROOT_9497, Pet.TANGLEROOT_INFO + " This is the Crystal variant."),	// Crystal
+	TANGLEROOT_9498(PetGroup.SKILLING, NpcID.TANGLEROOT_9498, Pet.TANGLEROOT_INFO + " This is the Dragon Fruit variant."),	// Dragon Fruit Variant, other player
+	TANGLEROOT_9499(PetGroup.SKILLING, NpcID.TANGLEROOT_9499, Pet.TANGLEROOT_INFO + " This is the Guam variant."),	// Guam Variant, other player
+	TANGLEROOT_9500(PetGroup.SKILLING, NpcID.TANGLEROOT_9500, Pet.TANGLEROOT_INFO + " This is the White Lily variant."),	// White Lily Variant, other player
+	TANGLEROOT_9501(PetGroup.SKILLING, NpcID.TANGLEROOT_9501, Pet.TANGLEROOT_INFO + " This is the Redwood variant."),	// Redwood Variant, other player
 
 	TOY_DOLL(PetGroup.TOY, NpcID.TOY_DOLL, Pet.TOY_DOLL_INFO),
 	TOY_DOLL_9253(PetGroup.TOY, NpcID.TOY_DOLL_9253, Pet.TOY_DOLL_INFO),

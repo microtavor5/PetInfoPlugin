@@ -244,6 +244,10 @@ public enum Pet
 	PRINCE_BLACK_DRAGON(PetGroup.BOSS, NpcID.PRINCE_BLACK_DRAGON, Pet.PRINCE_BLACK_DRAGON_INFO),
 	PRINCE_BLACK_DRAGON_6652(PetGroup.BOSS, NpcID.PRINCE_BLACK_DRAGON_6652, Pet.PRINCE_BLACK_DRAGON_INFO),
 
+	// The NpcID class does not yet have these ids so I ahd to hard code them
+	RED(PetGroup.SKILLING, 9850, Pet.ROCKY_INFO + " " + Pet.ROCKY_RED_PANDA),
+	RED_9852(PetGroup.SKILLING, 9852, Pet.ROCKY_INFO + " " + Pet.ROCKY_RED_PANDA),
+
 	RIFT_GUARDIAN(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN, Pet.RIFT_GUARDIAN_INFO + " This is the Fire Variant"),	// Fire
 	RIFT_GUARDIAN_7338(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7338, Pet.RIFT_GUARDIAN_INFO + " This is the Air Variant"),	// Air
 	RIFT_GUARDIAN_7339(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7339, Pet.RIFT_GUARDIAN_INFO + " This is the Mind Variant"),	// Mind
@@ -314,8 +318,8 @@ public enum Pet
 	ROCK_GOLEM_7740(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7740, Pet.ROCK_GOLEM_INFO + " This is the Elemental Variant"),	// Elemental variant, other player
 	ROCK_GOLEM_7741(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7741, Pet.ROCK_GOLEM_INFO + " This is the Daeyalt Variant"),	// Daeyalt
 
-	ROCKY(PetGroup.SKILLING, NpcID.ROCKY, Pet.ROCKY_INFO),
-	ROCKY_7353(PetGroup.SKILLING, NpcID.ROCKY_7353, Pet.ROCKY_INFO),
+	ROCKY(PetGroup.SKILLING, NpcID.ROCKY, Pet.ROCKY_INFO + " " + Pet.ROCKY_RACCOON),
+	ROCKY_7353(PetGroup.SKILLING, NpcID.ROCKY_7353, Pet.ROCKY_INFO + " " + Pet.ROCKY_RACCOON),
 
 	SCORPIAS_OFFSPRING(PetGroup.BOSS, NpcID.SCORPIAS_OFFSPRING, Pet.SCORPIAS_OFFSPRING_INFO),		// Usually even, what's up with this?
 	SCORPIAS_OFFSPRING_5561(PetGroup.BOSS, NpcID.SCORPIAS_OFFSPRING_5561, Pet.SCORPIAS_OFFSPRING_INFO),
@@ -398,6 +402,10 @@ public enum Pet
 
 	YOUNGLLEF(PetGroup.BOSS, NpcID.YOUNGLLEF, Pet.YOUNGLLEF_INFO),
 	YOUNGLLEF_8737(PetGroup.BOSS, NpcID.YOUNGLLEF_8737, Pet.YOUNGLLEF_INFO),
+
+	// The NpcID class does not yet have the ids, so I ahd to hard code them
+	ZIGGY(PetGroup.SKILLING, 9851, Pet.ROCKY_INFO + " " + Pet.ROCKY_TANUKI),
+	ZIGGY_9853(PetGroup.SKILLING, 9853, Pet.ROCKY_INFO + " " + Pet.ROCKY_TANUKI),
 
 	ZILYANA_JR(PetGroup.BOSS, NpcID.ZILYANA_JR, Pet.ZILYANA_JR_INFO),
 	ZILYANA_JR_6646(PetGroup.BOSS, NpcID.ZILYANA_JR_6646, Pet.ZILYANA_JR_INFO);
@@ -511,4 +519,8 @@ public enum Pet
 	 *	Variant text
 	 */
 	private static final String BABY_CHINCHOMPA_GOLD = "The gold variant is obtained by causing a Baby Chinchompa to metamorphosize at a rate of 1/10000.";
+
+	private static final String ROCKY_RACCOON = " This is the Raccoon variant of Rocky, obtained by using Redberries on any variant of Rocky.";
+	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.";
+	private static final String ROCKY_TANUKI = " This is the Tanuki variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.";
 }

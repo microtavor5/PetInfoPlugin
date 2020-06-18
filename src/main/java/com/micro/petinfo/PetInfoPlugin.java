@@ -54,7 +54,7 @@ import java.util.List;
 
 
 @PluginDescriptor(
-		name = "Pet Highlight",
+		name = "Pet Info",
 		description = "Highlights other players pets,shows the pets name and gives info about the pets.",
 		tags = {"pet"}
 )

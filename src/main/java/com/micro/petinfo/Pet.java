@@ -116,6 +116,9 @@ public enum Pet
 	DARK_CORE(PetGroup.BOSS, NpcID.DARK_CORE, Pet.DARK_CORE_INFO),    // Not sure this is the pet dark core, but it looks right
 	DARK_CORE_388(PetGroup.BOSS, NpcID.DARK_CORE_388, Pet.DARK_CORE_INFO),
 
+	DARK_SQUIRREL(PetGroup.BOSS, NpcID.DARK_SQUIRREL, Pet.GIANT_SQUIRREL_INFO + Pet.DARK_Giant_SQUIRREL),	// Thank you to Gamma91/Bram91 on gitHub for hte info
+	DARK_SQUIRREL_9638(PetGroup.BOSS, NpcID.DARK_SQUIRREL_9638, Pet.GIANT_SQUIRREL_INFO + Pet.DARK_Giant_SQUIRREL),
+
 	EEK(PetGroup.OTHER, NpcID.EEK, Pet.EEK_INFO),
 
 	ENRAGED_TEKTINY(PetGroup.OTHER, NpcID.ENRAGED_TEKTINY, Pet.OLMLET_INFO + Pet.OLMLET_CM_VARIANTS),
@@ -540,6 +543,8 @@ public enum Pet
 	 *	Variant text
 	 */
 	private static final String BABY_CHINCHOMPA_GOLD = "The gold variant is obtained by causing a Baby Chinchompa to metamorphosize at a rate of 1/10000.";
+
+	private static final String DARK_Giant_SQUIRREL = " This is a variant which is is unlocked buying the dark acorn in the hallowed sepulchre for 5000 hallowed marks and using it on a Giant Squirrel.";
 
 	private static final String ROCKY_RACCOON = " This is the Raccoon variant of Rocky, obtained by using Redberries on any variant of Rocky.";
 	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.";

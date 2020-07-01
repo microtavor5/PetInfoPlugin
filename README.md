@@ -13,4 +13,8 @@ have their names displayed above their heads and even right-click for more info!
 Therefor it is possible that some variants of the pets might not be recognised,
 or that some actual mobs might be mistaken as a pet.
 
+##### Plans
+* I want to re-write the description text to be more consistent, as well as more understandable.
+* At the moment pets will be detected when right clicking in a widget (i.e. the bank or inventory), that needs to be fixed
+
 ###### Special thanks to the devs of the Implings and Menu Entry Swapper plugins

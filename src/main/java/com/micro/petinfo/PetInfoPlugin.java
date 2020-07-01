@@ -130,6 +130,31 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		NPC[] cachedNPCs = client.getCachedNPCs();
+		List<NPC> validNPCs = client.getNpcs();
+		for (NPC pet: pets)
+		{
+			boolean isContained = validNPCs.contains(pet);
+			boolean isSameReference = false;
+			boolean isCached = pet == cachedNPCs[pet.getIndex()];
+			for(NPC npc : validNPCs)
+			{
+				if(npc == pet)
+				{
+					isSameReference = true;
+					break;
+				}
+			}
+			if(!isContained || !isCached || !isSameReference)
+			{
+				System.out.println("[" + System.currentTimeMillis() + "] " + pet.getName() + ": (" + pet.getId() + "):\tContained: " + isContained + "\t==: " + isSameReference + "\tIsCached: " + isCached + "\tHas Model: " + (pet.getModel() != null));
+			}
+		}
+	}
+
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)

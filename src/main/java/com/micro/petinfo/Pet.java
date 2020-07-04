@@ -494,7 +494,7 @@ public enum Pet
 	private static final String HELLPUPPY_INFO = "is dropped by Cerberus, at a rate of 1/3000.";
 	private static final String HERBI_INFO = "is obtained by harvesting Herbiboars, at a rate of 1/6500.";
 	private static final String HERON_INFO = "is obtained while training Fishing.";
-	private static final String IKKLE_HYDRA_INFO = "is dropped by Alchemical Hydra, at a rate of 1/300.";
+	private static final String IKKLE_HYDRA_INFO = "is dropped by Alchemical Hydra, at a rate of 1/3000.";
 	private static final String JALNIBREK_INFO = "is obtained by completing the inferno, at a rate of 1/100 (or 1/75 while on a TzKal-Zuk tast).";
 	private static final String KALPHITE_PRINCESS_INFO = "is dropped by Kalphite Queen, at a rate of 1/3000.";
 	private static final String KITTEN_INFO = "can be bought from Gertrude for 100gp, after completing the Gertrude's Cat quest.";

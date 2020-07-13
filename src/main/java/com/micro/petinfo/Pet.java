@@ -518,7 +518,7 @@ public enum Pet
 	private static final String ROCK_GOLEM_INFO = "is obtained while training Mining.";
 	private static final String ROCKY_INFO = "is obtained while training Thieving.";
 	private static final String SCORPIAS_OFFSPRING_INFO = "is dropped by Scorpia, at a rate of 1/2,015.75";
-	private static final String SKOTOS_INFO = "is ropped by Skotizo, at a rate of 1/65.";
+	private static final String SKOTOS_INFO = "is dropped by Skotizo, at a rate of 1/65.";
 	private static final String SMOKE_DEVIL_INFO = "is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.";
 	private static final String SMOLCANO_INFO = "is dropped by Zalcano, at a rate of 1/2250.";
 	private static final String SNAKELING_INFO = "is dropped by Zulrah, at a rate of 1/4000.";

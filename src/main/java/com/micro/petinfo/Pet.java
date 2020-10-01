@@ -476,7 +476,7 @@ public enum Pet
 	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1000.";
 	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/2000.";
 	private static final String CAT_INFO = "is obtained by letting a kitten grow for about 2 hours.";
-	private static final String CHAOS_ELEMENTAL_JR_INFO = "is dropped by the Chaos Elemental, at a rate of 1/33; or the Chaos Fanatic, at 1/1000.";
+	private static final String CHAOS_ELEMENTAL_JR_INFO = "is dropped by the Chaos Elemental, at a rate of 1/300; or the Chaos Fanatic, at 1/1000.";
 	private static final String CHOMPY_CHICK_INFO = "is dropped by Chompy birds after completing the elite Western Provinces Diary, at a rate of 1/500.";
 	private static final String CLOCKWORK_CAT_INFO = "can be crafted in a POH with 84 Crafting and a Crafting table 4.";
 	private static final String CORPOREAL_CRITTER_INFO = "is obtained by causing a pet Dark Core to metamorphosize.";

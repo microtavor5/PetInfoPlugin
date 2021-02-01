@@ -522,7 +522,7 @@ public enum Pet
 	private static final String SMOKE_DEVIL_INFO = "is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.";
 	private static final String SMOLCANO_INFO = "is dropped by Zalcano, at a rate of 1/2250.";
 	private static final String SNAKELING_INFO = "is dropped by Zulrah, at a rate of 1/4000.";
-	private static final String SRARACHA_INFO = "is dropped by Sarachnis, at a rate of 1/3000/";
+	private static final String SRARACHA_INFO = "is dropped by Sarachnis, at a rate of 1/3000.";
 	private static final String TANGLEROOT_INFO = "is obtained while training Farming.";
 	private static final String TOY_DOLL_INFO = "can be crafted in a POH with 18 Crafting and a Crafting table 3.";
 	private static final String TOY_MOUSE_INFO = "can be crafted in a POH with 33 Crafting and a Crafting table 4.";

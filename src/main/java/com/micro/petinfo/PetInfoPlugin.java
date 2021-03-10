@@ -50,9 +50,13 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,31 +133,6 @@ public class PetInfoPlugin extends Plugin
 			if (!pets.contains(npc))
 			{
 				pets.add(npc);
-			}
-		}
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		NPC[] cachedNPCs = client.getCachedNPCs();
-		List<NPC> validNPCs = client.getNpcs();
-		for (NPC pet: pets)
-		{
-			boolean isContained = validNPCs.contains(pet);
-			boolean isSameReference = false;
-			boolean isCached = pet == cachedNPCs[pet.getIndex()];
-			for(NPC npc : validNPCs)
-			{
-				if(npc == pet)
-				{
-					isSameReference = true;
-					break;
-				}
-			}
-			if(!isContained || !isCached || !isSameReference)
-			{
-				System.out.println("[" + System.currentTimeMillis() + "] " + pet.getName() + ": (" + pet.getId() + "):\tContained: " + isContained + "\t==: " + isSameReference + "\tIsCached: " + isCached + "\tHas Model: " + (pet.getModel() != null));
 			}
 		}
 	}
@@ -246,8 +225,8 @@ public class PetInfoPlugin extends Plugin
 
 	/**
 	 * Finds the color a given NPCs {@link PetGroup} should be displayed in
-	 * @param npc
-	 * @return
+	 * @param npc the npc to get the color of
+	 * @return the color of the npc based on the pet group
 	 */
 	Color npcToColor(NPC npc)
 	{
@@ -278,7 +257,38 @@ public class PetInfoPlugin extends Plugin
 	 */
 	private List<NPC> getPetsUnderCursor(Point mouseCanvasPosition)
 	{
-		return pets.stream().filter(p -> { return isClickable(p, mouseCanvasPosition); }).collect(Collectors.toList());
+		if (!mouseIsBlocked())
+		{
+			List<NPC> list = new ArrayList<>();
+			for (NPC p : pets)
+			{
+				if (isClickable(p, mouseCanvasPosition))
+				{
+					list.add(p);
+				}
+			}
+			return list;
+		}
+
+		return Collections.emptyList();
+	}
+
+	/**
+	 * Hacky way to see if the mouse is blocked;
+	 * check to see if you can walk to the mouse position.
+	 * This is instead of building a tree of widgets to search
+	 */
+	private boolean mouseIsBlocked()
+	{
+		List<MenuEntry> list = new ArrayList<>();
+		for (MenuEntry menuEntry : client.getMenuEntries())
+		{
+			if (menuEntry.getType() == MenuAction.WALK.getId())
+			{
+				list.add(menuEntry);
+			}
+		}
+		return list.isEmpty();
 	}
 
 	private boolean isClickable(NPC npc, Point mouseCanvasPosition)
@@ -304,7 +314,7 @@ public class PetInfoPlugin extends Plugin
 		List<NPC> petsUnderCursor = getPetsUnderCursor(mouseCanvasPosition);
 		if (!petsUnderCursor.isEmpty())
 		{
-			owners.clear();    //Clear the owners array of old owners
+			owners.clear();    // Clear the owners array of old owners
 			for (NPC pet : petsUnderCursor)
 			{
 				// Owner first because the menu options are FILO
@@ -347,24 +357,29 @@ public class PetInfoPlugin extends Plugin
 	 */
 	private void addPetOwnerMenu(NPC pet)
 	{
-		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
-
 		Actor owner = pet.getInteracting();	// Pets are always interacting with their owner. I think.
 
-		if(owner == null)
+		if(owner != null)
 		{
-			return;
-		}
-		owners.add(owner.getName());	// Add the owners name to the array for later retrieval
+			owners.add(owner.getName());	// Add the owners name to the array for later retrieval
 
+			ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
+
+			final MenuEntry examine = getMenuEntry(pet, owner, petNameColored.build());
+
+			MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), examine);
+			client.setMenuEntries(newMenu);
+		}
+	}
+
+	private MenuEntry getMenuEntry(NPC pet, Actor owner, String petName)
+	{
 		final MenuEntry examine = new MenuEntry();
 		examine.setOption(OWNER);
-		examine.setTarget(petNameColored.build());
+		examine.setTarget(petName);
 		examine.setType(MenuAction.RUNELITE.getId());
 		examine.setIdentifier(pet.getId());
 		examine.setParam0(owners.indexOf(owner.getName()));	// This becomes the MenuOptionClicked's ActionParam somehow.
-
-		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), examine);
-		client.setMenuEntries(newMenu);
+		return examine;
 	}
 }

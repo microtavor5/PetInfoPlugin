@@ -164,6 +164,9 @@ public enum Pet
 	JALNIBREK(PetGroup.BOSS, NpcID.JALNIBREK, Pet.JALNIBREK_INFO),
 	JALNIBREK_7675(PetGroup.BOSS, NpcID.JALNIBREK_7675, Pet.JALNIBREK_INFO),
 
+	JALREKJAD(PetGroup.BOSS, NpcID.JALREKJAD, Pet.JALREKJAD_INFO),
+	JALREKJAD_10625(PetGroup.BOSS, NpcID.JALREKJAD_10625, Pet.JALREKJAD_INFO),
+
 	KALPHITE_PRINCESS(PetGroup.BOSS, NpcID.KALPHITE_PRINCESS, Pet.KALPHITE_PRINCESS_INFO),	// Orange airborn
 	KALPHITE_PRINCESS_6638(PetGroup.BOSS, NpcID.KALPHITE_PRINCESS_6638, Pet.KALPHITE_PRINCESS_INFO),	// Green grounded	// Seen in game as other players
 	KALPHITE_PRINCESS_6653(PetGroup.BOSS, NpcID.KALPHITE_PRINCESS_6653, Pet.KALPHITE_PRINCESS_INFO),	// Green grounded
@@ -201,6 +204,12 @@ public enum Pet
 
 	LAZY_HELLCAT(PetGroup.OTHER, NpcID.LAZY_HELLCAT, Pet.LAZY_CAT_INFO),
 	LAZY_HELLCAT_6689(PetGroup.OTHER, NpcID.LAZY_HELLCAT_6689, Pet.LAZY_CAT_INFO),
+
+	LIL_CREATOR(PetGroup.OTHER, NpcID.LIL_CREATOR, Pet.LIL_CREATOR_INFO),
+	LIL_CREATOR_3566(PetGroup.OTHER, NpcID.LIL_CREATOR_3566, Pet.LIL_CREATOR_INFO),
+
+	LIL_DESTRUCTOR(PetGroup.OTHER, NpcID.LIL_DESTRUCTOR, Pet.LIL_DESTRUCTOR_INFO),
+	LIL_DESTRUCTOR_5008(PetGroup.OTHER, NpcID.LIL_DESTRUCTOR_5008, Pet.LIL_DESTRUCTOR_INFO),
 
 	LIL_ZIK(PetGroup.BOSS, NpcID.LIL_ZIK, Pet.LIL_ZIK_INFO),
 	LIL_ZIK_8377(PetGroup.BOSS, NpcID.LIL_ZIK_8337, Pet.LIL_ZIK_INFO),	// Seen in game other player
@@ -477,10 +486,10 @@ public enum Pet
 	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/2000.";
 	private static final String CAT_INFO = "is obtained by letting a kitten grow for about 2 hours.";
 	private static final String CHAOS_ELEMENTAL_JR_INFO = "is dropped by the Chaos Elemental, at a rate of 1/300; or the Chaos Fanatic, at 1/1000.";
-	private static final String CHOMPY_CHICK_INFO = "is dropped by Chompy birds after completing the elite Western Provinces Diary, at a rate of 1/500.";
+	private static final String CHOMPY_CHICK_INFO = "is dropped by Chompy birds, at a rate of 1/500, after completing the elite Western Provinces Diary.";
 	private static final String CLOCKWORK_CAT_INFO = "can be crafted in a POH with 84 Crafting and a Crafting table 4.";
 	private static final String CORPOREAL_CRITTER_INFO = "is obtained by causing a pet Dark Core to metamorphosize.";
-	private static final String CORRUPTED_YOUNGLLEF_INFO = "is obtained by completing the Corrupted Gauntlet then causing a Youngllef to metamorphosize.";
+	private static final String CORRUPTED_YOUNGLLEF_INFO = "is obtained by causing a Youngllef to metamorphosize, this can only be done after completing the Corrupted Gauntlet.";
 	private static final String DAGANNOTH_PRIME_JR_INFO = "is dropped by Dagannoth Prime, at a rate of 1/5000.";
 	private static final String DAGANNOTH_REX_JR_INFO = "is dropped by Dagannoth Rex, at a rate of 1/5000.";
 	private static final String DAGANNOTH_SUPREME_JR_INFO = "is dropped by Dagannoth Supreme, at a rate of 1/5000.";
@@ -496,6 +505,7 @@ public enum Pet
 	private static final String HERON_INFO = "is obtained while training Fishing.";
 	private static final String IKKLE_HYDRA_INFO = "is dropped by Alchemical Hydra, at a rate of 1/3000.";
 	private static final String JALNIBREK_INFO = "is obtained by completing the inferno, at a rate of 1/100 (or 1/75 while on a TzKal-Zuk task).";
+	private static final String JALREKJAD_INFO = "is obtained by causing a Tzrek-jad to metamorphosize, this can only be done after completing all six of TzHaar-Ket-Rak's Challenges (this requires having also completed the Inferno).";
 	private static final String KALPHITE_PRINCESS_INFO = "is dropped by Kalphite Queen, at a rate of 1/3000.";
 	private static final String KITTEN_INFO = "can be bought from Gertrude for 100gp, after completing the Gertrude's Cat quest.";
 	private static final String KRAKEN_INFO ="is dropped by Kraken, at a rate of 1/3000.";
@@ -503,7 +513,9 @@ public enum Pet
 	private static final String KRIL_TSUTSAROTH_JR_INFO = "is dropped by K'ril Tsutsaroth.";
 	private static final String LAZY_CAT_INFO = "is obtained by letting a Wily Cat grow for about an hour.";
 	private static final String LAZY_HELLCAT_INFO = "is obtained by letting a Wily Hellcat at grow for about an hour.";
-	private static final String LIL_ZIK_INFO = "is obtained by completing the theater of blood, at a rate of 1/650 (with optimal performance).";
+	private static final String LIL_CREATOR_INFO = "is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.";
+	private static final String LIL_DESTRUCTOR_INFO = "is obtained by causing a pet Lil' creator to metamorphosize.";
+	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at a rate of 1/4000 (or 1/3800 as MVP).";
 	private static final String MIDNIGHT_INFO = "is obtained by causing a pet Noon to metamorphosize.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
@@ -540,7 +552,7 @@ public enum Pet
 	/*
 	 *	Variant text
 	 */
-	private static final String BABY_CHINCHOMPA_GOLD = "The gold variant is obtained by causing a Baby Chinchompa to metamorphosize at a rate of 1/10000.";
+	private static final String BABY_CHINCHOMPA_GOLD = " The gold variant is obtained by causing a Baby Chinchompa to metamorphosize, at a rate of 1/10000.";
 
 	private static final String DARK_Giant_SQUIRREL = " This is a variant which is is unlocked buying the dark acorn in the hallowed sepulchre for 5000 hallowed marks and using it on a Giant Squirrel.";
 

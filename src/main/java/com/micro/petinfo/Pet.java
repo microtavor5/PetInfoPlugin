@@ -495,7 +495,7 @@ public enum Pet
 	private static final String DAGANNOTH_SUPREME_JR_INFO = "is dropped by Dagannoth Supreme, at a rate of 1/5000.";
 	private static final String DARK_CORE_INFO = "is dropped by the Corporeal Beast, at a rate of 1/5000.";
 	private static final String EEK_INFO = "was obtained during the 2018 Halloween event.";
-	private static final String FISHBOWL_INFO = "can be caught is in Harry's Fishing Shop";
+	private static final String FISHBOWL_INFO = "can be caught in Harry's Fishing Shop";
 	private static final String GENERAL_GRAARDOR_JR_INFO = "is dropped by General Graardor, at a rate of 1/5000";
 	private static final String GIANT_SQUIRREL_INFO = "is obtained by training Agility.";
 	private static final String HELLCAT_INFO = "is obtained by having a pet Cat hunt Hell-Rats.";

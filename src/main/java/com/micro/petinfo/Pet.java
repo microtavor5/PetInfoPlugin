@@ -217,6 +217,8 @@ public enum Pet
 	LITTLE_NIGHTMARE(PetGroup.BOSS, NpcID.LITTLE_NIGHTMARE, Pet.LITTLE_NIGHTMARE_INFO),
 	LITTLE_NIGHTMARE_9399(PetGroup.BOSS, NpcID.LITTLE_NIGHTMARE_9399, Pet.LITTLE_NIGHTMARE_INFO),
 
+	MAZ(PetGroup.OTHER, NpcID.MAZ, Pet.MAZ_INFO),	// Not a real pet, but close enough for me to want to add it
+
 	MIDNIGHT(PetGroup.BOSS, NpcID.MIDNIGHT, Pet.MIDNIGHT_INFO),
 	MIDNIGHT_7893(PetGroup.BOSS, NpcID.MIDNIGHT_7893, Pet.MIDNIGHT_INFO),	// Seen in game other player, morfed to NOON_7892
 
@@ -517,6 +519,7 @@ public enum Pet
 	private static final String LIL_DESTRUCTOR_INFO = "is obtained by causing a pet Lil' creator to metamorphosize.";
 	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at a rate of 1/4000 (or 1/3800 as MVP).";
+	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MIDNIGHT_INFO = "is obtained by causing a pet Noon to metamorphosize.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String OLMLET_INFO = "is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.";

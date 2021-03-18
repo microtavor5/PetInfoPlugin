@@ -86,10 +86,10 @@ public interface PetsConfig extends Config
 	@ConfigItem(
 			position = 3,
 			keyName = "togglePetInfoColor",
-			name = "Info default color",
-			description = "Choose between the RuneScape default yellow and the highlight colors for the pets name in the info text"
+			name = "Pet name color",
+			description = "Choose between the RuneScape default yellow and the custom highlight colors for the pets name"
 	)
-	default PetInfoColor petInfoColor() { return PetInfoColor.HIGHLIGHT; }
+	default PetInfoColor petInfoColor() { return PetInfoColor.YELLOW; }
 
 	@ConfigItem(
 			position = 4,

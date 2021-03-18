@@ -40,8 +40,7 @@ public interface PetsConfig extends Config
 	@ConfigSection(
 			name = "Pet group highlight settings",
 			description = "Choose how and what color pet groups (i.e. bossing, skilling) should be highlighted.",
-			position = 99,
-			closedByDefault = false
+			position = 99
 	)
 	String highlightSection = "section";
 
@@ -50,6 +49,12 @@ public interface PetsConfig extends Config
 		OFF,
 		HIGHLIGHT,
 		NAME_ONLY
+	}
+
+	enum PetInfoColor
+	{
+		HIGHLIGHT,
+		YELLOW
 	}
 
 	enum HighlightMode
@@ -72,6 +77,22 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 2,
+			keyName = "showOwnerForOwnPet",
+			name = "Hide Owner menu for your own pet",
+			description = "Toggle if the Owner right click menu is added on your own pet"
+	)
+	default boolean showOwnerOnOwnPet() { return  true; }
+
+	@ConfigItem(
+			position = 3,
+			keyName = "togglePetInfoColor",
+			name = "Info default color",
+			description = "Choose between the RuneScape default yellow and the highlight colors for the pets name in the info text"
+	)
+	default PetInfoColor petInfoColor() { return PetInfoColor.HIGHLIGHT; }
+
+	@ConfigItem(
+			position = 4,
 			keyName = "toggleHighlight",
 			name = "Highlight toggle",
 			description = "Select if no, all, or only your own pets are highlighted"
@@ -79,7 +100,7 @@ public interface PetsConfig extends Config
 	default HighlightMode highlight() { return HighlightMode.OFF; }
 
 	@ConfigItem(
-			position = 3,
+			position = 5,
 			keyName = "showBoss",
 			name = "Highlight Bossing Pets",
 			description = "Toggles highlighting for bossing pets",
@@ -91,7 +112,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
+			position = 6,
 			keyName = "bossColor",
 			name = "Boss Pet color",
 			description = "Highlight color for boss pets",
@@ -103,7 +124,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
+			position = 7,
 			keyName = "showSkilling",
 			name = "Highlight Skilling Pets",
 			description = "Toggles highlighting for skilling pets",
@@ -115,7 +136,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
+			position = 8,
 			keyName = "skillingColor",
 			name = "Skilling Pet color",
 			description = "Highlight color for skilling pets",
@@ -127,7 +148,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
+			position = 9,
 			keyName = "showToy",
 			name = "Highlight Toys",
 			description = "Toggles highlighting for clockwork toys",
@@ -139,7 +160,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
+			position = 10,
 			keyName = "toyColor",
 			name = "Toy color",
 			description = "Highlight color for clockwork toys",
@@ -151,7 +172,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
+			position = 11,
 			keyName = "showOther",
 			name = "Show Other Pets",
 			description = "Toggles highlighting for other pets (like cats)",
@@ -163,7 +184,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
+			position = 12,
 			keyName = "otherColor",
 			name = "Other Pet color",
 			description = "Highlight color for other pets",
@@ -175,7 +196,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 11,
+			position = 13,
 			keyName = "showNpcId",
 			name = "Show NPC ID",
 			description = "Show the pets NPC id next to its overhead name",

@@ -41,8 +41,6 @@ import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -50,15 +48,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @PluginDescriptor(
@@ -68,6 +61,7 @@ import java.util.stream.Collectors;
 )
 public class PetInfoPlugin extends Plugin
 {
+	// Use these two arrays instead of cachedNPC index to guard against despawn race-condition
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> pets = new ArrayList<>();	// Used to keep track of the current pets in the game
 
@@ -77,6 +71,9 @@ public class PetInfoPlugin extends Plugin
 
 	private final String INFO = "Info";
 	private final String OWNER = "Owner";
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Color defaultYellow = new Color(0xffff00);
 
 	@Inject
 	private Client client;
@@ -187,9 +184,11 @@ public class PetInfoPlugin extends Plugin
 			event.consume();
 			// We get the info text based off of the pet's NPCid
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getMenuTarget() + " " + Pet.getInfo(event.getId()), "");
+			return;
 		}
+
 		// If the player clicks on an OWNER menu entry
-		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(OWNER))
+		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(OWNER))
 		{
 			event.consume();
 			// We get the owner's name from the owners array. The events ActionParam is the index in the owners array for the owner in question.
@@ -255,8 +254,9 @@ public class PetInfoPlugin extends Plugin
 	 * Finds which pets are under the users cursor.
 	 * This consults the {@link #pets} array.
 	 */
-	private List<NPC> getPetsUnderCursor(Point mouseCanvasPosition)
+	private List<NPC> getPetsUnderCursor()
 	{
+		Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		if (!mouseIsBlocked())
 		{
 			List<NPC> list = new ArrayList<>();
@@ -309,9 +309,7 @@ public class PetInfoPlugin extends Plugin
 	 */
 	private void addMenus()
 	{
-		Point mouseCanvasPosition  = client.getMouseCanvasPosition();
-
-		List<NPC> petsUnderCursor = getPetsUnderCursor(mouseCanvasPosition);
+		List<NPC> petsUnderCursor = getPetsUnderCursor();
 		if (!petsUnderCursor.isEmpty())
 		{
 			owners.clear();    // Clear the owners array of old owners
@@ -324,6 +322,32 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	private void addPetInfoMenu(NPC pet)
+	{
+		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
+
+		final MenuEntry info = buildPetInfoMenu(pet);
+
+		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), info);
+		client.setMenuEntries(newMenu);
+	}
+
+	private void addPetOwnerMenu(NPC pet)
+	{
+		Actor owner = pet.getInteracting();	// Pets are always interacting with their owner. I think.
+
+		if(owner != null && (owner != client.getLocalPlayer() || !config.showOwnerOnOwnPet()))
+		{
+			String ownerName = colorOwnerName(owner);
+			owners.add(ownerName);	// Add the owners name to the array for later retrieval
+
+			final MenuEntry examine = buildPetOwnerMenu(pet, owners.indexOf(ownerName));
+
+			MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), examine);
+			client.setMenuEntries(newMenu);
+		}
+	}
+
 	/**
 	 * Adds an info menu for the given pet.
 	 * The {@link MenuEntry} is built as follows:
@@ -332,18 +356,17 @@ public class PetInfoPlugin extends Plugin
 	 * 	* {@link MenuEntry#setType(int)}: is {@link MenuAction#RUNELITE}
 	 * 	* {@link MenuEntry#setIdentifier(int)}: is the pets NPCid
 	 */
-	private void addPetInfoMenu(NPC pet)
+	private MenuEntry buildPetInfoMenu(NPC pet)
 	{
-		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
+		String petName = colorPetName(pet);
 
 		final MenuEntry info = new MenuEntry();
 		info.setOption(INFO);
-		info.setTarget(petNameColored.build());
+		info.setTarget(petName);
 		info.setType(MenuAction.RUNELITE.getId());
 		info.setIdentifier(pet.getId());
 
-		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), info);
-		client.setMenuEntries(newMenu);
+		return  info;
 	}
 
 	/**
@@ -355,31 +378,88 @@ public class PetInfoPlugin extends Plugin
 	 * 	* {@link MenuEntry#setIdentifier(int)}: is the pets NPCid
 	 * 	* {@link MenuEntry#setParam0(int)}: is the index in {@link #owners} represented by the pet's owner's name
 	 */
-	private void addPetOwnerMenu(NPC pet)
+	private MenuEntry buildPetOwnerMenu(NPC pet, int ownerIndex)
 	{
-		Actor owner = pet.getInteracting();	// Pets are always interacting with their owner. I think.
+		String petName = colorPetName(pet);
 
-		if(owner != null)
-		{
-			owners.add(owner.getName());	// Add the owners name to the array for later retrieval
+		final MenuEntry ownerMenu = new MenuEntry();
+		ownerMenu.setOption(OWNER);
+		ownerMenu.setTarget(petName);
+		ownerMenu.setType(MenuAction.RUNELITE.getId());
+		ownerMenu.setIdentifier(pet.getId());
+		ownerMenu.setParam0(ownerIndex);	// This becomes the MenuOptionClicked's ActionParam somehow.
 
-			ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
-
-			final MenuEntry examine = getMenuEntry(pet, owner, petNameColored.build());
-
-			MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), examine);
-			client.setMenuEntries(newMenu);
-		}
+		return ownerMenu;
 	}
 
-	private MenuEntry getMenuEntry(NPC pet, Actor owner, String petName)
+	private String colorOwnerName(Actor owner)
 	{
-		final MenuEntry examine = new MenuEntry();
-		examine.setOption(OWNER);
-		examine.setTarget(petName);
-		examine.setType(MenuAction.RUNELITE.getId());
-		examine.setIdentifier(pet.getId());
-		examine.setParam0(owners.indexOf(owner.getName()));	// This becomes the MenuOptionClicked's ActionParam somehow.
-		return examine;
+		Actor player = client.getLocalPlayer();
+
+		if (player == null) {
+			return colorChatString(defaultYellow, owner.getName());
+		}
+
+		Color colorFromLevel = getNameColorFromCombatLevels(
+				client.getLocalPlayer().getCombatLevel(),
+				owner.getCombatLevel()
+		);
+
+		return colorChatString(colorFromLevel, owner.getName());
+	}
+
+	private String colorPetName(NPC pet)
+	{
+		String petName = pet.getName();
+		switch (config.petInfoColor())
+		{
+			case HIGHLIGHT:
+			{
+				return colorChatString(npcToColor(pet), petName);
+			}
+			case YELLOW:
+			default:
+			{
+				return colorChatString(defaultYellow, petName);
+			}
+		}
+
+	}
+
+	private String colorChatString(Color color, String name)
+	{
+		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(color, name);
+		return petNameColored.build();
+	}
+
+	private Color getNameColorFromCombatLevels(int localPlayerLevel, int otherPlayerLevel)
+	{
+		int delta = localPlayerLevel - otherPlayerLevel;
+
+		if (delta < -9) {
+			return new Color(0xff0000);
+		}
+		if (delta < -6) {
+			return new Color(0xff3000);
+		}
+		if (delta < -3) {
+			return new Color(0xff7000);
+		}
+		if (delta < 0) {
+			return new Color(0xffb000);
+		}
+		if (delta > 9) {
+			return new Color(0xff00);
+		}
+		if (delta > 6) {
+			return new Color(0x40ff00);
+		}
+		if (delta > 3) {
+			return new Color(0x80ff00);
+		}
+		if (delta > 0) {
+			return new Color(0xc0ff00);
+		}
+		return new Color(0xffff00);
 	}
 }

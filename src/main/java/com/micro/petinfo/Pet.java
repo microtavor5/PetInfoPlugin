@@ -383,6 +383,10 @@ public enum Pet
 	TEKTINY(PetGroup.BOSS, NpcID.TEKTINY, Pet.OLMLET_INFO + Pet.OLMLET_CM_VARIANTS),
 	TEKTINY_8202(PetGroup.BOSS, NpcID.TEKTINY_8202, Pet.OLMLET_INFO + Pet.OLMLET_CM_VARIANTS),
 
+	// TODO use NpcID when updated
+	TINY_TEMPOR(PetGroup.OTHER, 10562, ""),
+	TINY_TEMPOR_10637(PetGroup.OTHER, 10637, ""),
+
 	TOY_DOLL(PetGroup.TOY, NpcID.TOY_DOLL, Pet.TOY_DOLL_INFO),
 	TOY_DOLL_9253(PetGroup.TOY, NpcID.TOY_DOLL_9253, Pet.TOY_DOLL_INFO),
 
@@ -539,6 +543,7 @@ public enum Pet
 	private static final String SNAKELING_INFO = "is dropped by Zulrah, at a rate of 1/4000.";
 	private static final String SRARACHA_INFO = "is dropped by Sarachnis, at a rate of 1/3000.";
 	private static final String TANGLEROOT_INFO = "is obtained while training Farming.";
+	private static final String TINY_TEMPOR_INFO = "is obtained from the Tempoross mini game.";	// TODO get drop rate
 	private static final String TOY_DOLL_INFO = "can be crafted in a POH with 18 Crafting and a Crafting table 3.";
 	private static final String TOY_MOUSE_INFO = "can be crafted in a POH with 33 Crafting and a Crafting table 4.";
 	private static final String TOY_SOLDIER_INFO = "can be crafted in a POH with 13 Crafting and a Crafting table 3.";

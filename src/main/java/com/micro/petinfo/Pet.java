@@ -138,6 +138,9 @@ public enum Pet
 	GIANT_SQUIRREL_7351(PetGroup.SKILLING, NpcID.GIANT_SQUIRREL_7351, Pet.GIANT_SQUIRREL_INFO),	// Seen in game as other players
 	GIANT_SQUIRREL_9666(PetGroup.SKILLING, NpcID.GIANT_SQUIRREL_9666, Pet.GIANT_SQUIRREL_INFO), // There's usually an even number, so I'm not sure what's up
 
+	GREAT_BLUE_HERON(PetGroup.SKILLING, NpcID.GREAT_BLUE_HERON, Pet.HERON_INFO + Pet.GREAT_BLUE_HERON_INFO),
+	GREAT_BLUE_HERON_10636(PetGroup.SKILLING, NpcID.GREAT_BLUE_HERON_10636, Pet.HERON_INFO + Pet.GREAT_BLUE_HERON_INFO),
+
 	HELLCAT(PetGroup.OTHER, NpcID.HELLCAT, Pet.HELLCAT_INFO),	// Spotted in Game as other players
 	HELLCAT_6668(PetGroup.OTHER, NpcID.HELLCAT_6668, Pet.HELLCAT_INFO),	// Spotted in Game as other players
 
@@ -383,9 +386,8 @@ public enum Pet
 	TEKTINY(PetGroup.BOSS, NpcID.TEKTINY, Pet.OLMLET_INFO + Pet.OLMLET_CM_VARIANTS),
 	TEKTINY_8202(PetGroup.BOSS, NpcID.TEKTINY_8202, Pet.OLMLET_INFO + Pet.OLMLET_CM_VARIANTS),
 
-	// TODO use NpcID when updated
-	TINY_TEMPOR(PetGroup.OTHER, 10562, ""),
-	TINY_TEMPOR_10637(PetGroup.OTHER, 10637, ""),
+	TINY_TEMPOR(PetGroup.OTHER, NpcID.TINY_TEMPOR, Pet.TINY_TEMPOR_INFO),
+	TINY_TEMPOR_10637(PetGroup.OTHER, NpcID.TINY_TEMPOR_10637, Pet.TINY_TEMPOR_INFO),
 
 	TOY_DOLL(PetGroup.TOY, NpcID.TOY_DOLL, Pet.TOY_DOLL_INFO),
 	TOY_DOLL_9253(PetGroup.TOY, NpcID.TOY_DOLL_9253, Pet.TOY_DOLL_INFO),
@@ -563,6 +565,8 @@ public enum Pet
 	private static final String BABY_CHINCHOMPA_GOLD = " The gold variant is obtained by causing a Baby Chinchompa to metamorphosize, at a rate of 1/10000.";
 
 	private static final String DARK_Giant_SQUIRREL = " This is a variant which is is unlocked buying the dark acorn in the hallowed sepulchre for 5000 hallowed marks and using it on a Giant Squirrel.";
+
+	private static final String GREAT_BLUE_HERON_INFO = " This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes";
 
 	private static final String ROCKY_RACCOON = " This is the Raccoon variant of Rocky, obtained by using Redberries on any variant of Rocky.";
 	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.";

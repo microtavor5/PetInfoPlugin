@@ -1,0 +1,4139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_201" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by placing an unsired on the Font of Consumption, at a rate of 5/128.</string>
+    </void>
+    <void property="npcId">
+     <int>5883</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by placing an unsired on the Font of Consumption, at a rate of 5/128.</string>
+    </void>
+    <void property="npcId">
+     <int>5884</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.</string>
+    </void>
+    <void property="npcId">
+     <int>6718</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.</string>
+    </void>
+    <void property="npcId">
+     <int>6719</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.</string>
+    </void>
+    <void property="npcId">
+     <int>6720</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.  The gold variant is obtained by causing a Baby Chinchompa to metamorphosize, at a rate of 1/10000.</string>
+    </void>
+    <void property="npcId">
+     <int>6721</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.</string>
+    </void>
+    <void property="npcId">
+     <int>6756</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.</string>
+    </void>
+    <void property="npcId">
+     <int>6757</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.</string>
+    </void>
+    <void property="npcId">
+     <int>6758</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while catching chinchompas.  The gold variant is obtained by causing a Baby Chinchompa to metamorphosize, at a rate of 1/10000.</string>
+    </void>
+    <void property="npcId">
+     <int>6759</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by killing the Giant Mole, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>5780</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by killing the Giant Mole, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>5781</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by killing the Giant Mole, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>5782</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by killing the Giant Mole, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6635</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by killing the Giant Mole, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6651</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by killing the Giant Mole, at a rate of 1/3000. This is a variant of the Baby Mole, obtained by using a Mole Claw on the Baby Mole.</string>
+    </void>
+    <void property="npcId">
+     <int>10650</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by killing the Giant Mole, at a rate of 1/3000. This is a variant of the Baby Mole, obtained by using a Mole Claw on the Baby Mole.</string>
+    </void>
+    <void property="npcId">
+     <int>10651</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Woodcutting.</string>
+    </void>
+    <void property="npcId">
+     <int>6717</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Woodcutting.</string>
+    </void>
+    <void property="npcId">
+     <int>6724</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing Master Clue Scrolls, at a rate of 1/1000.</string>
+    </void>
+    <void property="npcId">
+     <int>6296</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing Master Clue Scrolls, at a rate of 1/1000.</string>
+    </void>
+    <void property="npcId">
+     <int>7232</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Callisto, at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>497</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Callisto, at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>5558</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>395</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>1619</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>1620</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>1621</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>1622</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>1623</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>1624</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>3831</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>3832</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6662</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6663</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6664</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6665</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6666</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6667</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a kitten grow for about 2 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>7380</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Chaos Elemental, at a rate of 1/300; or the Chaos Fanatic, at 1/1000.</string>
+    </void>
+    <void property="npcId">
+     <int>2055</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Chaos Elemental, at a rate of 1/300; or the Chaos Fanatic, at 1/1000.</string>
+    </void>
+    <void property="npcId">
+     <int>5907</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Chompy birds, at a rate of 1/500, after completing the elite Western Provinces Diary.</string>
+    </void>
+    <void property="npcId">
+     <int>4001</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Chompy birds, at a rate of 1/500, after completing the elite Western Provinces Diary.</string>
+    </void>
+    <void property="npcId">
+     <int>4002</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 84 Crafting and a Crafting table 4.</string>
+    </void>
+    <void property="npcId">
+     <int>540</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 84 Crafting and a Crafting table 4.</string>
+    </void>
+    <void property="npcId">
+     <int>541</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 84 Crafting and a Crafting table 4.</string>
+    </void>
+    <void property="npcId">
+     <int>2782</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 84 Crafting and a Crafting table 4.</string>
+    </void>
+    <void property="npcId">
+     <int>6661</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Dark Core to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>8008</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Dark Core to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>8010</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a Youngllef to metamorphosize, this can only be done after completing the Corrupted Gauntlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8730</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a Youngllef to metamorphosize, this can only be done after completing the Corrupted Gauntlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8738</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Dagannoth Prime, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6627</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Dagannoth Prime, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6629</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Dagannoth Rex, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6630</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Dagannoth Rex, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6641</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Dagannoth Supreme, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6626</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Dagannoth Supreme, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6628</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Corporeal Beast, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>318</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Corporeal Beast, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>388</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by training Agility. This is a variant of the Giant Squirrel which is unlocked by using a Dark Acorn on a Giant Squirrel.</string>
+    </void>
+    <void property="npcId">
+     <int>9637</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by training Agility. This is a variant of the Giant Squirrel which is unlocked by using a Dark Acorn on a Giant Squirrel.</string>
+    </void>
+    <void property="npcId">
+     <int>9638</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>was obtained during the 2018 Halloween event.</string>
+    </void>
+    <void property="npcId">
+     <int>8485</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>9511</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>9513</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be caught in Harry&apos;s Fishing Shop</string>
+    </void>
+    <void property="npcId">
+     <int>6658</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be caught in Harry&apos;s Fishing Shop</string>
+    </void>
+    <void property="npcId">
+     <int>6659</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be caught in Harry&apos;s Fishing Shop</string>
+    </void>
+    <void property="npcId">
+     <int>6660</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>9512</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>9514</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by General Graardor, at a rate of 1/5000</string>
+    </void>
+    <void property="npcId">
+     <int>6632</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by General Graardor, at a rate of 1/5000</string>
+    </void>
+    <void property="npcId">
+     <int>6644</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by training Agility.</string>
+    </void>
+    <void property="npcId">
+     <int>7334</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by training Agility.</string>
+    </void>
+    <void property="npcId">
+     <int>7351</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by training Agility.</string>
+    </void>
+    <void property="npcId">
+     <int>9666</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Fishing. This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes</string>
+    </void>
+    <void property="npcId">
+     <int>6817</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Fishing. This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes</string>
+    </void>
+    <void property="npcId">
+     <int>10636</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by having a pet Cat hunt Hell-Rats.</string>
+    </void>
+    <void property="npcId">
+     <int>1625</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by having a pet Cat hunt Hell-Rats.</string>
+    </void>
+    <void property="npcId">
+     <int>6668</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by having a pet Kitten hunt Hell-Rats.</string>
+    </void>
+    <void property="npcId">
+     <int>5597</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Cerberus, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>964</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Cerberus, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>3099</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by harvesting Herbiboars, at a rate of 1/6500.</string>
+    </void>
+    <void property="npcId">
+     <int>7759</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by harvesting Herbiboars, at a rate of 1/6500.</string>
+    </void>
+    <void property="npcId">
+     <int>7760</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Fishing.</string>
+    </void>
+    <void property="npcId">
+     <int>6715</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Fishing.</string>
+    </void>
+    <void property="npcId">
+     <int>6722</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8492</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8493</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8494</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8495</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8517</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8518</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8519</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Alchemical Hydra, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8520</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing the inferno, at a rate of 1/100 (or 1/75 while on a TzKal-Zuk task).</string>
+    </void>
+    <void property="npcId">
+     <int>7674</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing the inferno, at a rate of 1/100 (or 1/75 while on a TzKal-Zuk task).</string>
+    </void>
+    <void property="npcId">
+     <int>7675</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a Tzrek-jad to metamorphosize, this can only be done after completing all six of TzHaar-Ket-Rak&apos;s Challenges (this requires having also completed the Inferno).</string>
+    </void>
+    <void property="npcId">
+     <int>10620</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a Tzrek-jad to metamorphosize, this can only be done after completing all six of TzHaar-Ket-Rak&apos;s Challenges (this requires having also completed the Inferno).</string>
+    </void>
+    <void property="npcId">
+     <int>10625</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kalphite Queen, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6637</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kalphite Queen, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6638</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kalphite Queen, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6653</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kalphite Queen, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6654</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be bought from Gertrude for 100gp, after completing the Gertrude&apos;s Cat quest.</string>
+    </void>
+    <void property="npcId">
+     <int>3498</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be bought from Gertrude for 100gp, after completing the Gertrude&apos;s Cat quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5591</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be bought from Gertrude for 100gp, after completing the Gertrude&apos;s Cat quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5592</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be bought from Gertrude for 100gp, after completing the Gertrude&apos;s Cat quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5593</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be bought from Gertrude for 100gp, after completing the Gertrude&apos;s Cat quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5594</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be bought from Gertrude for 100gp, after completing the Gertrude&apos;s Cat quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5595</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be bought from Gertrude for 100gp, after completing the Gertrude&apos;s Cat quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5596</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kraken, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6640</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kraken, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6656</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kree&apos;arra, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6631</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Kree&apos;arra, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6643</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by K&apos;ril Tsutsaroth.</string>
+    </void>
+    <void property="npcId">
+     <int>6634</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by K&apos;ril Tsutsaroth.</string>
+    </void>
+    <void property="npcId">
+     <int>6647</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>1626</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>1627</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>1628</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>1629</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>1630</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>1631</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>6683</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>6684</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>6685</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>6686</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>6687</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Cat grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>6688</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Hellcat at grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>1632</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a Wily Hellcat at grow for about an hour.</string>
+    </void>
+    <void property="npcId">
+     <int>6689</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.</string>
+    </void>
+    <void property="npcId">
+     <int>2833</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.</string>
+    </void>
+    <void property="npcId">
+     <int>3566</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Lil&apos; creator to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>3564</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Lil&apos; creator to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>5008</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).</string>
+    </void>
+    <void property="npcId">
+     <int>8336</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).</string>
+    </void>
+    <void property="npcId">
+     <int>8337</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by The Nightmare, at a rate of 1/4000 (or 1/3800 as MVP).</string>
+    </void>
+    <void property="npcId">
+     <int>9398</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by The Nightmare, at a rate of 1/4000 (or 1/3800 as MVP).</string>
+    </void>
+    <void property="npcId">
+     <int>9399</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>isn&apos;t a true pet, but you can get in her good graces by giving her an acorn.</string>
+    </void>
+    <void property="npcId">
+     <int>9298</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Noon to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>7890</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Noon to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>7893</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Grotesque Guardians, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>7891</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Grotesque Guardians, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>7892</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.</string>
+    </void>
+    <void property="npcId">
+     <int>7519</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.</string>
+    </void>
+    <void property="npcId">
+     <int>7520</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>5598</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>5599</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>5600</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>5601</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>5602</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>5603</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6676</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6677</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6678</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6679</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6680</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Cat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6681</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Hellcat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>5604</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by letting a pet Hellcat grow for about 2-3 hours.</string>
+    </void>
+    <void property="npcId">
+     <int>6682</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be received from Askeladden after The Fremennik Trials.</string>
+    </void>
+    <void property="npcId">
+     <int>5983</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be received from Askeladden after The Fremennik Trials.</string>
+    </void>
+    <void property="npcId">
+     <int>6657</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is received from High-level gambles in Barbarian Assault, at a rate of 1/1000.</string>
+    </void>
+    <void property="npcId">
+     <int>6642</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is received from High-level gambles in Barbarian Assault, at a rate of 1/1000.</string>
+    </void>
+    <void property="npcId">
+     <int>6674</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3077</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3078</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3079</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3080</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3081</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3082</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3083</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>3084</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>7368</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>7370</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the King Black Dragon, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6636</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the King Black Dragon, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6652</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8196</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8201</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Thieving.  This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.</string>
+    </void>
+    <void property="npcId">
+     <int>9850</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Thieving.  This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.</string>
+    </void>
+    <void property="npcId">
+     <int>9852</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Fire variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7337</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Air variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7338</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Mind variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7339</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Water variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7340</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Earth variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7341</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Body variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7342</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Cosmic variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7343</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Chaos variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7344</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Nature variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7345</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Law variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7346</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Death variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7347</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Soul variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7348</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Astral variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7349</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Blood variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7350</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Wrath variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7354</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Air variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7355</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Mind variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7356</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Water variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7357</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Earth variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7358</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Body variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7359</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Cosmic variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7360</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Chaos variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7361</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Nature variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7362</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Law variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7363</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Death variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7364</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Soul variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7365</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Astral variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7366</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Blood variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7367</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Wrath variant.</string>
+    </void>
+    <void property="npcId">
+     <int>8024</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Runecraft. This is the Wrath variant.</string>
+    </void>
+    <void property="npcId">
+     <int>8028</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Amethyst variant.</string>
+    </void>
+    <void property="npcId">
+     <int>2182</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Rock variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7439</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Tin variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7440</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Copper variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7441</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Iron variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7442</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Blurite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7443</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Silver variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7444</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Coal variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7445</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Gold variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7446</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Mithril variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7447</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Granite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7448</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Adamantite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7449</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Runite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7450</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Rock variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7451</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Tin variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7452</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Copper variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7453</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Iron variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7454</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Blurite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7455</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Silver variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7642</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Coal variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7643</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Gold variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7644</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Mithril variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7645</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Granite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7646</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is Adamantite fire variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7647</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Runite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7648</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Amethyst variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7711</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Lovakite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7736</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Elemental variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7737</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Daeyalt variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7738</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Lovakite variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7739</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Elemental variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7740</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Mining. This is the Daeyalt variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7741</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Thieving.  This is the Raccoon variant of Rocky, obtained by using Redberries on any variant of Rocky.</string>
+    </void>
+    <void property="npcId">
+     <int>7336</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Thieving.  This is the Raccoon variant of Rocky, obtained by using Redberries on any variant of Rocky.</string>
+    </void>
+    <void property="npcId">
+     <int>7353</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Scorpia, at a rate of 1/2,015.75</string>
+    </void>
+    <void property="npcId">
+     <int>5547</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Scorpia, at a rate of 1/2,015.75</string>
+    </void>
+    <void property="npcId">
+     <int>5561</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Scorpia, at a rate of 1/2,015.75</string>
+    </void>
+    <void property="npcId">
+     <int>6616</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Skotizo, at a rate of 1/65.</string>
+    </void>
+    <void property="npcId">
+     <int>425</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Skotizo, at a rate of 1/65.</string>
+    </void>
+    <void property="npcId">
+     <int>7671</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6639</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>6655</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8482</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8483</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Zalcano, at a rate of 1/2250.</string>
+    </void>
+    <void property="npcId">
+     <int>8731</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Zalcano, at a rate of 1/2250.</string>
+    </void>
+    <void property="npcId">
+     <int>8739</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Zulrah, at a rate of 1/4000.</string>
+    </void>
+    <void property="npcId">
+     <int>2127</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Zulrah, at a rate of 1/4000.</string>
+    </void>
+    <void property="npcId">
+     <int>2130</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Zulrah, at a rate of 1/4000.</string>
+    </void>
+    <void property="npcId">
+     <int>2131</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Zulrah, at a rate of 1/4000.</string>
+    </void>
+    <void property="npcId">
+     <int>2132</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Sarachnis, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>2143</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Sarachnis, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>2144</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming.</string>
+    </void>
+    <void property="npcId">
+     <int>7335</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Acorn variant.</string>
+    </void>
+    <void property="npcId">
+     <int>7352</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Crystal variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9492</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Dragon Fruit variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9493</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Guam variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9494</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the White Lily variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9495</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Redwood variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9496</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Crystal variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9497</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Dragon Fruit variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9498</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Guam variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9499</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the White Lily variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9500</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Farming. This is the Redwood variant.</string>
+    </void>
+    <void property="npcId">
+     <int>9501</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8197</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8202</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained from the Tempoross mini game.</string>
+    </void>
+    <void property="npcId">
+     <int>10562</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained from the Tempoross mini game.</string>
+    </void>
+    <void property="npcId">
+     <int>10637</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 18 Crafting and a Crafting table 3.</string>
+    </void>
+    <void property="npcId">
+     <int>9252</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 18 Crafting and a Crafting table 3.</string>
+    </void>
+    <void property="npcId">
+     <int>9253</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 33 Crafting and a Crafting table 4.</string>
+    </void>
+    <void property="npcId">
+     <int>9254</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 33 Crafting and a Crafting table 4.</string>
+    </void>
+    <void property="npcId">
+     <int>9255</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 13 Crafting and a Crafting table 3.</string>
+    </void>
+    <void property="npcId">
+     <int>3649</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>can be crafted in a POH with 13 Crafting and a Crafting table 3.</string>
+    </void>
+    <void property="npcId">
+     <int>9251</int>
+    </void>
+    <void property="petGroup">
+     <string>TOY</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by TzTok-Jad, at a rate of 1/200 (or 1/100 if on a slayer task).</string>
+    </void>
+    <void property="npcId">
+     <int>5892</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by TzTok-Jad, at a rate of 1/200 (or 1/100 if on a slayer task).</string>
+    </void>
+    <void property="npcId">
+     <int>5893</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Jal-nib-rek to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>8009</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by causing a pet Jal-nib-rek to metamorphosize.</string>
+    </void>
+    <void property="npcId">
+     <int>8011</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8198</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8203</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8199</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8204</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Venenatis at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>495</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Venenatis at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>5557</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8200</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item. This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.</string>
+    </void>
+    <void property="npcId">
+     <int>8205</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Vet&apos;ion, at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>5536</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Vet&apos;ion, at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>5537</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Vet&apos;ion, at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>5559</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Vet&apos;ion, at a rate of 1/2000.</string>
+    </void>
+    <void property="npcId">
+     <int>5560</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Vorkath, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8025</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Vorkath, at a rate of 1/3000.</string>
+    </void>
+    <void property="npcId">
+     <int>8029</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5584</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5585</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5586</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5587</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5588</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5589</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>6690</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>6691</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>6692</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>6693</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>6694</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>6695</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Hellcat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>5590</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by asking Felkrash to train an Overgrown Hellcat, after completing the Ratcatchers quest.</string>
+    </void>
+    <void property="npcId">
+     <int>6696</int>
+    </void>
+    <void property="petGroup">
+     <string>OTHER</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing The Gauntlet, at a rate of 1/2000 (or 1/800 for The Corrupted Gauntlet).</string>
+    </void>
+    <void property="npcId">
+     <int>8729</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained by completing The Gauntlet, at a rate of 1/2000 (or 1/800 for The Corrupted Gauntlet).</string>
+    </void>
+    <void property="npcId">
+     <int>8737</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Thieving.  This is the Tanuki variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.</string>
+    </void>
+    <void property="npcId">
+     <int>9851</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is obtained while training Thieving.  This is the Tanuki variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.</string>
+    </void>
+    <void property="npcId">
+     <int>9853</int>
+    </void>
+    <void property="petGroup">
+     <string>SKILLING</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Commander Zilyana, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6633</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.micro.petinfo.dataretrieval.SerializablePet">
+    <void property="info">
+     <string>is dropped by Commander Zilyana, at a rate of 1/5000.</string>
+    </void>
+    <void property="npcId">
+     <int>6646</int>
+    </void>
+    <void property="petGroup">
+     <string>BOSS</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

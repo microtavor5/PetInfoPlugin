@@ -36,6 +36,9 @@ package com.micro.petinfo;
 
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
+import com.micro.petinfo.dataretrieval.Pet;
+import com.micro.petinfo.dataretrieval.PetGroup;
+import com.micro.petinfo.dataretrieval.PetInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.*;
@@ -87,6 +90,8 @@ public class PetInfoPlugin extends Plugin
 	@Inject
 	private PetsConfig config;
 
+	private PetInfo petInfo = new PetInfo();
+
 	@Provides
 	PetsConfig getConfig(ConfigManager configManager)
 	{
@@ -111,7 +116,7 @@ public class PetInfoPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		Pet pet = Pet.findPet(npc.getId());
+		Pet pet = petInfo.findPet(npc.getId());
 
 		if (pet != null)
 		{
@@ -123,7 +128,7 @@ public class PetInfoPlugin extends Plugin
 	public void onNpcChanged(NpcChanged npcCompositionChanged)	// Do pet's compositions ever change? If they do we need to handle if they ever stop being pets,
 	{															// if they don't we don't need this at all. I think this may have cause the highlight with no pet issue.
 		NPC npc = npcCompositionChanged.getNpc();
-		Pet pet = Pet.findPet(npc.getId());
+		Pet pet = petInfo.findPet(npc.getId());
 
 		if (pet != null)
 		{
@@ -183,7 +188,8 @@ public class PetInfoPlugin extends Plugin
 		{
 			event.consume();
 			// We get the info text based off of the pet's NPCid
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getMenuTarget() + " " + Pet.getInfo(event.getId()), "");
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getMenuTarget()
+					+ " " + petInfo.getInfo(event.getId()), "");
 			return;
 		}
 
@@ -192,7 +198,8 @@ public class PetInfoPlugin extends Plugin
 		{
 			event.consume();
 			// We get the owner's name from the owners array. The events ActionParam is the index in the owners array for the owner in question.
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The owner of this " + event.getMenuTarget() + " is " + owners.get(event.getActionParam()), "");
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The owner of this "
+					+ event.getMenuTarget() + " is " + owners.get(event.getActionParam()), "");
 		}
 	}
 
@@ -201,13 +208,13 @@ public class PetInfoPlugin extends Plugin
 	 */
 	PetsConfig.PetMode showNpc(NPC npc)
 	{
-		Pet pet = Pet.findPet(npc.getId());
+		Pet pet = petInfo.findPet(npc.getId());
 		if (pet == null)
 		{
 			return PetsConfig.PetMode.OFF;
 		}
 
-		switch (pet.getPetGroup())
+		switch (pet.petGroup)
 		{
 			case BOSS:
 				return config.showBoss();
@@ -229,13 +236,13 @@ public class PetInfoPlugin extends Plugin
 	 */
 	Color npcToColor(NPC npc)
 	{
-		Pet pet = Pet.findPet(npc.getId());
+		Pet pet = petInfo.findPet(npc.getId());
 		if (pet == null)
 		{
 			return null;
 		}
 
-		switch (pet.getPetGroup())
+		switch (pet.petGroup)
 		{
 			case BOSS:
 				return config.getBossColor();

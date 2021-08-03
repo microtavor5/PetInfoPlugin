@@ -1,25 +1,25 @@
 package com.micro.petinfo.dataretrieval;
 
-import com.google.common.collect.ImmutableMap;
-import okhttp3.Call;
-import okhttp3.Request;
-
-import javax.inject.Inject;
-import java.beans.XMLDecoder;
-import java.io.FileInputStream;
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class PetInfo
 {
 	private Map<Integer, Pet> PETS;
 
-	private XMLParse xmlParse;
 
-	public PetInfo() {
-		xmlParse = new XMLParse();
-		this.PETS = xmlParse.getMap();
+	public PetInfo(PetDataFetcher petDataFetcher, boolean useRemote) {
+		try
+		{
+			this.PETS = petDataFetcher.getMap(useRemote);
+		}
+		catch (IOException e)
+		{
+			log.error("Error getting Pets: ", e);
+			log.error("Shutting plugin down...");
+		}
 	}
 
 	/**

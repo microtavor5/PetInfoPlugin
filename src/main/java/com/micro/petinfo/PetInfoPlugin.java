@@ -35,7 +35,9 @@
 package com.micro.petinfo;
 
 import com.google.common.collect.ObjectArrays;
+import com.google.gson.Gson;
 import com.google.inject.Provides;
+import com.micro.petinfo.dataretrieval.PetDataFetcher;
 import com.micro.petinfo.dataretrieval.Pet;
 import com.micro.petinfo.dataretrieval.PetGroup;
 import com.micro.petinfo.dataretrieval.PetInfo;
@@ -50,6 +52,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import okhttp3.OkHttpClient;
+
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.ArrayList;
@@ -90,7 +94,13 @@ public class PetInfoPlugin extends Plugin
 	@Inject
 	private PetsConfig config;
 
-	private PetInfo petInfo = new PetInfo();
+	@Inject
+	private OkHttpClient okHttpClient;
+
+	@Inject
+	private Gson gson;
+
+	private PetInfo petInfo;
 
 	@Provides
 	PetsConfig getConfig(ConfigManager configManager)
@@ -102,6 +112,7 @@ public class PetInfoPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		petInfo = new PetInfo(new PetDataFetcher(okHttpClient, gson), config.getRemoteData());
 	}
 
 	@Override

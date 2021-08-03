@@ -77,6 +77,14 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 2,
+			keyName = "getRemoteData",
+			name = "Get up-to-date list of pets",
+			description = "Use the updated list of pets from the github"
+	)
+	default boolean getRemoteData() { return true; }
+
+	@ConfigItem(
+			position = 2,
 			keyName = "showOwnerForOwnPet",
 			name = "Hide Owner menu for your own pet",
 			description = "Toggle if the Owner right click menu is added on your own pet"

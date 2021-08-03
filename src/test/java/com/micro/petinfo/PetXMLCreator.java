@@ -1,22 +1,15 @@
 package com.micro.petinfo;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.reflect.TypeToken;
 import com.micro.petinfo.dataretrieval.Pet;
 import com.micro.petinfo.dataretrieval.PetGroup;
-import com.micro.petinfo.dataretrieval.SerializablePet;
 import net.runelite.api.NpcID;
 import net.runelite.http.api.RuneLiteAPI;
-
-import java.beans.ExceptionListener;
-import java.beans.XMLEncoder;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class PetXMLCreator
 {
@@ -25,24 +18,12 @@ public class PetXMLCreator
 	{
 		try {
 			List<Pet> testPets = new ArrayList<>(getList());
-			//serializeToXML(testPets);
 			serializeToJson(testPets);
 		}
 		catch (IOException e) {
 			System.out.println("welp " + e);
 		}
 		System.out.println("and done");
-
-
-		FileReader fr = new FileReader("pets.json");
-		// CHECKSTYLE:OFF
-		Map<Integer, Pet> map = RuneLiteAPI.GSON.fromJson(fr, new TypeToken<Map<Integer, Pet>>(){}.getType());
-		// CHECKSTYLE:ON
-		for(Pet d : pets1)
-		{
-			Pet p = map.get(d.npcId);
-			System.out.println(p.npcId + " " + p.petGroup + " " + p.info);
-		}
 	}
 
 	private static void serializeToJson(List<Pet> pets) throws IOException
@@ -59,27 +40,8 @@ public class PetXMLCreator
 		fr.close();
 	}
 
-	private static void serializeToXML (List<Pet> pets) throws IOException
-	{
-		FileOutputStream fos = new FileOutputStream("pets.xml");
-		XMLEncoder encoder = new XMLEncoder(fos);
-		encoder.setExceptionListener(new ExceptionListener() {
-			public void exceptionThrown(Exception e) {
-				System.out.println("Exception! :"+e.toString());
-			}
-		});
-		encoder.writeObject(VERSION);
-		encoder.writeObject(pets);
-		encoder.close();
-		fos.close();
-	}
-
 	private static List<Pet> getList() {
-		List<Pet> pets = new ArrayList<>();
-		for(Pet pet : pets1) {
-			pets.add(pet);
-		}
-		return pets;
+		return new ArrayList<>(Arrays.asList(pets1));
 	}
 
 	/*

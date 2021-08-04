@@ -43,6 +43,7 @@ import com.micro.petinfo.dataretrieval.PetGroup;
 import com.micro.petinfo.dataretrieval.PetInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.events.*;
@@ -56,11 +57,12 @@ import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+@Slf4j
 @PluginDescriptor(
 		name = "Pet Info",
 		description = "Highlights other players pets,shows the pets name and gives info about the pets.",
@@ -71,13 +73,6 @@ public class PetInfoPlugin extends Plugin
 	// Use these two arrays instead of cachedNPC index to guard against despawn race-condition
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> pets = new ArrayList<>();	// Used to keep track of the current pets in the game
-
-	@Getter(AccessLevel.PACKAGE)
-	private final List<String> owners = new ArrayList<>();	// Used to keep track of the owners of the pets under the menu,
-															// the ActionParam of an OWNER event corresponds to an index in this array
-
-	private final String INFO = "Info";
-	private final String OWNER = "Owner";
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Color defaultYellow = new Color(0xffff00);
@@ -112,13 +107,21 @@ public class PetInfoPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		petInfo = new PetInfo(new PetDataFetcher(okHttpClient, gson), config.getRemoteData());
+
+		try
+		{
+			petInfo = new PetInfo(new PetDataFetcher(okHttpClient, gson), config.getRemoteData());
+		}
+		catch (IOException e)
+		{
+			log.error("[Pet-Info]\tCould not load pet data... Shutting plugin down...");
+			shutDown();
+		}
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		owners.clear();
 		pets.clear();
 		overlayManager.remove(overlay);
 	}
@@ -156,7 +159,6 @@ public class PetInfoPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
 			pets.clear();
-			owners.clear();
 		}
 	}
 
@@ -195,22 +197,12 @@ public class PetInfoPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		// If the player clicks on an INFO menu entry
-		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(INFO))
+		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().startsWith("Info"))
 		{
 			event.consume();
 			// We get the info text based off of the pet's NPCid
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getMenuTarget()
 					+ " " + petInfo.getInfo(event.getId()), "");
-			return;
-		}
-
-		// If the player clicks on an OWNER menu entry
-		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(OWNER))
-		{
-			event.consume();
-			// We get the owner's name from the owners array. The events ActionParam is the index in the owners array for the owner in question.
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The owner of this "
-					+ event.getMenuTarget() + " is " + owners.get(event.getActionParam()), "");
 		}
 	}
 
@@ -330,11 +322,8 @@ public class PetInfoPlugin extends Plugin
 		List<NPC> petsUnderCursor = getPetsUnderCursor();
 		if (!petsUnderCursor.isEmpty())
 		{
-			owners.clear();    // Clear the owners array of old owners
 			for (NPC pet : petsUnderCursor)
 			{
-				// Owner first because the menu options are FILO
-				addPetOwnerMenu(pet);
 				addPetInfoMenu(pet);
 			}
 		}
@@ -350,26 +339,10 @@ public class PetInfoPlugin extends Plugin
 		client.setMenuEntries(newMenu);
 	}
 
-	private void addPetOwnerMenu(NPC pet)
-	{
-		Actor owner = pet.getInteracting();	// Pets are always interacting with their owner. I think.
-
-		if(owner != null && (owner != client.getLocalPlayer() || !config.showOwnerOnOwnPet()))
-		{
-			String ownerName = colorOwnerName(owner);
-			owners.add(ownerName);	// Add the owners name to the array for later retrieval
-
-			final MenuEntry examine = buildPetOwnerMenu(pet, owners.indexOf(ownerName));
-
-			MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), examine);
-			client.setMenuEntries(newMenu);
-		}
-	}
-
 	/**
 	 * Adds an info menu for the given pet.
 	 * The {@link MenuEntry} is built as follows:
-	 * 	* {@link MenuEntry#setOption(String)}: is {@link #INFO}
+	 * 	* {@link MenuEntry#setOption(String)}: is "Info OwnerName's pet" or "Info pet" if no owner found
 	 * 	* {@link MenuEntry#setTarget(String)}: is the pets name, colored to match {@link #npcToColor(NPC)}
 	 * 	* {@link MenuEntry#setType(int)}: is {@link MenuAction#RUNELITE}
 	 * 	* {@link MenuEntry#setIdentifier(int)}: is the pets NPCid
@@ -377,37 +350,20 @@ public class PetInfoPlugin extends Plugin
 	private MenuEntry buildPetInfoMenu(NPC pet)
 	{
 		String petName = colorPetName(pet);
+		String option = "Info";
+
+		if(pet.getInteracting() != null)
+		{
+			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
+		}
 
 		final MenuEntry info = new MenuEntry();
-		info.setOption(INFO);
+		info.setOption(option);
 		info.setTarget(petName);
 		info.setType(MenuAction.RUNELITE.getId());
 		info.setIdentifier(pet.getId());
 
 		return  info;
-	}
-
-	/**
-	 * Adds an owner menu for the given pet.
-	 * The {@link MenuEntry} is built as follows:
-	 * 	* {@link MenuEntry#setOption(String)}: is {@link #OWNER}
-	 * 	* {@link MenuEntry#setTarget(String)}: is the pets name, colored to match {@link #npcToColor(NPC)}
-	 * 	* {@link MenuEntry#setType(int)}: is {@link MenuAction#RUNELITE}
-	 * 	* {@link MenuEntry#setIdentifier(int)}: is the pets NPCid
-	 * 	* {@link MenuEntry#setParam0(int)}: is the index in {@link #owners} represented by the pet's owner's name
-	 */
-	private MenuEntry buildPetOwnerMenu(NPC pet, int ownerIndex)
-	{
-		String petName = colorPetName(pet);
-
-		final MenuEntry ownerMenu = new MenuEntry();
-		ownerMenu.setOption(OWNER);
-		ownerMenu.setTarget(petName);
-		ownerMenu.setType(MenuAction.RUNELITE.getId());
-		ownerMenu.setIdentifier(pet.getId());
-		ownerMenu.setParam0(ownerIndex);	// This becomes the MenuOptionClicked's ActionParam somehow.
-
-		return ownerMenu;
 	}
 
 	private String colorOwnerName(Actor owner)

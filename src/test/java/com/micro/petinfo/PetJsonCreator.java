@@ -4,14 +4,17 @@ import com.google.common.collect.ImmutableMap;
 import com.micro.petinfo.dataretrieval.Pet;
 import com.micro.petinfo.dataretrieval.PetGroup;
 import net.runelite.api.NpcID;
+import net.runelite.client.RuneLite;
 import net.runelite.http.api.RuneLiteAPI;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PetXMLCreator
+public class PetJsonCreator
 {
 	private static final int VERSION = 0;
 	public static void main(String[] args) throws Exception
@@ -23,7 +26,7 @@ public class PetXMLCreator
 		catch (IOException e) {
 			System.out.println("welp " + e);
 		}
-		System.out.println("and done");
+		System.out.println("and done " + RuneLite.RUNELITE_DIR);
 	}
 
 	private static void serializeToJson(List<Pet> pets) throws IOException

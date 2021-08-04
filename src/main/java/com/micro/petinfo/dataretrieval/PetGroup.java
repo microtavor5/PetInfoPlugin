@@ -20,7 +20,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.micro.petinfo;
+package com.micro.petinfo.dataretrieval;
 
 /**
  * Groups based on different methods of obtaining pets.

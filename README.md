@@ -6,6 +6,9 @@ The Pet Info plugin for RuneLite allows you to right-click pets for info about t
 like how they are obtained, or who owns it.
 It also allows you to highlight pets, and have their names displayed above their heads.
 
+The plugin will attempt to fetch the most up to date pets from the github's
+main branch, and save a local fallback copy.
+
 ##### Known issues:
 * Sometimes the plugin will think there is a pet where there is non. 
 

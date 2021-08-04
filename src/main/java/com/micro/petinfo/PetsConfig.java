@@ -77,11 +77,11 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 2,
-			keyName = "showOwnerForOwnPet",
-			name = "Hide Owner menu for your own pet",
-			description = "Toggle if the Owner right click menu is added on your own pet"
+			keyName = "getRemoteData",
+			name = "Get up-to-date list of pets",
+			description = "Use the updated list of pets from the github. If off, and no local backup found, the plugin will not work. A local backup will be created on first download of an updated version."
 	)
-	default boolean showOwnerOnOwnPet() { return  true; }
+	default boolean getRemoteData() { return true; }
 
 	@ConfigItem(
 			position = 3,

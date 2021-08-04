@@ -13,7 +13,7 @@ public class PetDataFetcher
 {
 	private final OkHttpClient okHttpClient;
 	private final Gson gson;
-	private static final String URL = "https://raw.githubusercontent.com/microtavor5/PetInfoPlugin/http-xml-petinfo-retreval/pets.json";
+	private static final String URL = "https://raw.githubusercontent.com/microtavor5/PetInfoPlugin/master/pets.json";
 
 	public PetDataFetcher(OkHttpClient ok, Gson gs)
 	{

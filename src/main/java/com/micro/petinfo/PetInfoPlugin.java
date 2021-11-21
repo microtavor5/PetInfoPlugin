@@ -368,18 +368,34 @@ public class PetInfoPlugin extends Plugin
 
 	private String colorOwnerName(Actor owner)
 	{
-		Actor player = client.getLocalPlayer();
+		Color ownerColor;
 
-		if (player == null) {
-			return colorChatString(defaultYellow, owner.getName());
+		switch (config.petOwnerColor())
+		{
+			case YELLOW:
+				ownerColor = defaultYellow;
+				break;
+
+			case COMBAT:
+				Actor player = client.getLocalPlayer();
+
+				if (player == null) {
+					ownerColor = defaultYellow;
+					log.error("[Pet-Info]\tLocal player was null. Defaulting to yellow menu color.");
+				}
+				else {
+					ownerColor = getNameColorFromCombatLevels(
+						player.getCombatLevel(),
+						owner.getCombatLevel()
+					);
+				}
+				break;
+
+			default:
+				return  owner.getName();
 		}
 
-		Color colorFromLevel = getNameColorFromCombatLevels(
-				client.getLocalPlayer().getCombatLevel(),
-				owner.getCombatLevel()
-		);
-
-		return colorChatString(colorFromLevel, owner.getName());
+		return colorChatString(ownerColor, owner.getName());
 	}
 
 	private String colorPetName(NPC pet)

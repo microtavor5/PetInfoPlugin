@@ -34,7 +34,6 @@
 
 package com.micro.petinfo;
 
-import com.google.common.collect.ObjectArrays;
 import com.google.gson.Gson;
 import com.google.inject.Provides;
 import com.micro.petinfo.dataretrieval.PetDataFetcher;
@@ -96,6 +95,8 @@ public class PetInfoPlugin extends Plugin
 	private Gson gson;
 
 	private PetInfo petInfo;
+
+	private final String MENU_OPTION = "Info";
 
 	@Provides
 	PetsConfig getConfig(ConfigManager configManager)
@@ -193,17 +194,18 @@ public class PetInfoPlugin extends Plugin
 	/**
 	 * Prints to chat the appropriate text for the given menu
 	 */
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	public void onMenuOptionClicked(MenuEntry event)
 	{
-		// If the player clicks on an INFO menu entry
-		if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().startsWith("Info"))
+		// If the player did not click on an INFO menu entry (hopefully should lever happen with new api)
+		if (event.getType() != MenuAction.RUNELITE || !(event.getOption().startsWith("Info")))
 		{
-			event.consume();
-			// We get the info text based off of the pet's NPCid
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getMenuTarget()
-					+ " " + petInfo.getInfo(event.getId()), "");
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			return;
 		}
+
+		// We get the info text based off of the pet's NPCid
+		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
+				+ " " + petInfo.getInfo(event.getIdentifier()), "");
 	}
 
 	/**
@@ -293,7 +295,7 @@ public class PetInfoPlugin extends Plugin
 		List<MenuEntry> list = new ArrayList<>();
 		for (MenuEntry menuEntry : client.getMenuEntries())
 		{
-			if (menuEntry.getType() == MenuAction.WALK.getId())
+			if (menuEntry.getType() == MenuAction.WALK)
 			{
 				list.add(menuEntry);
 			}
@@ -331,39 +333,18 @@ public class PetInfoPlugin extends Plugin
 
 	private void addPetInfoMenu(NPC pet)
 	{
-		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(npcToColor(pet), pet.getName());
-
-		final MenuEntry info = buildPetInfoMenu(pet);
-
-		MenuEntry[] newMenu = ObjectArrays.concat(client.getMenuEntries(), info);
-		client.setMenuEntries(newMenu);
-	}
-
-	/**
-	 * Adds an info menu for the given pet.
-	 * The {@link MenuEntry} is built as follows:
-	 * 	* {@link MenuEntry#setOption(String)}: is "Info OwnerName's pet" or "Info pet" if no owner found
-	 * 	* {@link MenuEntry#setTarget(String)}: is the pets name, colored to match {@link #npcToColor(NPC)}
-	 * 	* {@link MenuEntry#setType(int)}: is {@link MenuAction#RUNELITE}
-	 * 	* {@link MenuEntry#setIdentifier(int)}: is the pets NPCid
-	 */
-	private MenuEntry buildPetInfoMenu(NPC pet)
-	{
-		String petName = colorPetName(pet);
-		String option = "Info";
-
+		String option = MENU_OPTION;
 		if(pet.getInteracting() != null)
 		{
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
 		}
 
-		final MenuEntry info = new MenuEntry();
-		info.setOption(option);
-		info.setTarget(petName);
-		info.setType(MenuAction.RUNELITE.getId());
-		info.setIdentifier(pet.getId());
-
-		return  info;
+		client.createMenuEntry(-1)
+				.setOption(option)
+				.setTarget(colorPetName(pet))
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(pet.getId())
+				.onClick(this::onMenuOptionClicked);
 	}
 
 	private String colorOwnerName(Actor owner)

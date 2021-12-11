@@ -86,7 +86,6 @@ public class PetJsonCreator
 	private static final String LAZY_CAT_INFO = "is obtained by letting a Wily Cat grow for about an hour.";
 	private static final String LAZY_HELLCAT_INFO = "is obtained by letting a Wily Hellcat at grow for about an hour.";
 	private static final String LIL_CREATOR_INFO = "is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.";
-	private static final String LIL_DESTRUCTOR_INFO = "is obtained by causing a pet Lil' creator to metamorphosize.";
 	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at a rate of 1/4000 (or 1/3800 as MVP).";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
@@ -114,7 +113,6 @@ public class PetJsonCreator
 	private static final String TOY_MOUSE_INFO = "can be crafted in a POH with 33 Crafting and a Crafting table 4.";
 	private static final String TOY_SOLDIER_INFO = "can be crafted in a POH with 13 Crafting and a Crafting table 3.";
 	private static final String TZREKJAD_INFO = "is dropped by TzTok-Jad, at a rate of 1/200 (or 1/100 if on a slayer task).";
-	private static final String TZREKZUK_IHFO = "is obtained by causing a pet Jal-nib-rek to metamorphosize.";
 	private static final String VENENATIS_SPIDERLING_INFO = "is dropped by Venenatis at a rate of 1/2000.";
 	private static final String VETION_JR_INFO = "is dropped by Vet'ion, at a rate of 1/2000.";
 	private static final String VORKI_INFO = "is dropped by Vorkath, at a rate of 1/3000.";
@@ -312,8 +310,23 @@ public class PetJsonCreator
 			new Pet(PetGroup.OTHER, NpcID.LIL_CREATOR, LIL_CREATOR_INFO),
 			new Pet(PetGroup.OTHER, NpcID.LIL_CREATOR_3566, LIL_CREATOR_INFO),
 
-			new Pet(PetGroup.OTHER, NpcID.LIL_DESTRUCTOR, LIL_DESTRUCTOR_INFO),
-			new Pet(PetGroup.OTHER, NpcID.LIL_DESTRUCTOR_5008, LIL_DESTRUCTOR_INFO),
+			new Pet(PetGroup.OTHER, NpcID.LIL_DESTRUCTOR, LIL_CREATOR_INFO),
+			new Pet(PetGroup.OTHER, NpcID.LIL_DESTRUCTOR_5008, LIL_CREATOR_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.LIL_BLOAT, LIL_ZIK_INFO),
+			new Pet(PetGroup.BOSS, NpcID.LIL_BLOAT_10871, LIL_ZIK_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.LIL_MAIDEN, LIL_ZIK_INFO),
+			new Pet(PetGroup.BOSS, NpcID.LIL_MAIDEN_10870, LIL_ZIK_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.LIL_NYLO, LIL_ZIK_INFO),
+			new Pet(PetGroup.BOSS, NpcID.LIL_NYLO_10872, LIL_ZIK_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.LIL_SOT, LIL_ZIK_INFO),
+			new Pet(PetGroup.BOSS, NpcID.LIL_SOT_10873, LIL_ZIK_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.LIL_XARP, LIL_ZIK_INFO),
+			new Pet(PetGroup.BOSS, NpcID.LIL_XARP_10874, LIL_ZIK_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.LIL_ZIK, LIL_ZIK_INFO),
 			new Pet(PetGroup.BOSS, NpcID.LIL_ZIK_8337, LIL_ZIK_INFO),	// Seen in game other player
@@ -464,6 +477,10 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.SRARACHA, SRARACHA_INFO),
 			new Pet(PetGroup.BOSS, NpcID.SRARACHA_2144, SRARACHA_INFO),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11157, SRARACHA_INFO),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11158, SRARACHA_INFO),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11159, SRARACHA_INFO),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11160, SRARACHA_INFO),
 
 			new Pet(PetGroup.SKILLING, NpcID.TANGLEROOT, TANGLEROOT_INFO),	// Acorn
 			new Pet(PetGroup.SKILLING, NpcID.TANGLEROOT_7352, TANGLEROOT_INFO + " This is the Acorn variant."),	// Acorn
@@ -496,8 +513,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.TZREKJAD, TZREKJAD_INFO),
 			new Pet(PetGroup.BOSS, NpcID.TZREKJAD_5893, TZREKJAD_INFO),
 
-			new Pet(PetGroup.BOSS, NpcID.TZREKZUK, TZREKZUK_IHFO),
-			new Pet(PetGroup.BOSS, NpcID.TZREKZUK_8011, TZREKZUK_IHFO),
+			new Pet(PetGroup.BOSS, NpcID.TZREKZUK, JALNIBREK_INFO),
+			new Pet(PetGroup.BOSS, NpcID.TZREKZUK_8011, JALNIBREK_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.VANGUARD_8198, OLMLET_INFO + OLMLET_CM_VARIANTS),
 			new Pet(PetGroup.BOSS, NpcID.VANGUARD_8203, OLMLET_INFO + OLMLET_CM_VARIANTS),

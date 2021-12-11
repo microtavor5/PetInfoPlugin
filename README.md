@@ -9,16 +9,6 @@ It also allows you to highlight pets, and have their names displayed above their
 The plugin will attempt to fetch the most up to date pets from the github's
 main branch, and save a local fallback copy.
 
-##### Known issues:
-* Sometimes the plugin will think there is a pet where there is non. 
-
-##### Possible Issues:
-* It is possible that I have the wrong IDs for the Smokedevel, Snakeling, and other pets.
-Therefor it is possible that some variants of the pets might not be recognised,
-or that some actual mobs might be mistaken as a pet.
-* If you vew a tall pet from an extremely low angle, and attempt to click on it
-  if there is no walkable tile behind the pet, you may not get menu options
-  for the pet 
 
 ##### Plans
 * I want to re-write the description text to be more consistent, as well as more understandable.

@@ -401,7 +401,7 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7348, RIFT_GUARDIAN_INFO + " This is the Soul variant."),	// Soul
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7349, RIFT_GUARDIAN_INFO + " This is the Astral variant."),	// Astral
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7350, RIFT_GUARDIAN_INFO + " This is the Blood variant."),	// Blood
-			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7354, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath
+			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7354, RIFT_GUARDIAN_INFO + " This is the Fire variant."),	// fire
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7355, RIFT_GUARDIAN_INFO + " This is the Air variant."),	// Air
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7356, RIFT_GUARDIAN_INFO + " This is the Mind variant."),	// Mind
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7357, RIFT_GUARDIAN_INFO + " This is the Water variant."),	// Water
@@ -416,7 +416,7 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7366, RIFT_GUARDIAN_INFO + " This is the Astral variant."),	// Astral
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_7367, RIFT_GUARDIAN_INFO + " This is the Blood variant."),	// Blood
 			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_8024, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath
-			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_8028, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath?
+			new Pet(PetGroup.SKILLING, NpcID.RIFT_GUARDIAN_8028, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath
 
 			new Pet(PetGroup.SKILLING, NpcID.ROCK_GOLEM, ROCK_GOLEM_INFO + " This is the Amethyst variant."),	// Amethyst
 			new Pet(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7439, ROCK_GOLEM_INFO + " This is the Rock variant."),	// Rock

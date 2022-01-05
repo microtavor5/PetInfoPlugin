@@ -90,6 +90,7 @@ public class PetJsonCreator
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at a rate of 1/4000 (or 1/3800 as MVP).";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MIDNIGHT_INFO = "is obtained by causing a pet Noon to metamorphosize.";
+	private static final String NEXLING_INFO = "is dropped by Nex.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String OLMLET_INFO = "is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.";
 	private static final String OVERGROWN_CAT_INFO = "is obtained by letting a pet Cat grow for about 2-3 hours.";
@@ -338,6 +339,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT, MIDNIGHT_INFO),
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT_7893, MIDNIGHT_INFO),	// Seen in game other player, morfed to NOON_7892
+		
+			new Pet(PetGroup.BOSS, 11276, NEXLING_INFO),	//TODO get updated droprate and use api to get IDs
+			new Pet(PetGroup.BOSS, 11277, NEXLING_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.NOON, NOON_INFO),
 			new Pet(PetGroup.BOSS, NpcID.NOON_7892, NOON_INFO),	// Seen in game as other players, morfed to MIDNIGHT_7893

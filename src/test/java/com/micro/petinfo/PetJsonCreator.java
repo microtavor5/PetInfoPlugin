@@ -216,7 +216,7 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.DARK_CORE, DARK_CORE_INFO),    // Not sure this is the pet dark core, but it looks right
 			new Pet(PetGroup.BOSS, NpcID.DARK_CORE_388, DARK_CORE_INFO),
 
-			new Pet(PetGroup.BOSS, NpcID.DARK_SQUIRREL, GIANT_SQUIRREL_INFO + DARK_Giant_SQUIRREL),	// Thank you to Gamma91/Bram91 on gitHub for hte info
+			new Pet(PetGroup.BOSS, NpcID.DARK_SQUIRREL, GIANT_SQUIRREL_INFO + DARK_Giant_SQUIRREL),	// Thank you to Gamma91/Bram91 on gitHub for the info
 			new Pet(PetGroup.BOSS, NpcID.DARK_SQUIRREL_9638, GIANT_SQUIRREL_INFO + DARK_Giant_SQUIRREL),
 
 			new Pet(PetGroup.OTHER, NpcID.EEK, EEK_INFO),
@@ -340,8 +340,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT, MIDNIGHT_INFO),
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT_7893, MIDNIGHT_INFO),	// Seen in game other player, morfed to NOON_7892
 		
-			new Pet(PetGroup.BOSS, 11276, NEXLING_INFO),	//TODO get updated droprate and use api to get IDs
-			new Pet(PetGroup.BOSS, 11277, NEXLING_INFO),
+			new Pet(PetGroup.BOSS, NpcID.NEXLING, NEXLING_INFO),	//TODO get updated droprate
+			new Pet(PetGroup.BOSS, NpcID.NEXLING_11277, NEXLING_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.NOON, NOON_INFO),
 			new Pet(PetGroup.BOSS, NpcID.NOON_7892, NOON_INFO),	// Seen in game as other players, morfed to MIDNIGHT_7893

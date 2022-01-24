@@ -82,7 +82,7 @@ public class PetJsonCreator
 	private static final String KITTEN_INFO = "can be bought from Gertrude for 100gp, after completing the Gertrude's Cat quest.";
 	private static final String KRAKEN_INFO ="is dropped by Kraken, at a rate of 1/3000.";
 	private static final String KREEARRA_JR_INFO = "is dropped by Kree'arra, at a rate of 1/5000.";
-	private static final String KRIL_TSUTSAROTH_JR_INFO = "is dropped by K'ril Tsutsaroth.";
+	private static final String KRIL_TSUTSAROTH_JR_INFO = "is dropped by K'ril Tsutsaroth, at a rate of 1/5000.";
 	private static final String LAZY_CAT_INFO = "is obtained by letting a Wily Cat grow for about an hour.";
 	private static final String LAZY_HELLCAT_INFO = "is obtained by letting a Wily Hellcat at grow for about an hour.";
 	private static final String LIL_CREATOR_INFO = "is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.";
@@ -221,15 +221,15 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.OTHER, NpcID.EEK, EEK_INFO),
 
-			new Pet(PetGroup.OTHER, NpcID.ENRAGED_TEKTINY, OLMLET_INFO + OLMLET_CM_VARIANTS),
-			new Pet(PetGroup.OTHER, NpcID.ENRAGED_TEKTINY_9513, OLMLET_INFO + OLMLET_CM_VARIANTS),
+			new Pet(PetGroup.BOSS, NpcID.ENRAGED_TEKTINY, OLMLET_INFO + OLMLET_CM_VARIANTS),
+			new Pet(PetGroup.BOSS, NpcID.ENRAGED_TEKTINY_9513, OLMLET_INFO + OLMLET_CM_VARIANTS),
 
 			new Pet(PetGroup.OTHER, NpcID.FISHBOWL, FISHBOWL_INFO),	// Blue
 			new Pet(PetGroup.OTHER, NpcID.FISHBOWL_6659, FISHBOWL_INFO),	// Green
 			new Pet(PetGroup.OTHER, NpcID.FISHBOWL_6660, FISHBOWL_INFO),	// Gold
 
-			new Pet(PetGroup.OTHER, NpcID.FLYING_VESPINA, OLMLET_INFO + OLMLET_CM_VARIANTS),
-			new Pet(PetGroup.OTHER, NpcID.FLYING_VESPINA_9514, OLMLET_INFO + OLMLET_CM_VARIANTS),
+			new Pet(PetGroup.BOSS, NpcID.FLYING_VESPINA, OLMLET_INFO + OLMLET_CM_VARIANTS),
+			new Pet(PetGroup.BOSS, NpcID.FLYING_VESPINA_9514, OLMLET_INFO + OLMLET_CM_VARIANTS),
 
 			new Pet(PetGroup.BOSS, NpcID.GENERAL_GRAARDOR_JR, GENERAL_GRAARDOR_JR_INFO),
 			new Pet(PetGroup.BOSS, NpcID.GENERAL_GRAARDOR_JR_6644, GENERAL_GRAARDOR_JR_INFO),

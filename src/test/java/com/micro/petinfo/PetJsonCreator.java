@@ -7,7 +7,6 @@ import net.runelite.api.NpcID;
 import net.runelite.client.RuneLite;
 import net.runelite.http.api.RuneLiteAPI;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,7 +130,9 @@ public class PetJsonCreator
 
 	private static final String DARK_Giant_SQUIRREL = " This is a variant of the Giant Squirrel which is unlocked by using a Dark Acorn on a Giant Squirrel.";
 
-	private static final String GREAT_BLUE_HERON_INFO = " This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes";
+	private static final String GREAT_BLUE_HERON_INFO = " This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes.";
+
+	private static final String LITTLE_PARASITE_INFO = " This is a variant of the the Little Nightmare, obtained by using a Parasitic Egg on her.";
 
 	private static final String ROCKY_RACCOON = " This is the Raccoon variant of Rocky, obtained by using Redberries on any variant of Rocky.";
 	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.";
@@ -322,6 +323,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.LIL_NYLO, LIL_ZIK_INFO),
 			new Pet(PetGroup.BOSS, NpcID.LIL_NYLO_10872, LIL_ZIK_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.LITTLE_PARASITE, LITTLE_NIGHTMARE_INFO + LITTLE_PARASITE_INFO),
+			new Pet(PetGroup.BOSS, NpcID.LITTLE_PARASITE_8541, LITTLE_NIGHTMARE_INFO + LITTLE_PARASITE_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.LIL_SOT, LIL_ZIK_INFO),
 			new Pet(PetGroup.BOSS, NpcID.LIL_SOT_10873, LIL_ZIK_INFO),

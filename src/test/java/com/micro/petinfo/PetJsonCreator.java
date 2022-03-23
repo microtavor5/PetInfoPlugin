@@ -108,7 +108,7 @@ public class PetJsonCreator
 	private static final String SNAKELING_INFO = "is dropped by Zulrah, at a rate of 1/4000.";
 	private static final String SRARACHA_INFO = "is dropped by Sarachnis, at a rate of 1/3000.";
 	private static final String TANGLEROOT_INFO = "is obtained while training Farming.";
-	private static final String TINY_TEMPOR_INFO = "is obtained from the Tempoross mini game, at a rate of 1/8000.";
+	private static final String TINY_TEMPOR_INFO = "is obtained from the Tempoross minigame, at a rate of 1/8000.";
 	private static final String TOY_DOLL_INFO = "can be crafted in a POH with 18 Crafting and a Crafting table 3.";
 	private static final String TOY_MOUSE_INFO = "can be crafted in a POH with 33 Crafting and a Crafting table 4.";
 	private static final String TOY_SOLDIER_INFO = "can be crafted in a POH with 13 Crafting and a Crafting table 3.";
@@ -131,6 +131,7 @@ public class PetJsonCreator
 	private static final String DARK_Giant_SQUIRREL = " This is a variant of the Giant Squirrel which is unlocked by using a Dark Acorn on a Giant Squirrel.";
 
 	private static final String GREAT_BLUE_HERON_INFO = " This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes.";
+	private static final String GREATISH_GUARDIAN = " This is a variant of the Rift Guardian, that can be obtained by using the Guardian's Eye reward from the Guardians of the Rift minigame on a Rift Guardian.";
 
 	private static final String LITTLE_PARASITE_INFO = " This is a variant of the the Little Nightmare, obtained by using a Parasitic Egg on her.";
 
@@ -241,6 +242,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.SKILLING, NpcID.GREAT_BLUE_HERON, HERON_INFO + GREAT_BLUE_HERON_INFO),
 			new Pet(PetGroup.SKILLING, NpcID.GREAT_BLUE_HERON_10636, HERON_INFO + GREAT_BLUE_HERON_INFO),
+
+			new Pet(PetGroup.SKILLING, NpcID.GREATISH_GUARDIAN, RIFT_GUARDIAN_INFO + GREATISH_GUARDIAN),
+			new Pet(PetGroup.SKILLING, NpcID.GREATISH_GUARDIAN_11428, RIFT_GUARDIAN_INFO + GREATISH_GUARDIAN),
 
 			new Pet(PetGroup.OTHER, NpcID.HELLCAT, HELLCAT_INFO),	// Spotted in Game as other players
 			new Pet(PetGroup.OTHER, NpcID.HELLCAT_6668, HELLCAT_INFO),	// Spotted in Game as other players

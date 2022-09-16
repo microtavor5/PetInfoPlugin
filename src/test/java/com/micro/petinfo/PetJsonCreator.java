@@ -467,8 +467,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7740, ROCK_GOLEM_INFO + " This is the Elemental variant."),	// Elemental variant, other player
 			new Pet(PetGroup.SKILLING, NpcID.ROCK_GOLEM_7741, ROCK_GOLEM_INFO + " This is the Daeyalt variant."),	// Daeyalt
 
-			new Pet(PetGroup.SKILLING, NpcID.ROCKY, ROCKY_INFO + " " + ROCKY_RACCOON),
-			new Pet(PetGroup.SKILLING, NpcID.ROCKY_7353, ROCKY_INFO + " " + ROCKY_RACCOON),
+			new Pet(PetGroup.SKILLING, NpcID.ROCKY, ROCKY_INFO),
+			new Pet(PetGroup.SKILLING, NpcID.ROCKY_7353, ROCKY_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.SCORPIAS_OFFSPRING, SCORPIAS_OFFSPRING_INFO),		// Usually even, what's up with this?
 			new Pet(PetGroup.BOSS, NpcID.SCORPIAS_OFFSPRING_5561, SCORPIAS_OFFSPRING_INFO),

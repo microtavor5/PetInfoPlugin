@@ -113,6 +113,7 @@ public class PetJsonCreator
 	private static final String TOY_DOLL_INFO = "can be crafted in a POH with 18 Crafting and a Crafting table 3.";
 	private static final String TOY_MOUSE_INFO = "can be crafted in a POH with 33 Crafting and a Crafting table 4.";
 	private static final String TOY_SOLDIER_INFO = "can be crafted in a POH with 13 Crafting and a Crafting table 3.";
+	private static final String TUMEKENS_GUARDIAN = "is obtained as a reward from completing the Tombs of Amascut.";
 	private static final String TZREKJAD_INFO = "is dropped by TzTok-Jad, at a rate of 1/200 (or 1/100 if on a slayer task).";
 	private static final String VENENATIS_SPIDERLING_INFO = "is dropped by Venenatis at a rate of 1/2000.";
 	private static final String VETION_JR_INFO = "is dropped by Vet'ion, at a rate of 1/2000.";
@@ -136,9 +137,17 @@ public class PetJsonCreator
 
 	private static final String LITTLE_PARASITE_INFO = " This is a variant of the the Little Nightmare, obtained by using a Parasitic Egg on her.";
 
-	private static final String ROCKY_RACCOON = " This is the Raccoon variant of Rocky, obtained by using Redberries on any variant of Rocky.";
 	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.";
 	private static final String ROCKY_TANUKI = " This is the Tanuki variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.";
+
+	private static final String TUMEKENS_DAMAGED_GUARDIAN = " This is a variant of the Tumeken's guardian unlocked with the Ancient remnant";
+	private static final String ELIDINIS_GUARDIAN = " This is a variant of the Tumeken's guardian.";
+	private static final String ELIDINIS_DAMAGED_GUARDIAN = " This is a variant of the Tumeken's guardian unlocked with the Ancient remnant";
+	private static final String AKKHITO = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Akkha.";
+	private static final String BABI= " This is a variant of the Tumeken's guardian unlocked with the Remnant of Ba-Ba.";
+	private static final String KEPHRITI = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Kephri.";
+	private static final String ZEBO = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Zebak.";
+
 
 	private static final String OLMLET_CM_VARIANTS = " This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.";
 
@@ -148,6 +157,12 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.OTHER, NpcID.ABYSSAL_PROTECTOR, ABYSSAL_PROTECTOR_INFO),
 			new Pet(PetGroup.OTHER, NpcID.ABYSSAL_PROTECTOR_11429, ABYSSAL_PROTECTOR_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.AKKHITO, TUMEKENS_GUARDIAN + AKKHITO),
+			new Pet(PetGroup.BOSS, NpcID.AKKHITO_11846, TUMEKENS_GUARDIAN + AKKHITO),
+
+			new Pet(PetGroup.BOSS, NpcID.BABI, TUMEKENS_GUARDIAN + BABI),
+			new Pet(PetGroup.BOSS, NpcID.BABI_11847, TUMEKENS_GUARDIAN + BABI),
 
 			new Pet(PetGroup.SKILLING, NpcID.BABY_CHINCHOMPA, BABY_CHINCHOMPA_INFO),	// Red Variant
 			new Pet(PetGroup.SKILLING, NpcID.BABY_CHINCHOMPA_6719, BABY_CHINCHOMPA_INFO),	// Grey Variant
@@ -227,6 +242,12 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.OTHER, NpcID.EEK, EEK_INFO),
 
+			new Pet(PetGroup.BOSS, NpcID.ELIDINIS_DAMAGED_GUARDIAN, TUMEKENS_GUARDIAN + ELIDINIS_DAMAGED_GUARDIAN),
+			new Pet(PetGroup.BOSS, NpcID.ELIDINIS_DAMAGED_GUARDIAN_11851, TUMEKENS_GUARDIAN + ELIDINIS_DAMAGED_GUARDIAN),
+
+			new Pet(PetGroup.BOSS, NpcID.ELIDINIS_GUARDIAN, TUMEKENS_GUARDIAN + ELIDINIS_GUARDIAN),
+			new Pet(PetGroup.BOSS, NpcID.ELIDINIS_GUARDIAN_11813, TUMEKENS_GUARDIAN + ELIDINIS_GUARDIAN),
+
 			new Pet(PetGroup.BOSS, NpcID.ENRAGED_TEKTINY, OLMLET_INFO + OLMLET_CM_VARIANTS),
 			new Pet(PetGroup.BOSS, NpcID.ENRAGED_TEKTINY_9513, OLMLET_INFO + OLMLET_CM_VARIANTS),
 
@@ -283,6 +304,9 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.KALPHITE_PRINCESS_6638, KALPHITE_PRINCESS_INFO),	// Green grounded	// Seen in game as other players
 			new Pet(PetGroup.BOSS, NpcID.KALPHITE_PRINCESS_6653, KALPHITE_PRINCESS_INFO),	// Green grounded
 			new Pet(PetGroup.BOSS, NpcID.KALPHITE_PRINCESS_6654, KALPHITE_PRINCESS_INFO),	// Green grounded
+
+			new Pet(PetGroup.BOSS, NpcID.KEPHRITI, TUMEKENS_GUARDIAN + KEPHRITI),
+			new Pet(PetGroup.BOSS, NpcID.KEPHRITI_11848, TUMEKENS_GUARDIAN + KEPHRITI),
 
 			new Pet(PetGroup.OTHER, NpcID.KITTEN, KITTEN_INFO),	// Black and grey checkered
 			new Pet(PetGroup.OTHER, NpcID.KITTEN_5591, KITTEN_INFO),	// Black and grey checkered
@@ -526,6 +550,12 @@ public class PetJsonCreator
 			new Pet(PetGroup.TOY, NpcID.TOY_SOLDIER, TOY_SOLDIER_INFO),
 			new Pet(PetGroup.TOY, NpcID.TOY_SOLDIER_9251, TOY_SOLDIER_INFO),
 
+			new Pet(PetGroup.BOSS, NpcID.TUMEKENS_DAMAGED_GUARDIAN, TUMEKENS_GUARDIAN + TUMEKENS_DAMAGED_GUARDIAN),
+			new Pet(PetGroup.BOSS, NpcID.TUMEKENS_DAMAGED_GUARDIAN_11850, TUMEKENS_GUARDIAN + TUMEKENS_DAMAGED_GUARDIAN),
+
+			new Pet(PetGroup.BOSS, NpcID.TUMEKENS_GUARDIAN, TUMEKENS_GUARDIAN),
+			new Pet(PetGroup.BOSS, NpcID.TUMEKENS_GUARDIAN_11812, TUMEKENS_GUARDIAN),
+
 			new Pet(PetGroup.BOSS, NpcID.TZREKJAD, TZREKJAD_INFO),
 			new Pet(PetGroup.BOSS, NpcID.TZREKJAD_5893, TZREKJAD_INFO),
 
@@ -570,6 +600,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.YOUNGLLEF, YOUNGLLEF_INFO),
 			new Pet(PetGroup.BOSS, NpcID.YOUNGLLEF_8737, YOUNGLLEF_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.ZEBO, TUMEKENS_GUARDIAN + ZEBO),
+			new Pet(PetGroup.BOSS, NpcID.ZEBO_11849, TUMEKENS_GUARDIAN + ZEBO),
 
 			new Pet(PetGroup.SKILLING, NpcID.ZIGGY, ROCKY_INFO + " " + ROCKY_TANUKI),
 			new Pet(PetGroup.SKILLING, NpcID.ZIGGY_9853, ROCKY_INFO + " " + ROCKY_TANUKI),

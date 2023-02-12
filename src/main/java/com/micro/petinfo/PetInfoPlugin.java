@@ -369,7 +369,7 @@ public class PetInfoPlugin extends Plugin
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
 		}
 
-		client.createMenuEntry(-1)
+		client.createMenuEntry(0)
 				.setOption(option)
 				.setTarget(colorPetName(pet))
 				.setType(MenuAction.RUNELITE)

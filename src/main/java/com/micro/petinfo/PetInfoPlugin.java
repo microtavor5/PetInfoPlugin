@@ -334,7 +334,7 @@ public class PetInfoPlugin extends Plugin
 	private void addPetInfoMenu(NPC pet)
 	{
 		String option = MENU_OPTION;
-		if(pet.getInteracting() != null)
+		if(pet.getInteracting() != null && config.showPetOwner())
 		{
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
 		}

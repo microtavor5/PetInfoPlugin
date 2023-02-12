@@ -44,6 +44,13 @@ public interface PetsConfig extends Config
 	)
 	String highlightSection = "section";
 
+	enum MenuMode
+	{
+		OFF,
+		INFO,
+		EXAMINE
+	}
+
 	enum PetMode
 	{
 		OFF,
@@ -73,14 +80,11 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 1,
-			keyName = "petInfo",
+			keyName = "menu",
 			name = "Right click menu",
-			description = "Show pet info option on right click"
+			description = "Show option on right click"
 	)
-	default boolean showMenu()
-	{
-		return true;
-	}
+	default MenuMode menu() { return MenuMode.INFO; }
 
 	@ConfigItem(
 			position = 2,

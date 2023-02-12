@@ -99,7 +99,8 @@ public class PetInfoPlugin extends Plugin
 
 	private PetInfo petInfo;
 
-	private final String MENU_OPTION = "Info";
+	private final String MENU_OPTION_INFO = "Info";
+	private final String MENU_OPTION_EXAMINE = "Examine";
 
 	@Provides
 	PetsConfig getConfig(ConfigManager configManager)
@@ -186,7 +187,7 @@ public class PetInfoPlugin extends Plugin
 	public void onClientTick(ClientTick clientTick)
 	{
 		// Ensure we are going to be showing the menus, that a menu can be show at all, or an existing menu is not already open
-		if (!config.showMenu() || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
+		if (config.menu() == PetsConfig.MenuMode.OFF || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
 		{
 			return;
 		}
@@ -200,15 +201,34 @@ public class PetInfoPlugin extends Plugin
 	public void onMenuOptionClicked(MenuEntry event)
 	{
 		// If the player did not click on an INFO menu entry (hopefully should lever happen with new api)
-		if (event.getType() != MenuAction.RUNELITE || !(event.getOption().startsWith("Info")))
+		if (event.getType() != MenuAction.RUNELITE)
+		{
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			return;
+		}
+
+		if (config.menu() == PetsConfig.MenuMode.INFO && !(event.getOption().startsWith("Info")))
+		{
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			return;
+		}
+
+		if (config.menu() == PetsConfig.MenuMode.EXAMINE && !(event.getOption().startsWith("Examine")))
 		{
 			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
 			return;
 		}
 
 		// We get the info text based off of the pet's NPCid
-		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
-				+ " " + petInfo.getInfo(event.getIdentifier()), "");
+		if (config.menu() == PetsConfig.MenuMode.INFO)
+		{
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
+					+ " " + petInfo.getInfo(event.getIdentifier()), "");
+		}
+		else if (config.menu() == PetsConfig.MenuMode.EXAMINE)
+		{
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", petInfo.getExamine(event.getIdentifier()), "");
+		}
 	}
 
 	/**
@@ -277,6 +297,7 @@ public class PetInfoPlugin extends Plugin
 			List<NPC> list = new ArrayList<>();
 			for (NPC p : pets)
 			{
+
 				if (isClickable(p, mouseCanvasPosition))
 				{
 					list.add(p);
@@ -336,7 +357,13 @@ public class PetInfoPlugin extends Plugin
 
 	private void addPetInfoMenu(NPC pet)
 	{
-		String option = MENU_OPTION;
+		if (config.menu().equals(PetsConfig.MenuMode.EXAMINE) && pet.getInteracting() == client.getLocalPlayer())
+		{
+			return;
+		}
+
+		String option = config.menu().equals(PetsConfig.MenuMode.INFO) ? MENU_OPTION_INFO : MENU_OPTION_EXAMINE;
+
 		if(pet.getInteracting() != null && config.showPetOwner())
 		{
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";

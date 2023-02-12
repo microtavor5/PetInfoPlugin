@@ -96,14 +96,6 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 3,
-			keyName = "getRemoteData",
-			name = "Get up-to-date list of pets",
-			description = "Use the updated list of pets from the github. If off, and no local backup found, the plugin will not work. A local backup will be created on first download of an updated version."
-	)
-	default boolean getRemoteData() { return true; }
-
-	@ConfigItem(
-			position = 4,
 			keyName = "togglePetInfoColor",
 			name = "Pet name color",
 			description = "Choose between the RuneScape default yellow and the custom highlight colors for the pets name"
@@ -111,12 +103,20 @@ public interface PetsConfig extends Config
 	default PetInfoColor petInfoColor() { return PetInfoColor.YELLOW; }
 
 	@ConfigItem(
-			position = 5,
+			position = 4,
 			keyName = "togglePetOwnerColor",
 			name = "Pet's owner name color",
 			description = "Choose between the RuneScape default yellow, white, or the combat level differential"
 	)
 	default PetOwnerColor petOwnerColor() { return PetOwnerColor.WHITE; }
+
+	@ConfigItem(
+			position = 5,
+			keyName = "getRemoteData",
+			name = "Get up-to-date list of pets",
+			description = "Use the updated list of pets from the github. If off, and no local backup found, the plugin will not work. A local backup will be created on first download of an updated version."
+	)
+	default boolean getRemoteData() { return true; }
 
 	@ConfigItem(
 			position = 6,

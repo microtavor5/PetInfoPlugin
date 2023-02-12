@@ -75,7 +75,7 @@ public interface PetsConfig extends Config
 			position = 1,
 			keyName = "petInfo",
 			name = "Right click menu",
-			description = "Show pet Info and Owner option on right click"
+			description = "Show pet info option on right click"
 	)
 	default boolean showMenu()
 	{
@@ -84,6 +84,14 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 2,
+			keyName = "showPetOwner",
+			name = "Show pet's owner name",
+			description = "Show pet's owner name on right click"
+	)
+	default boolean showPetOwner() { return true; }
+
+	@ConfigItem(
+			position = 3,
 			keyName = "getRemoteData",
 			name = "Get up-to-date list of pets",
 			description = "Use the updated list of pets from the github. If off, and no local backup found, the plugin will not work. A local backup will be created on first download of an updated version."
@@ -91,7 +99,7 @@ public interface PetsConfig extends Config
 	default boolean getRemoteData() { return true; }
 
 	@ConfigItem(
-			position = 3,
+			position = 4,
 			keyName = "togglePetInfoColor",
 			name = "Pet name color",
 			description = "Choose between the RuneScape default yellow and the custom highlight colors for the pets name"
@@ -99,7 +107,7 @@ public interface PetsConfig extends Config
 	default PetInfoColor petInfoColor() { return PetInfoColor.YELLOW; }
 
 	@ConfigItem(
-			position = 4,
+			position = 5,
 			keyName = "togglePetOwnerColor",
 			name = "Pet's owner name color",
 			description = "Choose between the RuneScape default yellow, white, or the combat level differential"
@@ -107,15 +115,16 @@ public interface PetsConfig extends Config
 	default PetOwnerColor petOwnerColor() { return PetOwnerColor.WHITE; }
 
 	@ConfigItem(
-			position = 5,
+			position = 6,
 			keyName = "toggleHighlight",
 			name = "Highlight toggle",
-			description = "Select if no, all, or only your own pets are highlighted"
+			description = "Select if no, all, or only your own pets are highlighted",
+			section = highlightSection
 	)
 	default HighlightMode highlight() { return HighlightMode.OFF; }
 
 	@ConfigItem(
-			position = 6,
+			position = 7,
 			keyName = "showBoss",
 			name = "Highlight Bossing Pets",
 			description = "Toggles highlighting for bossing pets",
@@ -127,7 +136,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
+			position = 8,
 			keyName = "bossColor",
 			name = "Boss Pet color",
 			description = "Highlight color for boss pets",
@@ -139,7 +148,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
+			position = 9,
 			keyName = "showSkilling",
 			name = "Highlight Skilling Pets",
 			description = "Toggles highlighting for skilling pets",
@@ -151,7 +160,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
+			position = 10,
 			keyName = "skillingColor",
 			name = "Skilling Pet color",
 			description = "Highlight color for skilling pets",
@@ -163,7 +172,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
+			position = 11,
 			keyName = "showToy",
 			name = "Highlight Toys",
 			description = "Toggles highlighting for clockwork toys",
@@ -175,7 +184,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 11,
+			position = 12,
 			keyName = "toyColor",
 			name = "Toy color",
 			description = "Highlight color for clockwork toys",
@@ -187,7 +196,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 12,
+			position = 13,
 			keyName = "showOther",
 			name = "Show Other Pets",
 			description = "Toggles highlighting for other pets (like cats)",
@@ -199,7 +208,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 13,
+			position = 14,
 			keyName = "otherColor",
 			name = "Other Pet color",
 			description = "Highlight color for other pets",
@@ -211,7 +220,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 14,
+			position = 15,
 			keyName = "showNpcId",
 			name = "Show NPC ID",
 			description = "Show the pets NPC id next to its overhead name",

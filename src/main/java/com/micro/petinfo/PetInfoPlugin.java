@@ -74,6 +74,9 @@ public class PetInfoPlugin extends Plugin
 	private final List<NPC> pets = new ArrayList<>();	// Used to keep track of the current pets in the game
 
 	@Getter(AccessLevel.PACKAGE)
+	private final Color defaultWhite = new Color(0xffffff);
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Color defaultYellow = new Color(0xffff00);
 
 	@Inject
@@ -353,6 +356,10 @@ public class PetInfoPlugin extends Plugin
 
 		switch (config.petOwnerColor())
 		{
+			case WHITE:
+				ownerColor = defaultWhite;
+				break;
+
 			case YELLOW:
 				ownerColor = defaultYellow;
 				break;

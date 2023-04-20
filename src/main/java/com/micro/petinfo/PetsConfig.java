@@ -48,7 +48,8 @@ public interface PetsConfig extends Config
 	{
 		OFF,
 		INFO,
-		EXAMINE
+		EXAMINE,
+		BOTH
 	}
 
 	enum PetMode
@@ -84,7 +85,7 @@ public interface PetsConfig extends Config
 			name = "Right click menu",
 			description = "Show option on right click"
 	)
-	default MenuMode menu() { return MenuMode.INFO; }
+	default MenuMode menu() { return MenuMode.BOTH; }
 
 	@ConfigItem(
 			position = 2,

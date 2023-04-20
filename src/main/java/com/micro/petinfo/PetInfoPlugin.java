@@ -219,6 +219,13 @@ public class PetInfoPlugin extends Plugin
 			return;
 		}
 
+		if (config.menu() == PetsConfig.MenuMode.BOTH &&
+				!(event.getOption().startsWith("Info")) && !(event.getOption().startsWith("Examine")))
+		{
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			return;
+		}
+
 		// We get the info text based off of the pet's NPCid
 		if (config.menu() == PetsConfig.MenuMode.INFO)
 		{
@@ -228,6 +235,18 @@ public class PetInfoPlugin extends Plugin
 		else if (config.menu() == PetsConfig.MenuMode.EXAMINE)
 		{
 			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", petInfo.getExamine(event.getIdentifier()), "");
+		}
+		else if (config.menu() == PetsConfig.MenuMode.BOTH)
+		{
+			if (event.getOption().startsWith("Info"))
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
+						+ " " + petInfo.getInfo(event.getIdentifier()), "");
+			}
+			else
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", petInfo.getExamine(event.getIdentifier()), "");
+			}
 		}
 	}
 
@@ -286,7 +305,7 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	/**
-	 * Finds which pets are under the users cursor.
+	 * Finds which pets are under the user's cursor.
 	 * This consults the {@link #pets} array.
 	 */
 	private List<NPC> getPetsUnderCursor()
@@ -333,7 +352,7 @@ public class PetInfoPlugin extends Plugin
 
 		if (npcHull != null)
 		{
-			// Determine if the cursor is inside of the outline of the pet
+			// Determine if the cursor is inside the outline of the pet
 			return npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 		}
 
@@ -341,7 +360,7 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	/**
-	 * Adds the menus for the the pets that are under the cursor at the time of the call.
+	 * Adds the menus for the pets that are under the cursor at the time of the call.
 	 */
 	private void addMenus()
 	{
@@ -350,20 +369,29 @@ public class PetInfoPlugin extends Plugin
 		{
 			for (NPC pet : petsUnderCursor)
 			{
-				addPetInfoMenu(pet);
+				// Add info menu
+				if (config.menu().equals(PetsConfig.MenuMode.INFO) || config.menu().equals(PetsConfig.MenuMode.BOTH))
+				{
+					addPetMenu(pet, MENU_OPTION_INFO);
+				}
+
+				// Add examine menu
+				if (config.menu().equals(PetsConfig.MenuMode.EXAMINE) || config.menu().equals(PetsConfig.MenuMode.BOTH))
+				{
+					if (pet.getInteracting() == client.getLocalPlayer()) {
+						return;
+					}
+					else
+					{
+						addPetMenu(pet, MENU_OPTION_EXAMINE);
+					}
+				}
 			}
 		}
 	}
 
-	private void addPetInfoMenu(NPC pet)
+	private void addPetMenu(NPC pet, String option)
 	{
-		if (config.menu().equals(PetsConfig.MenuMode.EXAMINE) && pet.getInteracting() == client.getLocalPlayer())
-		{
-			return;
-		}
-
-		String option = config.menu().equals(PetsConfig.MenuMode.INFO) ? MENU_OPTION_INFO : MENU_OPTION_EXAMINE;
-
 		if(pet.getInteracting() != null && config.showPetOwner())
 		{
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";

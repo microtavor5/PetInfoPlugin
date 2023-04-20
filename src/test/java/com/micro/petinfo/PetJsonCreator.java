@@ -590,6 +590,10 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.VETION_JR_5537, VETION_JR_INFO),	// Orange
 			new Pet(PetGroup.BOSS, NpcID.VETION_JR_5559, VETION_JR_INFO),	// Purple
 			new Pet(PetGroup.BOSS, NpcID.VETION_JR_5560, VETION_JR_INFO),	// Orange
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11983, VETION_JR_INFO),
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11984, VETION_JR_INFO),
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11987, VETION_JR_INFO),
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11988, VETION_JR_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.VORKI, VORKI_INFO),
 			new Pet(PetGroup.BOSS, NpcID.VORKI_8029, VORKI_INFO),	// Seen in game, other player

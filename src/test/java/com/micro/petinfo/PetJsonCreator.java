@@ -90,6 +90,7 @@ public class PetJsonCreator
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/4000.";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MIDNIGHT_INFO = "is obtained by causing a pet Noon to metamorphosize.";
+	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2500.";
 	private static final String NEXLING_INFO = "is dropped by Nex at a rate of 1/500.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String OLMLET_INFO = "is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.";
@@ -136,6 +137,10 @@ public class PetJsonCreator
 	private static final String GREATISH_GUARDIAN = " This is a variant of the Rift Guardian, that can be obtained by using the Guardian's Eye reward from the Guardians of the Rift minigame on a Rift Guardian.";
 
 	private static final String LITTLE_PARASITE_INFO = " This is a variant of the the Little Nightmare, obtained by using a Parasitic Egg on her.";
+
+	private static final String MUPHIN_MELEE = " This is the melee variant, obtained by using Charged Ice on Muphin.";
+	private static final String MUPHIN_RANGED = " This is the ranged variant, obtained by using Charged Ice on Muphin.";
+	private static final String MUPHIN_SHIELDED = " This is the shielded variant, obtained by using Charged Ice on Muphin.";
 
 	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.";
 	private static final String ROCKY_TANUKI = " This is the Tanuki variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.";
@@ -375,6 +380,13 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT, MIDNIGHT_INFO),
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT_7893, MIDNIGHT_INFO),	// Seen in game other player, morfed to NOON_7892
+
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN, MUPHIN_INFO + MUPHIN_RANGED),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12006, MUPHIN_INFO + MUPHIN_MELEE),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12007, MUPHIN_INFO + MUPHIN_SHIELDED),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12014, MUPHIN_INFO + MUPHIN_RANGED),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12015, MUPHIN_INFO + MUPHIN_MELEE),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12016, MUPHIN_INFO + MUPHIN_SHIELDED),
 		
 			new Pet(PetGroup.BOSS, NpcID.NEXLING, NEXLING_INFO),
 			new Pet(PetGroup.BOSS, NpcID.NEXLING_11277, NEXLING_INFO),

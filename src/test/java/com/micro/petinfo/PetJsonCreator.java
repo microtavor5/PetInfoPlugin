@@ -50,7 +50,7 @@ public class PetJsonCreator
 	 * Pet Info Strings
 	 */
 	private static final String ABYSSAL_ORPHAN_INFO = "is obtained by placing an unsired on the Font of Consumption, at a rate of 5/128.";
-	private static final String ABYSSAL_PROTECTOR_INFO = "is obtained from the Guardians of the Rift minigame.";
+	private static final String ABYSSAL_PROTECTOR_INFO = "is obtained from the Guardians of the Rift minigame, at a rate of 1/4000.";
 	private static final String BABY_CHINCHOMPA_INFO = "is obtained while catching chinchompas.";
 	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3000.";
 	private static final String BEAVER_INFO = "is obtained while training Woodcutting.";

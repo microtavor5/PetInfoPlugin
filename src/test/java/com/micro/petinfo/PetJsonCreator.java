@@ -141,6 +141,7 @@ public class PetJsonCreator
 	private static final String MIDNIGHT_INFO = "is obtained by causing a pet Noon to metamorphosize.";
 	private static final String MIDNIGHT_EXAMINE = "The mini Guardian of Dusk!";
 	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2500.";
+	private static final String MUPHIN_EXAMINE = "An oversized grub with arms.";
 	private static final String NEXLING_INFO = "is dropped by Nex at a rate of 1/500.";
 	private static final String NEXLING_EXAMINE = "The gods don't quite fear this one.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
@@ -473,20 +474,20 @@ public class PetJsonCreator
 			new Pet(PetGroup.OTHER, NpcID.MAZ, MAZ_INFO, MAZ_EXAMINE),	// Not a real pet, but close enough for me to want to add it
 
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT, MIDNIGHT_INFO, MIDNIGHT_EXAMINE),
-			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT_7893, MIDNIGHT_INFO, MIDNIGHT_EXAMINE),	// Seen in game other player, morfed to NOON_7892
+			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT_7893, MIDNIGHT_INFO, MIDNIGHT_EXAMINE),	// Seen in game other player, morphed to NOON_7892
 
-			new Pet(PetGroup.BOSS, NpcID.MUPHIN, MUPHIN_INFO + MUPHIN_RANGED),
-			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12006, MUPHIN_INFO + MUPHIN_MELEE),
-			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12007, MUPHIN_INFO + MUPHIN_SHIELDED),
-			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12014, MUPHIN_INFO + MUPHIN_RANGED),
-			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12015, MUPHIN_INFO + MUPHIN_MELEE),
-			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12016, MUPHIN_INFO + MUPHIN_SHIELDED),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN, MUPHIN_INFO + MUPHIN_RANGED, MUPHIN_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12006, MUPHIN_INFO + MUPHIN_MELEE, MUPHIN_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12007, MUPHIN_INFO + MUPHIN_SHIELDED, MUPHIN_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12014, MUPHIN_INFO + MUPHIN_RANGED, MUPHIN_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12015, MUPHIN_INFO + MUPHIN_MELEE, MUPHIN_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12016, MUPHIN_INFO + MUPHIN_SHIELDED, MUPHIN_EXAMINE),
 		
 			new Pet(PetGroup.BOSS, NpcID.NEXLING, NEXLING_INFO, NEXLING_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.NEXLING_11277, NEXLING_INFO, NEXLING_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.NOON, NOON_INFO, NOON_EXAMINE),
-			new Pet(PetGroup.BOSS, NpcID.NOON_7892, NOON_INFO, NOON_EXAMINE),	// Seen in game as other players, morfed to MIDNIGHT_7893
+			new Pet(PetGroup.BOSS, NpcID.NOON_7892, NOON_INFO, NOON_EXAMINE),	// Seen in game as other players, morphed to MIDNIGHT_7893
 
 			new Pet(PetGroup.BOSS, NpcID.OLMLET, OLMLET_INFO, OLMLET_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.OLMLET_7520, OLMLET_INFO, OLMLET_EXAMINE),	// Seen in game other player
@@ -684,10 +685,10 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.VETION_JR_5537, VETION_JR_INFO, VETION_JR_EXAMINE),	// Orange
 			new Pet(PetGroup.BOSS, NpcID.VETION_JR_5559, VETION_JR_INFO, VETION_JR_EXAMINE),	// Purple
 			new Pet(PetGroup.BOSS, NpcID.VETION_JR_5560, VETION_JR_INFO, VETION_JR_EXAMINE),	// Orange
-			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11983, VETION_JR_INFO),
-			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11984, VETION_JR_INFO),
-			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11987, VETION_JR_INFO),
-			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11988, VETION_JR_INFO),
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11983, VETION_JR_INFO, VETION_JR_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11984, VETION_JR_INFO, VETION_JR_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11987, VETION_JR_INFO, VETION_JR_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.VETION_JR_11988, VETION_JR_INFO, VETION_JR_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.VORKI, VORKI_INFO, VORKI_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.VORKI_8029, VORKI_INFO, VORKI_EXAMINE),	// Seen in game, other player

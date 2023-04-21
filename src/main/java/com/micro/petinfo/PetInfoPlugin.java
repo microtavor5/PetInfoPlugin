@@ -74,6 +74,9 @@ public class PetInfoPlugin extends Plugin
 	private final List<NPC> pets = new ArrayList<>();	// Used to keep track of the current pets in the game
 
 	@Getter(AccessLevel.PACKAGE)
+	private final Color defaultWhite = new Color(0xffffff);
+
+	@Getter(AccessLevel.PACKAGE)
 	private final Color defaultYellow = new Color(0xffff00);
 
 	@Inject
@@ -96,7 +99,8 @@ public class PetInfoPlugin extends Plugin
 
 	private PetInfo petInfo;
 
-	private final String MENU_OPTION = "Info";
+	private final String MENU_OPTION_INFO = "Info";
+	private final String MENU_OPTION_EXAMINE = "Examine";
 
 	@Provides
 	PetsConfig getConfig(ConfigManager configManager)
@@ -183,7 +187,7 @@ public class PetInfoPlugin extends Plugin
 	public void onClientTick(ClientTick clientTick)
 	{
 		// Ensure we are going to be showing the menus, that a menu can be show at all, or an existing menu is not already open
-		if (!config.showMenu() || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
+		if (config.menu() == PetsConfig.MenuMode.OFF || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
 		{
 			return;
 		}
@@ -197,15 +201,53 @@ public class PetInfoPlugin extends Plugin
 	public void onMenuOptionClicked(MenuEntry event)
 	{
 		// If the player did not click on an INFO menu entry (hopefully should lever happen with new api)
-		if (event.getType() != MenuAction.RUNELITE || !(event.getOption().startsWith("Info")))
+		if (event.getType() != MenuAction.RUNELITE)
+		{
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			return;
+		}
+
+		if (config.menu() == PetsConfig.MenuMode.INFO && !(event.getOption().startsWith("Info")))
+		{
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			return;
+		}
+
+		if (config.menu() == PetsConfig.MenuMode.EXAMINE && !(event.getOption().startsWith("Examine")))
+		{
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			return;
+		}
+
+		if (config.menu() == PetsConfig.MenuMode.BOTH &&
+				!(event.getOption().startsWith("Info")) && !(event.getOption().startsWith("Examine")))
 		{
 			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
 			return;
 		}
 
 		// We get the info text based off of the pet's NPCid
-		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
-				+ " " + petInfo.getInfo(event.getIdentifier()), "");
+		if (config.menu() == PetsConfig.MenuMode.INFO)
+		{
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
+					+ " " + petInfo.getInfo(event.getIdentifier()), "");
+		}
+		else if (config.menu() == PetsConfig.MenuMode.EXAMINE)
+		{
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", petInfo.getExamine(event.getIdentifier()), "");
+		}
+		else if (config.menu() == PetsConfig.MenuMode.BOTH)
+		{
+			if (event.getOption().startsWith("Info"))
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
+						+ " " + petInfo.getInfo(event.getIdentifier()), "");
+			}
+			else
+			{
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", petInfo.getExamine(event.getIdentifier()), "");
+			}
+		}
 	}
 
 	/**
@@ -263,7 +305,7 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	/**
-	 * Finds which pets are under the users cursor.
+	 * Finds which pets are under the user's cursor.
 	 * This consults the {@link #pets} array.
 	 */
 	private List<NPC> getPetsUnderCursor()
@@ -274,6 +316,7 @@ public class PetInfoPlugin extends Plugin
 			List<NPC> list = new ArrayList<>();
 			for (NPC p : pets)
 			{
+
 				if (isClickable(p, mouseCanvasPosition))
 				{
 					list.add(p);
@@ -309,7 +352,7 @@ public class PetInfoPlugin extends Plugin
 
 		if (npcHull != null)
 		{
-			// Determine if the cursor is inside of the outline of the pet
+			// Determine if the cursor is inside the outline of the pet
 			return npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 		}
 
@@ -317,7 +360,7 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	/**
-	 * Adds the menus for the the pets that are under the cursor at the time of the call.
+	 * Adds the menus for the pets that are under the cursor at the time of the call.
 	 */
 	private void addMenus()
 	{
@@ -326,20 +369,35 @@ public class PetInfoPlugin extends Plugin
 		{
 			for (NPC pet : petsUnderCursor)
 			{
-				addPetInfoMenu(pet);
+				// Add info menu
+				if (config.menu().equals(PetsConfig.MenuMode.INFO) || config.menu().equals(PetsConfig.MenuMode.BOTH))
+				{
+					addPetMenu(pet, MENU_OPTION_INFO);
+				}
+
+				// Add examine menu
+				if (config.menu().equals(PetsConfig.MenuMode.EXAMINE) || config.menu().equals(PetsConfig.MenuMode.BOTH))
+				{
+					if (pet.getInteracting() == client.getLocalPlayer()) {
+						return;
+					}
+					else
+					{
+						addPetMenu(pet, MENU_OPTION_EXAMINE);
+					}
+				}
 			}
 		}
 	}
 
-	private void addPetInfoMenu(NPC pet)
+	private void addPetMenu(NPC pet, String option)
 	{
-		String option = MENU_OPTION;
-		if(pet.getInteracting() != null)
+		if(pet.getInteracting() != null && config.showPetOwner())
 		{
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
 		}
 
-		client.createMenuEntry(-1)
+		client.createMenuEntry(0)
 				.setOption(option)
 				.setTarget(colorPetName(pet))
 				.setType(MenuAction.RUNELITE)
@@ -353,6 +411,10 @@ public class PetInfoPlugin extends Plugin
 
 		switch (config.petOwnerColor())
 		{
+			case WHITE:
+				ownerColor = defaultWhite;
+				break;
+
 			case YELLOW:
 				ownerColor = defaultYellow;
 				break;

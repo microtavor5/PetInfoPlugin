@@ -138,7 +138,7 @@ public class PetJsonCreator
 	private static final String LITTLE_PARASITE_EXAMINE = "So cute!";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MAZ_EXAMINE = "Looking after trees as if they were home.";
-	private static final String MIDNIGHT_INFO = "is obtained by causing a pet Noon to metamorphosize.";
+	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String MIDNIGHT_EXAMINE = "The mini Guardian of Dusk!";
 	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2500.";
 	private static final String MUPHIN_EXAMINE = "An oversized grub with arms.";

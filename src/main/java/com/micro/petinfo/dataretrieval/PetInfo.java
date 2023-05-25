@@ -33,4 +33,12 @@ public class PetInfo
 	{
 		return PETS.get(npcId).info;
 	}
+
+	/**
+	 * Returns the examine string for the passed NPCid
+	 */
+	public String getExamine(int npcId)
+	{
+		return PETS.get(npcId).examine;
+	}
 }

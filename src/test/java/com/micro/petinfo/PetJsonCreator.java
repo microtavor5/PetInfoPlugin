@@ -57,10 +57,14 @@ public class PetJsonCreator
 	private static final String BABY_CHINCHOMPA_EXAMINE = "Fluffy and cute, keep away from fire!";
 	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3000.";
 	private static final String BABY_MOLE_EXAMINE = "Keep Molin', molin' molin' molin'!";
+	private static final String BARON = "is obtained by killing Duke Sucellus, at a rate of 1/2500.";
+	private static final String BARON_EXAMINE = "Better keep an eye on this one.";
 	private static final String BEAVER_INFO = "is obtained while training Woodcutting.";
 	private static final String BEAVER_EXAMINE = "Looks like it's gotten through a lot of wood.";
 	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1000.";
 	private static final String BLOODHOUND_EXAMINE = "Tracking down clues with logic and a pipe.";
+	private static final String BUTCH = "is obtained by killing Vardorvis, at a rate of 1/3000";
+	private static final String BUTCH_EXAMINE = "A tiny headless executioner.";
 	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/2000.";
 	private static final String CALLISTO_CUB_EXAMINE = "Bear-ly smaller than his father.";
 	private static final String CAT_INFO = "is obtained by letting a kitten grow for about 2 hours.";
@@ -126,6 +130,8 @@ public class PetJsonCreator
 	private static final String LIL_CREATOR_INFO = "is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.";
 	private static final String LIL_CREATOR_EXAMINE = "A pint-sized bringer of existence.";
 	private static final String LIL_DESTRUCTOR_EXAMINE = "Harbinger of light surface scratches and minor dents.";
+	private static final String LIL_VIATHAN = "is obtained by killing The Leviathan, at a rate of 1/2500.";
+	private static final String LIL_VIATHAN_EXAMINE = "A small creature deformed by the Abyss.";
 	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
 	private static final String LIL_ZIK_EXAMINE = "What has eight legs and runs a Vampyric Theatre?";
 	private static final String LIL_MAIDEN_EXAMINE = "Freed from her torturous constraints.";
@@ -215,6 +221,8 @@ public class PetJsonCreator
 	private static final String WILY_CAT_EXAMINE = "Wild.";
 	private static final String WILY_HELLCAT_INFO = "is obtained by asking Felkrash to train an Overgrown Hellcat, after completing the Ratcatchers quest.";
 	private static final String WILY_HELLCAT_EXAMINE = "Wild and hellish.";
+	private static final String WISP = "is obtained by killing The Whisperer, at a rate of 1/2000";
+	private static final String WISP_EXAMINE = "Born in the shadows.";
 	private static final String YOUNGLLEF_INFO = "is obtained by completing The Gauntlet, at a rate of 1/2000 (or 1/800 for The Corrupted Gauntlet).";
 	private static final String YOUNGLLEF_EXAMINE = "Looks like a bit of a nightmare.";
 	private static final String ZILYANA_JR_INFO = "is dropped by Commander Zilyana, at a rate of 1/5000.";
@@ -245,6 +253,18 @@ public class PetJsonCreator
 	private static final String ELIDINIS_DAMAGED_GUARDIAN = " This is a variant of the Tumeken's guardian unlocked with the Ancient remnant";
 	private static final String AKKHITO = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Akkha.";
 	private static final String BABI = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Ba-Ba.";
+
+	private static final String BEAVER_LOGS = " This is the Logs variant.";
+	private static final String BEAVER_OAK = " This is the Oak variant.";
+	private static final String BEAVER_WILLOW = " This is the Willow variant.";
+	private static final String BEAVER_TEAK = " This is the Teak variant.";
+	private static final String BEAVER_MAPLE = " This is the Maple variant.";
+	private static final String BEAVER_MAHOGANY = " This is the Mahogany variant.";
+	private static final String BEAVER_ARCTIC_PINE = " This is the Arctic Pine variant.";
+	private static final String BEAVER_YEW = " This is the Yew variant.";
+	private static final String BEAVER_MAGIC = " This is the Magic variant.";
+	private static final String BEAVER_REDWOOD = " This is the Redwood variant.";
+
 	private static final String KEPHRITI = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Kephri.";
 	private static final String ZEBO = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Zebak.";
 
@@ -282,11 +302,35 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.BABY_MOLERAT, BABY_MOLE_INFO + BABY_MOLE_RAT, BABY_MOLE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.BABY_MOLERAT_10651, BABY_MOLE_INFO + BABY_MOLE_RAT, BABY_MOLE_EXAMINE),
 
-			new Pet(PetGroup.SKILLING, NpcID.BEAVER, BEAVER_INFO, BEAVER_EXAMINE),
-			new Pet(PetGroup.SKILLING, NpcID.BEAVER_6724, BEAVER_INFO, BEAVER_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.BARON, BARON, BARON_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.BARON_12159, BARON, BARON_EXAMINE),
+
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER, BEAVER_INFO + BEAVER_LOGS, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12181, BEAVER_INFO + BEAVER_LOGS, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12170, BEAVER_INFO + BEAVER_OAK, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12182, BEAVER_INFO + BEAVER_OAK, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12171, BEAVER_INFO + BEAVER_WILLOW, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12183, BEAVER_INFO + BEAVER_WILLOW, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12176, BEAVER_INFO + BEAVER_TEAK, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12188, BEAVER_INFO + BEAVER_TEAK, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12172, BEAVER_INFO + BEAVER_MAPLE, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12184, BEAVER_INFO + BEAVER_MAPLE, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12177, BEAVER_INFO + BEAVER_MAHOGANY, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12189, BEAVER_INFO + BEAVER_MAHOGANY, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12178, BEAVER_INFO + BEAVER_ARCTIC_PINE, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12190, BEAVER_INFO + BEAVER_ARCTIC_PINE, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12173, BEAVER_INFO + BEAVER_YEW, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12185, BEAVER_INFO + BEAVER_YEW, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12174, BEAVER_INFO + BEAVER_MAGIC, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12186, BEAVER_INFO + BEAVER_MAGIC, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12175, BEAVER_INFO + BEAVER_REDWOOD, BEAVER_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.BEAVER_12187, BEAVER_INFO + BEAVER_REDWOOD, BEAVER_EXAMINE),
 
 			new Pet(PetGroup.OTHER, NpcID.BLOODHOUND, BLOODHOUND_INFO, BLOODHOUND_EXAMINE),
 			new Pet(PetGroup.OTHER, NpcID.BLOODHOUND_7232, BLOODHOUND_INFO, BLOODHOUND_EXAMINE),	// Seen in game, other players
+
+			new Pet(PetGroup.BOSS, NpcID.BUTCH, BUTCH, BUTCH_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.BUTCH_12158, BUTCH, BUTCH_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.CALLISTO_CUB, CALLISTO_CUB_INFO, CALLISTO_CUB_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.CALLISTO_CUB_5558, CALLISTO_CUB_INFO, CALLISTO_CUB_EXAMINE),
@@ -461,6 +505,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.LIL_SOT, LIL_ZIK_INFO, LIL_SOT_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.LIL_SOT_10873, LIL_ZIK_INFO, LIL_SOT_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.LILVIATHAN, LIL_VIATHAN, LIL_VIATHAN_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.LILVIATHAN_12160, LIL_VIATHAN, LIL_VIATHAN_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.LIL_XARP, LIL_ZIK_INFO, LIL_XARP_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.LIL_XARP_10874, LIL_ZIK_INFO, LIL_XARP_EXAMINE),
@@ -708,6 +755,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.OTHER, NpcID.WILY_HELLCAT, WILY_HELLCAT_INFO, WILY_HELLCAT_EXAMINE),
 			new Pet(PetGroup.OTHER, NpcID.WILY_HELLCAT_6696, WILY_HELLCAT_INFO, WILY_HELLCAT_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.WISP, WISP, WISP_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.WISP_12157, WISP, WISP_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.YOUNGLLEF, YOUNGLLEF_INFO, YOUNGLLEF_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.YOUNGLLEF_8737, YOUNGLLEF_INFO, YOUNGLLEF_EXAMINE),

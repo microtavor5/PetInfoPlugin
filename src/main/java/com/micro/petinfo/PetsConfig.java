@@ -121,6 +121,17 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 6,
+			keyName = "maxPets",
+			name = "Max Pets (for better FPS)",
+			description = "Limits the number of pets to add menus to. Fewer pets = more fps, but fewer menus."
+	)
+	default int getMaxPets()
+	{
+		return 45;
+	}
+
+	@ConfigItem(
+			position = 7,
 			keyName = "toggleHighlight",
 			name = "Highlight toggle",
 			description = "Select if no, all, or only your own pets are highlighted",
@@ -129,7 +140,7 @@ public interface PetsConfig extends Config
 	default HighlightMode highlight() { return HighlightMode.OFF; }
 
 	@ConfigItem(
-			position = 7,
+			position = 8,
 			keyName = "showBoss",
 			name = "Highlight Bossing Pets",
 			description = "Toggles highlighting for bossing pets",
@@ -141,7 +152,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
+			position = 9,
 			keyName = "bossColor",
 			name = "Boss Pet color",
 			description = "Highlight color for boss pets",
@@ -153,7 +164,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
+			position = 10,
 			keyName = "showSkilling",
 			name = "Highlight Skilling Pets",
 			description = "Toggles highlighting for skilling pets",
@@ -165,7 +176,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
+			position = 11,
 			keyName = "skillingColor",
 			name = "Skilling Pet color",
 			description = "Highlight color for skilling pets",
@@ -177,7 +188,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 11,
+			position = 12,
 			keyName = "showToy",
 			name = "Highlight Toys",
 			description = "Toggles highlighting for clockwork toys",
@@ -189,7 +200,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 12,
+			position = 13,
 			keyName = "toyColor",
 			name = "Toy color",
 			description = "Highlight color for clockwork toys",
@@ -201,7 +212,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 13,
+			position = 14,
 			keyName = "showOther",
 			name = "Show Other Pets",
 			description = "Toggles highlighting for other pets (like cats)",
@@ -213,7 +224,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 14,
+			position = 15,
 			keyName = "otherColor",
 			name = "Other Pet color",
 			description = "Highlight color for other pets",
@@ -225,7 +236,7 @@ public interface PetsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 15,
+			position = 16,
 			keyName = "showNpcId",
 			name = "Show NPC ID",
 			description = "Show the pets NPC id next to its overhead name",

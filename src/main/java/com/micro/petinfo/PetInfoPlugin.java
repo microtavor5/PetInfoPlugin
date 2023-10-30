@@ -191,7 +191,6 @@ public class PetInfoPlugin extends Plugin
 		{
 			return;
 		}
-
 		addMenus();
 	}
 
@@ -313,13 +312,13 @@ public class PetInfoPlugin extends Plugin
 		Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		if (!mouseIsBlocked())
 		{
+			final int maxPets = Math.min(pets.size(), config.getMaxPets());
 			List<NPC> list = new ArrayList<>();
-			for (NPC p : pets)
+			for (int i = 0; i < maxPets; i++)
 			{
-
-				if (isClickable(p, mouseCanvasPosition))
+				if (isClickable(pets.get(i), mouseCanvasPosition))
 				{
-					list.add(p);
+					list.add(pets.get(i));
 				}
 			}
 			return list;

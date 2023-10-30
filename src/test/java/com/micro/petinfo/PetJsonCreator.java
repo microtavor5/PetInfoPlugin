@@ -254,6 +254,9 @@ public class PetJsonCreator
 	private static final String AKKHITO = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Akkha.";
 	private static final String BABI = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Ba-Ba.";
 
+	private static final String SRARACHA_ORANGE = " This is the Orange variant unlocked using an orange egg sack.";
+	private static final String SRARACHA_BLUE = " This is the Blue variant unlocked using a blue egg sack.";
+
 	private static final String BEAVER_LOGS = " This is the Logs variant.";
 	private static final String BEAVER_OAK = " This is the Oak variant.";
 	private static final String BEAVER_WILLOW = " This is the Willow variant.";
@@ -671,10 +674,10 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.SRARACHA, SRARACHA_INFO, SRARACHA_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.SRARACHA_2144, SRARACHA_INFO, SRARACHA_EXAMINE),
-			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11157, SRARACHA_INFO, SRARACHA_EXAMINE),
-			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11158, SRARACHA_INFO, SRARACHA_EXAMINE),
-			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11159, SRARACHA_INFO, SRARACHA_EXAMINE),
-			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11160, SRARACHA_INFO, SRARACHA_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11157, SRARACHA_INFO + SRARACHA_ORANGE, SRARACHA_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11159, SRARACHA_INFO + SRARACHA_ORANGE, SRARACHA_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11158, SRARACHA_INFO + SRARACHA_BLUE, SRARACHA_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.SRARACHA_11160, SRARACHA_INFO + SRARACHA_BLUE, SRARACHA_EXAMINE),
 
 			new Pet(PetGroup.SKILLING, NpcID.TANGLEROOT, TANGLEROOT_INFO, TANGLEROOT_EXAMINE),	// Acorn
 			new Pet(PetGroup.SKILLING, NpcID.TANGLEROOT_7352, TANGLEROOT_INFO + " This is the Acorn variant.", TANGLEROOT_EXAMINE),	// Acorn

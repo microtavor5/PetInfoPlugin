@@ -182,6 +182,8 @@ public class PetJsonCreator
 	private static final String RED_EXAMINE = "Red panda, like pandas but red.";
 	private static final String SCORPIAS_OFFSPRING_INFO = "is dropped by Scorpia, at a rate of 1/2,015.75";
 	private static final String SCORPIAS_OFFSPRING_EXAMINE = "A scuttling little scorpion with an incredibly vicious tail.";
+	private static final String SCURRY_INFO = "is dropped by Scurrius, for the MVP of the kill, at a rate of 1/3,000.";
+	private static final String SCURRY_EXAMINE = "I wonder if it sits.";
 	private static final String SKOTOS_INFO = "is dropped by Skotizo, at a rate of 1/65.";
 	private static final String SKOTOS_EXAMINE = "Spawn of Darkness.";
 	private static final String SMOKE_DEVIL_INFO = "is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.";
@@ -654,6 +656,9 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.SCORPIAS_OFFSPRING, SCORPIAS_OFFSPRING_INFO, SCORPIAS_OFFSPRING_EXAMINE),		// Usually even, what's up with this?
 			new Pet(PetGroup.BOSS, NpcID.SCORPIAS_OFFSPRING_5561, SCORPIAS_OFFSPRING_INFO, SCORPIAS_OFFSPRING_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.SCORPIAS_OFFSPRING_6616, SCORPIAS_OFFSPRING_INFO, SCORPIAS_OFFSPRING_EXAMINE),	// This one is much smaller
+
+			new Pet(PetGroup.BOSS, NpcID.SCURRY, SCURRY_INFO, SCURRY_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.SCURRY_7616, SCURRY_INFO, SCURRY_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.SKOTOS, SKOTOS_INFO, SKOTOS_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.SKOTOS_7671, SKOTOS_INFO, SKOTOS_EXAMINE),

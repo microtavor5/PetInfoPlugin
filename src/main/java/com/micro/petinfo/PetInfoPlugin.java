@@ -45,13 +45,16 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.geometry.SimplePolygon;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
@@ -78,6 +81,9 @@ public class PetInfoPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Color defaultYellow = new Color(0xffff00);
+
+	@Inject
+	private ModelOutlineRenderer modelOutlineRenderer;
 
 	@Inject
 	private Client client;
@@ -186,7 +192,7 @@ public class PetInfoPlugin extends Plugin
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
-		// Ensure we are going to be showing the menus, that a menu can be show at all, or an existing menu is not already open
+		// Ensure we are going to be showing the menus, that a menu can be shown at all, or an existing menu is not already open
 		if (config.menu() == PetsConfig.MenuMode.OFF || client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
 		{
 			return;
@@ -314,8 +320,9 @@ public class PetInfoPlugin extends Plugin
 		{
 			final int maxPets = Math.min(pets.size(), config.getMaxPets());
 			List<NPC> list = new ArrayList<>();
-			for (int i = 0; i < maxPets; i++)
+			for (int i = 0; i < pets.size(); i++)
 			{
+				modelOutlineRenderer.drawOutline(pets.get(i), 10, Color.magenta, 2);
 				if (isClickable(pets.get(i), mouseCanvasPosition))
 				{
 					list.add(pets.get(i));
@@ -347,12 +354,37 @@ public class PetInfoPlugin extends Plugin
 
 	private boolean isClickable(NPC npc, Point mouseCanvasPosition)
 	{
-		Shape npcHull = npc.getConvexHull();	// Gets a Shape representing an outline of the npc
-
-		if (npcHull != null)
+		// First calculate the NPC's local X Y Z coordinates
+		NPCComposition transformedComposition = npc.getTransformedComposition();
+		if(transformedComposition == null)
 		{
-			// Determine if the cursor is inside the outline of the pet
-			return npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
+			return false;
+		}
+		int size = transformedComposition.getSize();
+
+
+		LocalPoint lp = npc.getLocalLocation();
+		if (lp == null){
+			return false;
+		}
+
+		// NPCs z position are calculated based on the tile height of the northeastern tile
+		final int northEastX = lp.getX() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
+		final int northEastY = lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
+		final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY);
+		int height = Perspective.getTileHeight(client, northEastLp, client.getPlane());
+        SimplePolygon aabb = RLUtils.calculateAABB(client, npc.getModel(), npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
+
+
+		// Check the bounding box to see if the mouse is anywhere near the NPC before doing the expensive check
+		if (aabb.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()))
+		{
+			Shape npcHull = npc.getConvexHull();	// Gets a Shape representing an outline of the npc
+			if (npcHull != null)
+			{
+				// Determine if the cursor is inside the outline of the NPC
+				return npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
+			}
 		}
 
 		return false;
@@ -363,27 +395,28 @@ public class PetInfoPlugin extends Plugin
 	 */
 	private void addMenus()
 	{
-		List<NPC> petsUnderCursor = getPetsUnderCursor();
-		if (!petsUnderCursor.isEmpty())
+		if (pets.isEmpty())
 		{
-			for (NPC pet : petsUnderCursor)
+			return;
+		}
+		List<NPC> petsUnderCursor = getPetsUnderCursor();
+		for (NPC pet : petsUnderCursor)
+		{
+			// Add info menu
+			if (config.menu().equals(PetsConfig.MenuMode.INFO) || config.menu().equals(PetsConfig.MenuMode.BOTH))
 			{
-				// Add info menu
-				if (config.menu().equals(PetsConfig.MenuMode.INFO) || config.menu().equals(PetsConfig.MenuMode.BOTH))
-				{
-					addPetMenu(pet, MENU_OPTION_INFO);
-				}
+				addPetMenu(pet, MENU_OPTION_INFO);
+			}
 
-				// Add examine menu
-				if (config.menu().equals(PetsConfig.MenuMode.EXAMINE) || config.menu().equals(PetsConfig.MenuMode.BOTH))
+			// Add examine menu
+			if (config.menu().equals(PetsConfig.MenuMode.EXAMINE) || config.menu().equals(PetsConfig.MenuMode.BOTH))
+			{
+				if (pet.getInteracting() == client.getLocalPlayer()) {
+					return;
+				}
+				else
 				{
-					if (pet.getInteracting() == client.getLocalPlayer()) {
-						return;
-					}
-					else
-					{
-						addPetMenu(pet, MENU_OPTION_EXAMINE);
-					}
+					addPetMenu(pet, MENU_OPTION_EXAMINE);
 				}
 			}
 		}
@@ -494,4 +527,5 @@ public class PetInfoPlugin extends Plugin
 		}
 		return new Color(0xffff00);
 	}
+
 }

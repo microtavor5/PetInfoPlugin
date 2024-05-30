@@ -2,10 +2,6 @@ plugins {
     id 'java'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-}
-
 repositories {
 	mavenLocal()
 	maven {
@@ -16,17 +12,16 @@ repositories {
 
 def runeLiteVersion = 'latest.release'
 
+
 dependencies {
 	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
 
-	compileOnly 'org.projectlombok:lombok:1.18.32'
-	annotationProcessor 'org.projectlombok:lombok:1.18.32'
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-	testImplementation 'junit:junit:4.13.2'
-	testImplementation 'org.slf4j:slf4j-simple:1.7.36'
-	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion, {
-		exclude group: 'ch.qos.logback', module: 'logback-classic'
-	}
+	testImplementation 'junit:junit:4.12'
+	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
+	testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
 }
 
 group = 'micro'
@@ -35,5 +30,6 @@ sourceCompatibility = '1.8'
 
 tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
+	options.release.set(11)
 	options.warnings = false
 }

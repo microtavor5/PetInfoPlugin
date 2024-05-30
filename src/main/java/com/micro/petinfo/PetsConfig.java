@@ -121,13 +121,13 @@ public interface PetsConfig extends Config
 
 	@ConfigItem(
 			position = 6,
-			keyName = "maxPets",
-			name = "Max Pets (for better FPS)",
-			description = "Limits the number of pets to add menus to. Fewer pets = more fps, but fewer menus."
+			keyName = "skipConvexHull",
+			name = "Imprecise click boxes (better FPS)",
+			description = "Speed up the pets under cursor check if things are slow."
 	)
-	default int getMaxPets()
+	default boolean getSkipConvexHull()
 	{
-		return 45;
+		return false;
 	}
 
 	@ConfigItem(

@@ -318,13 +318,12 @@ public class PetInfoPlugin extends Plugin
 		Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		if (!mouseIsBlocked())
 		{
-			final int maxPets = Math.min(pets.size(), config.getMaxPets());
 			List<NPC> list = new ArrayList<>();
-			for (int i = 0; i < pets.size(); i++)
+			for (NPC pet : pets)
 			{
-				if (isClickable(pets.get(i), mouseCanvasPosition))
+				if (isClickable(pet, mouseCanvasPosition))
 				{
-					list.add(pets.get(i));
+					list.add(pet);
 				}
 			}
 			return list;
@@ -378,11 +377,17 @@ public class PetInfoPlugin extends Plugin
 		// Check the bounding box to see if the mouse is anywhere near the NPC before doing the expensive check
 		if (aabb.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY()))
 		{
-			Shape npcHull = npc.getConvexHull();	// Gets a Shape representing an outline of the npc
-			if (npcHull != null)
+			// If we don't want to do the expensive check
+			if (config.getSkipConvexHull())
 			{
-				// Determine if the cursor is inside the outline of the NPC
-				return npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
+				return true;
+			}
+			else {
+				Shape npcHull = npc.getConvexHull();    // Gets a Shape representing an outline of the npc
+				if (npcHull != null) {
+					// Determine if the cursor is inside the outline of the NPC
+					return npcHull.contains(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
+				}
 			}
 		}
 

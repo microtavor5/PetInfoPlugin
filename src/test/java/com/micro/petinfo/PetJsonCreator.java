@@ -66,6 +66,7 @@ public class PetJsonCreator
 	private static final String BUTCH = "is obtained by killing Vardorvis, at a rate of 1/3000";
 	private static final String BUTCH_EXAMINE = "A tiny headless executioner.";
 	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/2000.";
+	private static final String RETRO_VARIANT = " This is the retro variant.";
 	private static final String CALLISTO_CUB_EXAMINE = "Bear-ly smaller than his father.";
 	private static final String CAT_INFO = "is obtained by letting a kitten grow for about 2 hours.";
 	private static final String CAT_EXAMINE = "A fully grown feline.";
@@ -171,6 +172,8 @@ public class PetJsonCreator
 	private static final String PHOENIX_EXAMINE = "The essence of fire.";
 	private static final String PRINCE_BLACK_DRAGON_INFO = "is dropped by the King Black Dragon, at a rate of 1/3000.";
 	private static final String PRINCE_BLACK_DRAGON_EXAMINE = "Not quite the full royalty yet.";
+	private static final String QUETZIN_INFO = "is obtained by completing expert and master Hunters' Rumours, at a rate of 1/1000.";
+	private static final String QUETZIN_EXAMINE = "Is this bird tailing me?";
 	private static final String RIFT_GUARDIAN_INFO = "is obtained while training Runecraft.";
 	private static final String RIFT_GUARDIAN_EXAMINE = "An abyssal rift guardian.";
 	private static final String GREATISH_GUARDIAN_EXAMINE = "Not quite as great as the Great Guardian, but pretty close.";
@@ -188,6 +191,8 @@ public class PetJsonCreator
 	private static final String SKOTOS_EXAMINE = "Spawn of Darkness.";
 	private static final String SMOKE_DEVIL_INFO = "is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.";
 	private static final String SMOKE_DEVIL_EXAMINE = "*cough*";
+	private static final String SMOL_HEREDIT_INFO = "is dropped by Sol Heredit (in the  Fortis Colosseum) at a rate of 1/200, or by giving Diana's quivers to Minimus, also at a rate of 1/200.";
+	private static final String SMOL_HEREDIT_EXAMINE = "Still somewhat imposing, I suppose.";
 	private static final String SMOLCANO_INFO = "is dropped by Zalcano, at a rate of 1/2250.";
 	private static final String SMOLCANO_EXAMINE = "Not so threatening at this size.";
 	private static final String SNAKELING_INFO = "is dropped by Zulrah, at a rate of 1/4000.";
@@ -339,6 +344,8 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.CALLISTO_CUB, CALLISTO_CUB_INFO, CALLISTO_CUB_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.CALLISTO_CUB_5558, CALLISTO_CUB_INFO, CALLISTO_CUB_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.CALLISTO_CUB_11982, CALLISTO_CUB_INFO + RETRO_VARIANT, CALLISTO_CUB_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.CALLISTO_CUB_11986, CALLISTO_CUB_INFO + RETRO_VARIANT, CALLISTO_CUB_EXAMINE),
 
 			new Pet(PetGroup.OTHER, NpcID.CAT, CAT_INFO, CAT_EXAMINE),	// Black and grey checkered
 			new Pet(PetGroup.OTHER, NpcID.CAT_1619, CAT_INFO, CAT_EXAMINE),	// Black and grey checkered
@@ -580,6 +587,9 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.PRINCE_BLACK_DRAGON, PRINCE_BLACK_DRAGON_INFO, PRINCE_BLACK_DRAGON_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.PRINCE_BLACK_DRAGON_6652, PRINCE_BLACK_DRAGON_INFO, PRINCE_BLACK_DRAGON_EXAMINE),
 
+			new Pet(PetGroup.SKILLING, NpcID.QUETZIN, QUETZIN_INFO, QUETZIN_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.QUETZIN_12858, QUETZIN_INFO, QUETZIN_EXAMINE),
+
 			new Pet(PetGroup.BOSS, NpcID.PUPPADILE, OLMLET_INFO + OLMLET_CM_VARIANTS, PUPPADILE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.PUPPADILE_8201, OLMLET_INFO + OLMLET_CM_VARIANTS, PUPPADILE_EXAMINE),
 
@@ -668,6 +678,9 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.SMOKE_DEVIL_8482, SMOKE_DEVIL_INFO, SMOKE_DEVIL_EXAMINE),	// Blue
 			new Pet(PetGroup.BOSS, NpcID.SMOKE_DEVIL_8483, SMOKE_DEVIL_INFO, SMOKE_DEVIL_EXAMINE),	// Blue
 
+			new Pet(PetGroup.BOSS, NpcID.SMOL_HEREDIT, SMOL_HEREDIT_INFO, SMOL_HEREDIT_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.SMOL_HEREDIT_12857, SMOL_HEREDIT_INFO, SMOL_HEREDIT_EXAMINE),
+
 			new Pet(PetGroup.BOSS, NpcID.SMOLCANO, SMOLCANO_INFO, SMOLCANO_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.SMOLCANO_8739, SMOLCANO_INFO, SMOLCANO_EXAMINE),
 
@@ -732,6 +745,8 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.VENENATIS_SPIDERLING, VENENATIS_SPIDERLING_INFO, VENENATIS_SPIDERLING_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.VENENATIS_SPIDERLING_5557, VENENATIS_SPIDERLING_INFO, VENENATIS_SPIDERLING_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.VENENATIS_SPIDERLING_11981, VENENATIS_SPIDERLING_INFO + RETRO_VARIANT, VENENATIS_SPIDERLING_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.VENENATIS_SPIDERLING_11985, VENENATIS_SPIDERLING_INFO + RETRO_VARIANT, VENENATIS_SPIDERLING_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.VESPINA, OLMLET_INFO + OLMLET_CM_VARIANTS, VESPINA_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.VESPINA_8205, OLMLET_INFO + OLMLET_CM_VARIANTS, VESPINA_EXAMINE),

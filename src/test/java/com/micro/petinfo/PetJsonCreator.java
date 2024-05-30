@@ -172,13 +172,11 @@ public class PetJsonCreator
 	private static final String PHOENIX_EXAMINE = "The essence of fire.";
 	private static final String PRINCE_BLACK_DRAGON_INFO = "is dropped by the King Black Dragon, at a rate of 1/3000.";
 	private static final String PRINCE_BLACK_DRAGON_EXAMINE = "Not quite the full royalty yet.";
-	private static final String QUETZIN_INFO = "is obtained by completing expert and master Hunters' Rumours, at a rate of 1/1000.";
+	private static final String QUETZIN_INFO = "is obtained by opening hunters' loot sacks obtained from completing Hunters' Rumours in the Hunter Guild.";
 	private static final String QUETZIN_EXAMINE = "Is this bird tailing me?";
 	private static final String RIFT_GUARDIAN_INFO = "is obtained while training Runecraft.";
 	private static final String RIFT_GUARDIAN_EXAMINE = "An abyssal rift guardian.";
 	private static final String GREATISH_GUARDIAN_EXAMINE = "Not quite as great as the Great Guardian, but pretty close.";
-	private static final String QUETZIN_INFO = "is obtained by opening hunters' loot sacks obtained from completing Hunters' Rumours in the Hunter Guild.";
-	private static final String QUETZIN_EXAMINE = "Is this bird tailing me?";
 	private static final String ROCK_GOLEM_INFO = "is obtained while training Mining.";
 	private static final String ROCK_GOLEM_EXAMINE = "Found somewhere between a rock and a hard place.";
 	private static final String ROCKY_INFO = "is obtained while training Thieving.";
@@ -543,7 +541,7 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12014, MUPHIN_INFO + MUPHIN_RANGED, MUPHIN_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12015, MUPHIN_INFO + MUPHIN_MELEE, MUPHIN_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12016, MUPHIN_INFO + MUPHIN_SHIELDED, MUPHIN_EXAMINE),
-		
+
 			new Pet(PetGroup.BOSS, NpcID.NEXLING, NEXLING_INFO, NEXLING_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.NEXLING_11277, NEXLING_INFO, NEXLING_EXAMINE),
 
@@ -594,9 +592,6 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.PUPPADILE, OLMLET_INFO + OLMLET_CM_VARIANTS, PUPPADILE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.PUPPADILE_8201, OLMLET_INFO + OLMLET_CM_VARIANTS, PUPPADILE_EXAMINE),
-			
-			new Pet(PetGroup.SKILLING, NpcID.QUETZIN, QUETZIN_INFO, QUETZIN_EXAMINE),
-			new Pet(PetGroup.SKILLING, NpcID.QUETZIN_12858, QUETZIN_INFO, QUETZIN_EXAMINE),
 
 			new Pet(PetGroup.SKILLING, NpcID.RED, ROCKY_INFO + " " + ROCKY_RED_PANDA, RED_EXAMINE),
 			new Pet(PetGroup.SKILLING, NpcID.RED_9852, ROCKY_INFO + " " + ROCKY_RED_PANDA, RED_EXAMINE),

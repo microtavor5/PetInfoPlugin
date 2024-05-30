@@ -322,7 +322,6 @@ public class PetInfoPlugin extends Plugin
 			List<NPC> list = new ArrayList<>();
 			for (int i = 0; i < pets.size(); i++)
 			{
-				modelOutlineRenderer.drawOutline(pets.get(i), 10, Color.magenta, 2);
 				if (isClickable(pets.get(i), mouseCanvasPosition))
 				{
 					list.add(pets.get(i));

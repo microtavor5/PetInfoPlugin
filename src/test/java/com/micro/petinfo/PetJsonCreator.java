@@ -172,7 +172,7 @@ public class PetJsonCreator
 	private static final String PHOENIX_EXAMINE = "The essence of fire.";
 	private static final String PRINCE_BLACK_DRAGON_INFO = "is dropped by the King Black Dragon, at a rate of 1/3000.";
 	private static final String PRINCE_BLACK_DRAGON_EXAMINE = "Not quite the full royalty yet.";
-	private static final String QUETZIN_INFO = "is obtained by opening hunters' loot sacks obtained from completing Hunters' Rumours in the Hunter Guild.";
+	private static final String QUETZIN_INFO = "is obtained by opening hunters' loot sacks obtained from completing Hunters' Rumours in the Hunter Guild, at a rate of 1/1000.";
 	private static final String QUETZIN_EXAMINE = "Is this bird tailing me?";
 	private static final String RIFT_GUARDIAN_INFO = "is obtained while training Runecraft.";
 	private static final String RIFT_GUARDIAN_EXAMINE = "An abyssal rift guardian.";

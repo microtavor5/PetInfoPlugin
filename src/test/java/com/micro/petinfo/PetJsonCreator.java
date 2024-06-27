@@ -243,6 +243,9 @@ public class PetJsonCreator
 
 	private static final String DARK_GIANT_SQUIRREL = " This is a variant of the Giant Squirrel which is unlocked by using a Dark Acorn on a Giant Squirrel.";
 
+	private static final String FOX = " This is a variant of the Beaver, unlocked by using a Fox Whistle (a drop from the Poachers forestry event) on a Beaver.";
+	private static final String FOX_EXAMINE = "Foxy.";
+
 	private static final String GREAT_BLUE_HERON_INFO = " This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes.";
 	private static final String GREATISH_GUARDIAN = " This is a variant of the Rift Guardian, that can be obtained by using the Guardian's Eye reward from the Guardians of the Rift minigame on a Rift Guardian.";
 
@@ -251,6 +254,9 @@ public class PetJsonCreator
 	private static final String MUPHIN_MELEE = " This is the melee variant, obtained by using Charged Ice on Muphin.";
 	private static final String MUPHIN_RANGED = " This is the ranged variant, obtained by using Charged Ice on Muphin.";
 	private static final String MUPHIN_SHIELDED = " This is the shielded variant, obtained by using Charged Ice on Muphin.";
+
+	private static final String PHEASANT = " This is a variant of the Beaver, that can obtained by using a Golden Pheasant Egg (a rare drop from the Pheasant Control forestry event) on a Beaver.";
+	private static final String PHEASANT_EXAMINE = "A brightly coloured game bird.";
 
 	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.";
 	private static final String ROCKY_TANUKI = " This is the Tanuki variant of Rocky, obtained by using Poison Ivy Berries on any variant of Rocky.";
@@ -264,7 +270,7 @@ public class PetJsonCreator
 	private static final String SRARACHA_ORANGE = " This is the Orange variant unlocked using an orange egg sack.";
 	private static final String SRARACHA_BLUE = " This is the Blue variant unlocked using a blue egg sack.";
 
-	private static final String BEAVER_LOGS = " This is the Logs variant.";
+	private static final String BEAVER_LOGS = " This is the normal Logs variant.";
 	private static final String BEAVER_OAK = " This is the Oak variant.";
 	private static final String BEAVER_WILLOW = " This is the Willow variant.";
 	private static final String BEAVER_TEAK = " This is the Teak variant.";
@@ -413,6 +419,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.FLYING_VESPINA, OLMLET_INFO + OLMLET_CM_VARIANTS, VESPINA_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.FLYING_VESPINA_9514, OLMLET_INFO + OLMLET_CM_VARIANTS, VESPINA_EXAMINE),
+
+			new Pet(PetGroup.SKILLING, NpcID.FOX_12548, BEAVER_INFO + FOX, FOX_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.FOX_12550, BEAVER_INFO + FOX, FOX_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.GENERAL_GRAARDOR_JR, GENERAL_GRAARDOR_JR_INFO, GENERAL_GRAARDOR_JR_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.GENERAL_GRAARDOR_JR_6644, GENERAL_GRAARDOR_JR_INFO, GENERAL_GRAARDOR_JR_EXAMINE),
@@ -572,6 +581,10 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.OTHER, NpcID.PENANCE_PET, PENANCE_PET_INFO, PENANCE_PET_EXAMINE),
 			new Pet(PetGroup.OTHER, NpcID.PENANCE_PET_6674, PENANCE_PET_INFO, PENANCE_PET_EXAMINE),
+
+			new Pet(PetGroup.SKILLING, NpcID.PHEASANT_12547, BEAVER_INFO + PHEASANT, PHEASANT_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.PHEASANT_12549, BEAVER_INFO + PHEASANT, PHEASANT_EXAMINE),
+
 
 			new Pet(PetGroup.SKILLING, NpcID.PHOENIX, PHOENIX_INFO, PHOENIX_EXAMINE),	// Green
 			new Pet(PetGroup.SKILLING, NpcID.PHOENIX_3078, PHOENIX_INFO, PHOENIX_EXAMINE),	// Blue

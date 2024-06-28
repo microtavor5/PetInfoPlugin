@@ -11,6 +11,5 @@ main branch, and save a local fallback copy.
 
 ##### Plans
 * I want to re-write the description text to be more consistent, as well as more understandable.
-* Find a better way to deal with adding menus to the pets
 
 ###### Special thanks to the devs of the Implings and Menu Entry Swapper plugins

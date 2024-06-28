@@ -255,7 +255,7 @@ public class PetJsonCreator
 	private static final String MUPHIN_RANGED = " This is the ranged variant, obtained by using Charged Ice on Muphin.";
 	private static final String MUPHIN_SHIELDED = " This is the shielded variant, obtained by using Charged Ice on Muphin.";
 
-	private static final String PHEASANT = " This is a variant of the Beaver, that can obtained by using a Golden Pheasant Egg (a rare drop from the Pheasant Control forestry event) on a Beaver.";
+	private static final String PHEASANT = " This is a variant of the Beaver, that can obtained by using a Golden Pheasant Egg (a very rare drop from the Pheasant Control forestry event) on a Beaver.";
 	private static final String PHEASANT_EXAMINE = "A brightly coloured game bird.";
 
 	private static final String ROCKY_RED_PANDA = " This is the Red Panda variant of Rocky, obtained by using Redberries on any variant of Rocky.";

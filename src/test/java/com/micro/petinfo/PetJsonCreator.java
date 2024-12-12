@@ -108,6 +108,8 @@ public class PetJsonCreator
 	private static final String HERBI_EXAMINE = "A boar with an impressive mane of dried herbs.";
 	private static final String HERON_INFO = "is obtained while training Fishing.";
 	private static final String HERON_EXAMINE = "A long-legged bird that likes to fish.";
+	private static final String HUBERTE_INFO = "is dropped by the Hueycoatl at a base rate of 1/400, scaled according to kill contribution.";
+	private static final String HUBERTE_EXAMINE = "Looks very polite.";
 	private static final String IKKLE_HYDRA_INFO = "is dropped by Alchemical Hydra, at a rate of 1/3000.";
 	private static final String IKKLE_HYDRA_EXAMINE = "How does it not fall over?";
 	private static final String JALNIBREK_INFO = "is obtained by completing the inferno, at a rate of 1/100 (or 1/75 while on a TzKal-Zuk task).";
@@ -147,10 +149,14 @@ public class PetJsonCreator
 	private static final String MAZ_EXAMINE = "Looking after trees as if they were home.";
 	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String MIDNIGHT_EXAMINE = "The mini Guardian of Dusk!";
+	private static final String MOXI_INFO = "is dropped by Amoxliatl at a rate of 1/3000.";
+	private static final String MOXI_EXAMINE = "A tiny frost nagua.";
 	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2500.";
 	private static final String MUPHIN_EXAMINE = "An oversized grub with arms.";
 	private static final String NEXLING_INFO = "is dropped by Nex at a rate of 1/500.";
 	private static final String NEXLING_EXAMINE = "The gods don't quite fear this one.";
+	private static final String NID_INFO = "is dropped by Araxxor at a base rate of 1/1500 when harvesting Araxxor's corpse, or 1/3000 when destroying the corpse instead of harvesting.";
+	private static final String NID_EXAMINE = "Looks like a respectable gentleman.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String NOON_EXAMINE = "The mini Guardian of Dawn!";
 	private static final String OLMLET_INFO = "is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.";
@@ -254,6 +260,9 @@ public class PetJsonCreator
 	private static final String MUPHIN_MELEE = " This is the melee variant, obtained by using Charged Ice on Muphin.";
 	private static final String MUPHIN_RANGED = " This is the ranged variant, obtained by using Charged Ice on Muphin.";
 	private static final String MUPHIN_SHIELDED = " This is the shielded variant, obtained by using Charged Ice on Muphin.";
+
+	private static final String RAX_VARIANT = " This is a metamorph of Nid, which is obtained by using coagulated venom on Nid.";
+	private static final String RAX_EXAMINE = "Really hope she doesn't crawl into my mouth while I sleep.";
 
 	private static final String PHEASANT = " This is a variant of the Beaver, that can obtained by using a Golden Pheasant Egg (a very rare drop from the Pheasant Control forestry event) on a Beaver.";
 	private static final String PHEASANT_EXAMINE = "A brightly coloured game bird.";
@@ -450,6 +459,9 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.HERON, HERON_INFO, HERON_EXAMINE),	// Spotted in Game as other players
 			new Pet(PetGroup.SKILLING, NpcID.HERON_6722, HERON_INFO, HERON_EXAMINE),
 
+			new Pet(PetGroup.BOSS, NpcID.HUBERTE, HUBERTE_INFO, HUBERTE_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.HUBERTE_14045, HUBERTE_INFO, HUBERTE_EXAMINE),
+
 			new Pet(PetGroup.BOSS, NpcID.IKKLE_HYDRA, IKKLE_HYDRA_INFO, IKKLE_HYDRA_EXAMINE),	// Green Variant, other player
 			new Pet(PetGroup.BOSS, NpcID.IKKLE_HYDRA_8493, IKKLE_HYDRA_INFO, IKKLE_HYDRA_EXAMINE),	// Blue Variant, other player
 			new Pet(PetGroup.BOSS, NpcID.IKKLE_HYDRA_8494, IKKLE_HYDRA_INFO, IKKLE_HYDRA_EXAMINE),	// Red Variant, other player
@@ -544,6 +556,9 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT, MIDNIGHT_INFO, MIDNIGHT_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.MIDNIGHT_7893, MIDNIGHT_INFO, MIDNIGHT_EXAMINE),	// Seen in game other player, morphed to NOON_7892
 
+			new Pet(PetGroup.BOSS, NpcID.MOXI, MOXI_INFO, MOXI_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.MOXI_14046, MOXI_INFO, MOXI_EXAMINE),
+
 			new Pet(PetGroup.BOSS, NpcID.MUPHIN, MUPHIN_INFO + MUPHIN_RANGED, MUPHIN_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12006, MUPHIN_INFO + MUPHIN_MELEE, MUPHIN_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.MUPHIN_12007, MUPHIN_INFO + MUPHIN_SHIELDED, MUPHIN_EXAMINE),
@@ -553,6 +568,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.NEXLING, NEXLING_INFO, NEXLING_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.NEXLING_11277, NEXLING_INFO, NEXLING_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.NID, NID_INFO, NID_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.NID_13683, NID_INFO, NID_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.NOON, NOON_INFO, NOON_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.NOON_7892, NOON_INFO, NOON_EXAMINE),	// Seen in game as other players, morphed to MIDNIGHT_7893
@@ -605,6 +623,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.PUPPADILE, OLMLET_INFO + OLMLET_CM_VARIANTS, PUPPADILE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.PUPPADILE_8201, OLMLET_INFO + OLMLET_CM_VARIANTS, PUPPADILE_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.RAX, NID_INFO + RAX_VARIANT,  RAX_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.RAX_13684, NID_INFO + RAX_VARIANT,  RAX_EXAMINE),
 
 			new Pet(PetGroup.SKILLING, NpcID.RED, ROCKY_INFO + " " + ROCKY_RED_PANDA, RED_EXAMINE),
 			new Pet(PetGroup.SKILLING, NpcID.RED_9852, ROCKY_INFO + " " + ROCKY_RED_PANDA, RED_EXAMINE),

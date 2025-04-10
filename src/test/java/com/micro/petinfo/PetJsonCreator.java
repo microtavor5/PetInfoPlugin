@@ -155,7 +155,7 @@ public class PetJsonCreator
 	private static final String MUPHIN_EXAMINE = "An oversized grub with arms.";
 	private static final String NEXLING_INFO = "is dropped by Nex at a rate of 1/500.";
 	private static final String NEXLING_EXAMINE = "The gods don't quite fear this one.";
-	private static final String NID_INFO = "is dropped by Araxxor at a base rate of 1/1500 when harvesting Araxxor's corpse, or 1/3000 when destroying the corpse instead of harvesting.";
+	private static final String NID_INFO = "is dropped by Araxxor at a base rate of 1/3000 when harvesting Araxxor's corpse, or 1/1500 when destroying the corpse instead of harvesting.";
 	private static final String NID_EXAMINE = "Looks like a respectable gentleman.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String NOON_EXAMINE = "The mini Guardian of Dawn!";

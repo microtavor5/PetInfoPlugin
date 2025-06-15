@@ -63,6 +63,9 @@ public class PetJsonCreator
 	private static final String BEAVER_EXAMINE = "Looks like it's gotten through a lot of wood.";
 	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1000.";
 	private static final String BLOODHOUND_EXAMINE = "Tracking down clues with logic and a pipe.";
+	private static final String BRAN_INFO = "is dropped by the Royal Titans, Branda the Fire Queen and Eldric the Ice King, at rates from 1/1500 to 1/3000.";
+	private static final String BRAN_EXAMINE = "Might have a short temper.";
+	private static final String RIC_EXAMINE = "Looks like a chill guy.";
 	private static final String BUTCH = "is obtained by killing Vardorvis, at a rate of 1/3000";
 	private static final String BUTCH_EXAMINE = "A tiny headless executioner.";
 	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/2000.";
@@ -98,6 +101,7 @@ public class PetJsonCreator
 	private static final String GENERAL_GRAARDOR_JR_EXAMINE = "Totally unintelligible.";
 	private static final String GIANT_SQUIRREL_INFO = "is obtained by training Agility.";
 	private static final String GIANT_SQUIRREL_EXAMINE = "A giant squirrel with beautiful markings.";
+	private static final String BONE_SQUIRREL_EXAMINE = "A giant squirrel with a skeletal aesthetic.";
 	private static final String HELLCAT_INFO = "is obtained by having a pet Cat hunt Hell-Rats.";
 	private static final String HELLCAT_EXAMINE = "A hellish pet cat!";
 	private static final String HELLKITTEN_INFO = "is obtained by having a pet Kitten hunt Hell-Rats.";
@@ -236,6 +240,8 @@ public class PetJsonCreator
 	private static final String WILY_HELLCAT_EXAMINE = "Wild and hellish.";
 	private static final String WISP = "is obtained by killing The Whisperer, at a rate of 1/2000";
 	private static final String WISP_EXAMINE = "Born in the shadows.";
+	private static final String YAMI_INFO = "is obtained by killing Yama, at a rate of 1/2500, or 1/100 when fought with a contract.";
+	private static final String YAMI_EXAMINE = "Small, but somehow still looks down on me.";
 	private static final String YOUNGLLEF_INFO = "is obtained by completing The Gauntlet, at a rate of 1/2000 (or 1/800 for The Corrupted Gauntlet).";
 	private static final String YOUNGLLEF_EXAMINE = "Looks like a bit of a nightmare.";
 	private static final String ZILYANA_JR_INFO = "is dropped by Commander Zilyana, at a rate of 1/5000.";
@@ -247,7 +253,13 @@ public class PetJsonCreator
 
 	private static final String BABY_MOLE_RAT = " This is a variant of the Baby Mole, obtained by using a Mole Claw on the Baby Mole.";
 
+	private static final String BRAN_VARIANT = " This is a miniature of Branda the Fire Queen, and can be turned into the Ric pet.";
+
+	private static final String RIC_VARIANT = " This is a miniature of Eldric the Ice King, and can be turned into the Bran pet.";
+
 	private static final String DARK_GIANT_SQUIRREL = " This is a variant of the Giant Squirrel which is unlocked by using a Dark Acorn on a Giant Squirrel.";
+
+	private static final String BONE_SQUIRREL = " This is a variant of the Giant Squirrel which is unlocked by using a Calcified Acorn on a Giant Squirrel.";
 
 	private static final String FOX = " This is a variant of the Beaver, unlocked by using a Fox Whistle (a drop from the Poachers forestry event) on a Beaver.";
 	private static final String FOX_EXAMINE = "Foxy.";
@@ -328,11 +340,16 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_HUNTER_BLACK, BABY_CHINCHOMPA_INFO, BABY_CHINCHOMPA_EXAMINE),	// Black Variant
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_HUNTER_GOLD, BABY_CHINCHOMPA_INFO + " " + BABY_CHINCHOMPA_GOLD, BABY_CHINCHOMPA_EXAMINE),	// Gold Variant
 
-			// ToDo: update variant text
 			new Pet(PetGroup.BOSS, NpcID.POH_MOLE_PET, BABY_MOLE_INFO, BABY_MOLE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.MOLE_PET, BABY_MOLE_INFO, BABY_MOLE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.POH_MOLE_PET_NAKED, BABY_MOLE_INFO + BABY_MOLE_RAT, BABY_MOLE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.MOLE_PET_NAKED, BABY_MOLE_INFO + BABY_MOLE_RAT, BABY_MOLE_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.POH_RTBRANDA_PET, BRAN_INFO + BRAN_VARIANT, BRAN_VARIANT),
+			new Pet(PetGroup.BOSS, NpcID.RTBRANDA_PET, BRAN_INFO + BRAN_VARIANT, BRAN_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.POH_RTELDRIC_PET, BRAN_INFO + RIC_VARIANT, RIC_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.RTELDRIC_PET, BRAN_INFO + RIC_VARIANT, RIC_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.POH_DUKE_SUCELLUS_PET, BARON, BARON_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.DUKE_SUCELLUS_PET, BARON, BARON_EXAMINE),
@@ -429,10 +446,12 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.POH_BANDOS_PET, GENERAL_GRAARDOR_JR_INFO, GENERAL_GRAARDOR_JR_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.BANDOS_PET, GENERAL_GRAARDOR_JR_INFO, GENERAL_GRAARDOR_JR_EXAMINE),
 
-			// ToDo: Add bone squirrel
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_AGILITY, GIANT_SQUIRREL_INFO, GIANT_SQUIRREL_EXAMINE),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_AGILITY, GIANT_SQUIRREL_INFO, GIANT_SQUIRREL_EXAMINE),	// Seen in game as other players
 			new Pet(PetGroup.SKILLING, NpcID.HALLOWED_ADVENTURER_FLOOR3_TREASURE_PET_VISIBLE, GIANT_SQUIRREL_INFO, GIANT_SQUIRREL_EXAMINE), // There's usually an even number, so I'm not sure what's up
+
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_AGILITY_BONE, GIANT_SQUIRREL_INFO + BONE_SQUIRREL, BONE_SQUIRREL_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_AGILITY_BONE, GIANT_SQUIRREL_INFO + BONE_SQUIRREL, BONE_SQUIRREL_EXAMINE),
 
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_FISH_TEMPOROSS, HERON_INFO + GREAT_BLUE_HERON_INFO, HERON_EXAMINE),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_FISH_TEMPOROSS, HERON_INFO + GREAT_BLUE_HERON_INFO, HERON_EXAMINE),
@@ -800,6 +819,8 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, 12153, WISP, WISP_EXAMINE),
 			new Pet(PetGroup.BOSS, 12157, WISP, WISP_EXAMINE),
+
+			new Pet(PetGroup.BOSS, 14204, YAMI_INFO, YAMI_EXAMINE),
 
 			new Pet(PetGroup.BOSS, 8729, YOUNGLLEF_INFO, YOUNGLLEF_EXAMINE),
 			new Pet(PetGroup.BOSS, 8737, YOUNGLLEF_INFO, YOUNGLLEF_EXAMINE),

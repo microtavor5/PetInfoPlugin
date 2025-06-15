@@ -53,14 +53,16 @@ public class PetDataFetcher
 		Request request = new Request.Builder().url(URL).build();
 		Response response = okHttpClient.newCall(request).execute();
 
-		String body = response.body().string();
+		ResponseBody responseBody = response.body();
 
-		if(!response.isSuccessful() || body == null)
+		if(!response.isSuccessful() || responseBody == null)
 		{
 			String errText = "An error occurred fetching remote json from " + URL + " HTTP response: " + response.code();
 			response.close();
 			throw new IOException(errText);
 		}
+
+		String body = responseBody.string();
 
 		int responseCode = getRelevantResponseCode(response);
 

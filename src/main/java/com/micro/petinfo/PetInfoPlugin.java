@@ -44,6 +44,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.Menu;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.*;
@@ -208,26 +209,26 @@ public class PetInfoPlugin extends Plugin
 		// If the player did not click on an INFO menu entry (hopefully should lever happen with new api)
 		if (event.getType() != MenuAction.RUNELITE)
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
 			return;
 		}
 
 		if (config.menu() == PetsConfig.MenuMode.INFO && !(event.getOption().startsWith("Info")))
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
 			return;
 		}
 
 		if (config.menu() == PetsConfig.MenuMode.EXAMINE && !(event.getOption().startsWith("Examine")))
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
 			return;
 		}
 
 		if (config.menu() == PetsConfig.MenuMode.BOTH &&
 				!(event.getOption().startsWith("Info")) && !(event.getOption().startsWith("Examine")))
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?", event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
 			return;
 		}
 
@@ -319,9 +320,15 @@ public class PetInfoPlugin extends Plugin
 		if (!mouseIsBlocked())
 		{
 			List<NPC> list = new ArrayList<>();
+
+			WorldView wv = client.getTopLevelWorldView();
+			if (wv == null) {
+				return list;
+			}
+
 			for (NPC pet : pets)
 			{
-				if (isClickable(pet, mouseCanvasPosition))
+				if (isClickable(pet, mouseCanvasPosition, wv))
 				{
 					list.add(pet);
 				}
@@ -340,7 +347,8 @@ public class PetInfoPlugin extends Plugin
 	private boolean mouseIsBlocked()
 	{
 		List<MenuEntry> list = new ArrayList<>();
-		for (MenuEntry menuEntry : client.getMenuEntries())
+		Menu menu = client.getMenu();
+		for (MenuEntry menuEntry : menu.getMenuEntries())
 		{
 			if (menuEntry.getType() == MenuAction.WALK)
 			{
@@ -350,7 +358,7 @@ public class PetInfoPlugin extends Plugin
 		return list.isEmpty();
 	}
 
-	private boolean isClickable(NPC npc, Point mouseCanvasPosition)
+	private boolean isClickable(NPC npc, Point mouseCanvasPosition, WorldView wv)
 	{
 		// First calculate the NPC's local X Y Z coordinates
 		NPCComposition transformedComposition = npc.getTransformedComposition();
@@ -366,11 +374,12 @@ public class PetInfoPlugin extends Plugin
 			return false;
 		}
 
+
 		// NPCs z position are calculated based on the tile height of the northeastern tile
 		final int northEastX = lp.getX() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
 		final int northEastY = lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
-		final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY);
-		int height = Perspective.getTileHeight(client, northEastLp, client.getPlane());
+		final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY, wv);
+		int height = Perspective.getTileHeight(client, northEastLp, wv.getPlane());
         SimplePolygon aabb = RLUtils.calculateAABB(client, npc.getModel(), npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
 
 
@@ -433,7 +442,9 @@ public class PetInfoPlugin extends Plugin
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
 		}
 
-		client.createMenuEntry(0)
+		Menu menu = client.getMenu();
+
+		menu.createMenuEntry(0)
 				.setOption(option)
 				.setTarget(colorPetName(pet))
 				.setType(MenuAction.RUNELITE)

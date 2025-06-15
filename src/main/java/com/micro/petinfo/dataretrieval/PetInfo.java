@@ -12,7 +12,7 @@ public class PetInfo
 	protected static final String localDir = RuneLite.RUNELITE_DIR + "/pet-info";
 	protected static final String localJson = localDir + "/pets.json";
 
-	private Map<Integer, Pet> PETS;
+	private final Map<Integer, Pet> PETS;
 
 	public PetInfo(PetDataFetcher petDataFetcher, boolean useRemote) throws IOException {
 		this.PETS = petDataFetcher.getMap(useRemote);

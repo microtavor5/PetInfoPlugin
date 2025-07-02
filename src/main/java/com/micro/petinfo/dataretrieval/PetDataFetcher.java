@@ -7,6 +7,7 @@ import okhttp3.*;
 
 import java.io.*;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 public class PetDataFetcher
@@ -28,7 +29,7 @@ public class PetDataFetcher
 		{
 			try
 			{
-				reader = getRemoteJson();
+				reader = getRemoteJson().get();
 			}
 			catch (Exception e)
 			{
@@ -48,33 +49,53 @@ public class PetDataFetcher
 	}
 
 	/* All network code goes in here. Only use hard coded URL's to approved domains */
-	private Reader getRemoteJson() throws IOException
+	private CompletableFuture<StringReader> getRemoteJson()
 	{
 		Request request = new Request.Builder().url(URL).build();
-		Response response = okHttpClient.newCall(request).execute();
 
-		String body = response.body().string();
+		CompletableFuture<StringReader> future = new CompletableFuture<>();
+		okHttpClient.newCall(request).enqueue(new Callback() {
+			@Override
+			public void onFailure(Call call, IOException e) {
+				future.completeExceptionally(e);
+			}
 
-		if(!response.isSuccessful() || body == null)
-		{
-			String errText = "An error occurred fetching remote json from " + URL + " HTTP response: " + response.code();
-			response.close();
-			throw new IOException(errText);
-		}
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				try
+				{
+					ResponseBody responseBody = response.body();
 
-		int responseCode = getRelevantResponseCode(response);
+					if (!response.isSuccessful() || responseBody == null)
+					{
+						String errText = "An error occurred fetching remote json from " + URL + " HTTP response: " + response.code();
+						response.close();
+						throw new IOException(errText);
+					}
 
-		try
-		{
-			makeLocalBackup(body, responseCode == 304);
-		}
-		catch (IOException e)
-		{
-			log.error("[PetInfo]\tA local backup was needed but could not be created.");
-		}
+					String body = responseBody.string();
 
-		response.close();
-		return new StringReader(body);
+					int responseCode = getRelevantResponseCode(response);
+
+					try
+					{
+						makeLocalBackup(body, responseCode == 304);
+					} catch (IOException e) {
+						log.error("[PetInfo]\tA local backup was needed but could not be created.");
+					}
+
+					response.close();
+					future.complete(new StringReader(body));
+				}
+				catch (Exception e)
+				{
+					future.completeExceptionally(e);
+				}
+			}
+		});
+
+		return future;
 	}
 
 	private int getRelevantResponseCode(Response response)

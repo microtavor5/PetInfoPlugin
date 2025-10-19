@@ -91,6 +91,8 @@ public class PetJsonCreator
 	private static final String DAGANNOTH_SUPREME_JR_EXAMINE = "Wouldn't want that sleeping at the end of my bed.";
 	private static final String DARK_CORE_INFO = "is dropped by the Corporeal Beast, at a rate of 1/5000.";
 	private static final String DARK_CORE_EXAMINE = "Isn't so annoying when in pet form.";
+	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only staring on level 6 of a delve, at varying rates from 1/1000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
+	private static final String DOM_EXAMINE = "Doom on a small scale.";
 	private static final String EEK_INFO = "was obtained during the 2018 Halloween event.";
 	private static final String EEK_EXAMINE = "She's a keen spinner of webs.";
 	private static final String FISHBOWL_INFO = "can be caught in Harry's Fishing Shop";
@@ -426,6 +428,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.POH_COREPET, DARK_CORE_INFO, DARK_CORE_EXAMINE),    // Not sure this is the pet dark core, but it looks right
 			new Pet(PetGroup.BOSS, NpcID.CORE_PET, DARK_CORE_INFO, DARK_CORE_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.POH_DOM_PET, DOM_INFO, DOM_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.DOM_PET, DOM_INFO, DOM_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.POH_SKILLPET_AGILITY_DARK, GIANT_SQUIRREL_INFO + DARK_GIANT_SQUIRREL, GIANT_SQUIRREL_EXAMINE),	// Thank you to Gamma91/Bram91 on gitHub for the info
 			new Pet(PetGroup.BOSS, NpcID.SKILLPET_AGILITY_DARK, GIANT_SQUIRREL_INFO + DARK_GIANT_SQUIRREL, GIANT_SQUIRREL_EXAMINE),

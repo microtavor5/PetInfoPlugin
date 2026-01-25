@@ -370,7 +370,8 @@ public class PetInfoPlugin extends Plugin
 
 
 		LocalPoint lp = npc.getLocalLocation();
-		if (lp == null){
+		if (lp == null)
+		{
 			return false;
 		}
 
@@ -380,7 +381,20 @@ public class PetInfoPlugin extends Plugin
 		final int northEastY = lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
 		final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY, wv);
 		int height = Perspective.getTileHeight(client, northEastLp, wv.getPlane());
-        SimplePolygon aabb = RLUtils.calculateAABB(client, npc.getModel(), npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
+
+		Model npc_model = npc.getModel();
+
+		if (npc_model == null)
+		{
+			return false;
+		}
+
+        SimplePolygon aabb = RLUtils.calculateAABB(client, npc_model, npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
+
+		if (aabb == null)
+		{
+			return false;
+		}
 
 
 		// Check the bounding box to see if the mouse is anywhere near the NPC before doing the expensive check

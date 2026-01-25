@@ -52,7 +52,7 @@ public interface PetsConfig extends Config
 		BOTH
 	}
 
-	enum PetMode
+	enum PetDisplayMode
 	{
 		OFF,
 		HIGHLIGHT,
@@ -146,9 +146,9 @@ public interface PetsConfig extends Config
 			description = "Toggles highlighting for bossing pets",
 			section = highlightSection
 	)
-	default PetMode showBoss()
+	default PetDisplayMode showBoss()
 	{
-		return PetMode.HIGHLIGHT;
+		return PetDisplayMode.HIGHLIGHT;
 	}
 
 	@ConfigItem(
@@ -170,9 +170,9 @@ public interface PetsConfig extends Config
 			description = "Toggles highlighting for skilling pets",
 			section = highlightSection
 	)
-	default PetMode showSkilling()
+	default PetDisplayMode showSkilling()
 	{
-		return PetMode.HIGHLIGHT;
+		return PetDisplayMode.HIGHLIGHT;
 	}
 
 	@ConfigItem(
@@ -194,9 +194,9 @@ public interface PetsConfig extends Config
 			description = "Toggles highlighting for clockwork toys",
 			section = highlightSection
 	)
-	default PetMode showToy()
+	default PetDisplayMode showToy()
 	{
-		return PetMode.OFF;
+		return PetDisplayMode.OFF;
 	}
 
 	@ConfigItem(
@@ -218,9 +218,9 @@ public interface PetsConfig extends Config
 			description = "Toggles highlighting for other pets (like cats)",
 			section = highlightSection
 	)
-	default PetMode showOther()
+	default PetDisplayMode showOther()
 	{
-		return PetMode.NAME_ONLY;
+		return PetDisplayMode.NAME_ONLY;
 	}
 
 	@ConfigItem(

@@ -131,6 +131,9 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Shutdown plugin.
+	 */
 	@Override
 	protected void shutDown()
 	{
@@ -138,11 +141,14 @@ public class PetInfoPlugin extends Plugin
 		overlayManager.remove(overlay);
 	}
 
+	/**
+	 * Detect when a new pet NPC has spawned, and add it to {@link #pets}
+	 */
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		Pet pet = petInfo.findPet(npc.getId());
+		Pet pet = petInfo.getPetById(npc.getId());
 
 		if (pet != null)
 		{
@@ -150,11 +156,14 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Detect when an NPC has changed composition into a pet, and add it to {@link #pets}
+	 */
 	@Subscribe
-	public void onNpcChanged(NpcChanged npcCompositionChanged)	// Do pet's compositions ever change? If they do we need to handle if they ever stop being pets,
-	{															// if they don't we don't need this at all. I think this may have cause the highlight with no pet issue.
+	public void onNpcChanged(NpcChanged npcCompositionChanged)
+	{
 		NPC npc = npcCompositionChanged.getNpc();
-		Pet pet = petInfo.findPet(npc.getId());
+		Pet pet = petInfo.getPetById(npc.getId());
 
 		if (pet != null)
 		{
@@ -165,6 +174,10 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Clear the pets list when logging out or hopping worlds.
+	 * @param event
+	 */
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -174,6 +187,10 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Remove pet NPCs from {@link #pets} when they de-spawn.
+	 * @param npcDespawned
+	 */
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
@@ -209,26 +226,26 @@ public class PetInfoPlugin extends Plugin
 		// If the player did not click on an INFO menu entry (hopefully should lever happen with new api)
 		if (event.getType() != MenuAction.RUNELITE)
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
 			return;
 		}
 
 		if (config.menu() == PetsConfig.MenuMode.INFO && !(event.getOption().startsWith("Info")))
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
 			return;
 		}
 
 		if (config.menu() == PetsConfig.MenuMode.EXAMINE && !(event.getOption().startsWith("Examine")))
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
 			return;
 		}
 
 		if (config.menu() == PetsConfig.MenuMode.BOTH &&
 				!(event.getOption().startsWith("Info")) && !(event.getOption().startsWith("Examine")))
 		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry?" + event);
+			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
 			return;
 		}
 
@@ -257,14 +274,14 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	/**
-	 * Finds the {@link com.micro.petinfo.PetsConfig.PetMode} of a given NPC.
+	 * Finds the {@link PetsConfig.PetDisplayMode} of a given NPC.
 	 */
-	PetsConfig.PetMode showNpc(NPC npc)
+	PetsConfig.PetDisplayMode getPetDisplayMode(NPC npc)
 	{
-		Pet pet = petInfo.findPet(npc.getId());
+		Pet pet = petInfo.getPetById(npc.getId());
 		if (pet == null)
 		{
-			return PetsConfig.PetMode.OFF;
+			return PetsConfig.PetDisplayMode.OFF;
 		}
 
 		switch (pet.petGroup)
@@ -278,7 +295,7 @@ public class PetInfoPlugin extends Plugin
 			case OTHER:
 				return config.showOther();
 			default:
-				return PetsConfig.PetMode.OFF;
+				return PetsConfig.PetDisplayMode.OFF;
 		}
 	}
 
@@ -289,7 +306,7 @@ public class PetInfoPlugin extends Plugin
 	 */
 	Color npcToColor(NPC npc)
 	{
-		Pet pet = petInfo.findPet(npc.getId());
+		Pet pet = petInfo.getPetById(npc.getId());
 		if (pet == null)
 		{
 			return null;
@@ -317,23 +334,20 @@ public class PetInfoPlugin extends Plugin
 	private List<NPC> getPetsUnderCursor()
 	{
 		Point mouseCanvasPosition = client.getMouseCanvasPosition();
-		if (!mouseIsBlocked())
+		WorldView wv = client.getTopLevelWorldView();
+		if (!mouseIsBlocked() && mouseCanvasPosition != null && wv != null)
 		{
-			List<NPC> list = new ArrayList<>();
+			List<NPC> pets_under_cursor = new ArrayList<>();
 
-			WorldView wv = client.getTopLevelWorldView();
-			if (wv == null) {
-				return list;
-			}
-
+			// Add "clickable" pets to the result array
 			for (NPC pet : pets)
 			{
 				if (isClickable(pet, mouseCanvasPosition, wv))
 				{
-					list.add(pet);
+					pets_under_cursor.add(pet);
 				}
 			}
-			return list;
+			return pets_under_cursor;
 		}
 
 		return Collections.emptyList();
@@ -346,18 +360,25 @@ public class PetInfoPlugin extends Plugin
 	 */
 	private boolean mouseIsBlocked()
 	{
-		List<MenuEntry> list = new ArrayList<>();
 		Menu menu = client.getMenu();
 		for (MenuEntry menuEntry : menu.getMenuEntries())
 		{
 			if (menuEntry.getType() == MenuAction.WALK)
 			{
-				list.add(menuEntry);
+				return false;
 			}
 		}
-		return list.isEmpty();
+		return true;
 	}
 
+	/**
+	 * Determine if an NPC can be clicked by the user, first by using Axis Aligned Bounding Boxes to eliminate NPCs far
+	 * away from the cursor, and then (if the config allows) using the NPC's convex hull for more precise checks.
+	 * @param npc The NPC to check under cursor
+	 * @param mouseCanvasPosition The location of the cursor
+	 * @param wv The world View
+	 * @return If the passed NPC is under the cursor
+	 */
 	private boolean isClickable(NPC npc, Point mouseCanvasPosition, WorldView wv)
 	{
 		// First calculate the NPC's local X Y Z coordinates
@@ -368,7 +389,6 @@ public class PetInfoPlugin extends Plugin
 		}
 
 		int size = transformedComposition.getSize();
-
 
 		LocalPoint lp = npc.getLocalLocation();
 		if (lp == null)
@@ -394,6 +414,7 @@ public class PetInfoPlugin extends Plugin
 			return false;
 		}
 
+		// Get an Axis Aligned Bounding Box for fast elimination of pets not near cursor
         SimplePolygon aabb = RLUtils.calculateAABB(client, npc_model, npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
 		if (aabb == null)
 		{
@@ -431,6 +452,7 @@ public class PetInfoPlugin extends Plugin
 		{
 			return;
 		}
+
 		List<NPC> petsUnderCursor = getPetsUnderCursor();
 		for (NPC pet : petsUnderCursor)
 		{
@@ -454,13 +476,20 @@ public class PetInfoPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Add a menu entry regarding a specific pet
+	 * @param pet The pet to add the menu entry about
+	 * @param option The specific option to add
+	 */
 	private void addPetMenu(NPC pet, String option)
 	{
+		// Determine if we should add the pet owner's name
 		if(pet.getInteracting() != null && config.showPetOwner())
 		{
 			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
 		}
 
+		// Add the menu option
 		Menu menu = client.getMenu();
 
 		menu.createMenuEntry(0)
@@ -471,6 +500,11 @@ public class PetInfoPlugin extends Plugin
 				.onClick(this::onMenuOptionClicked);
 	}
 
+	/**
+	 * Gets the name of an actor, and colors it to match the option specified in the config.
+	 * @param owner The actor representing the owner of a pet.
+	 * @return The
+	 */
 	private String colorOwnerName(Actor owner)
 	{
 		Color ownerColor;
@@ -507,6 +541,11 @@ public class PetInfoPlugin extends Plugin
 		return colorChatString(ownerColor, owner.getName());
 	}
 
+	/**
+	 * Get pet's name and color it according to the config.
+	 * @param pet The pet to get the name of
+	 * @return The pet's name, colored
+	 */
 	private String colorPetName(NPC pet)
 	{
 		String petName = pet.getName();
@@ -525,16 +564,29 @@ public class PetInfoPlugin extends Plugin
 
 	}
 
-	private String colorChatString(Color color, String name)
+	/**
+	 * Build a colored chat string
+	 * @param color The color to apply
+	 * @param message The message to color
+	 * @return The colored message as a string for RuneScape chat
+	 */
+	private String colorChatString(Color color, String message)
 	{
-		ChatMessageBuilder petNameColored = new ChatMessageBuilder().append(color, name);
-		return petNameColored.build();
+		ChatMessageBuilder coloredMessage = new ChatMessageBuilder().append(color, message);
+		return coloredMessage.build();
 	}
 
+	/**
+	 * Match the difference in combat level to the color that other player's name should be
+	 * @param localPlayerLevel The combat level of the local player
+	 * @param otherPlayerLevel The combat level of the other player to compare against
+	 * @return The color representing the difference in combat level
+	 */
 	private Color getNameColorFromCombatLevels(int localPlayerLevel, int otherPlayerLevel)
 	{
 		int delta = localPlayerLevel - otherPlayerLevel;
 
+		// Other player is stronger
 		if (delta < -9) {
 			return new Color(0xff0000);
 		}
@@ -547,8 +599,10 @@ public class PetInfoPlugin extends Plugin
 		if (delta < 0) {
 			return new Color(0xffb000);
 		}
+
+		// Other player is weaker
 		if (delta > 9) {
-			return new Color(0xff00);
+			return new Color(0x00ff00);
 		}
 		if (delta > 6) {
 			return new Color(0x40ff00);
@@ -559,6 +613,8 @@ public class PetInfoPlugin extends Plugin
 		if (delta > 0) {
 			return new Color(0xc0ff00);
 		}
+
+		// Default case (delta == 0)
 		return new Color(0xffff00);
 	}
 

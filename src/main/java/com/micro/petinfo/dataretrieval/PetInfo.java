@@ -21,7 +21,7 @@ public class PetInfo
 	/**
 	 * Returns the Pet enum if the passed NPCid is a pet, null if not
 	 */
-	public Pet findPet(int npcId)
+	public Pet getPetById(int npcId)
 	{
 		return PETS.get(npcId);
 	}

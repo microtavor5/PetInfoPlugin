@@ -95,10 +95,10 @@ public class PetsOverlay extends Overlay
 
 		Color color = plugin.npcToColor(pet);
 		// Determine if we are drawing the box and the name or just the name
-		if (plugin.showNpc(pet) == PetsConfig.PetMode.HIGHLIGHT && color != null)
+		if (plugin.getPetDisplayMode(pet) == PetsConfig.PetDisplayMode.HIGHLIGHT && color != null)
 		{
 			drawHighlightedPet(graphics, pet, petName, color);
-		} else if (plugin.showNpc(pet) == PetsConfig.PetMode.NAME_ONLY && color != null)
+		} else if (plugin.getPetDisplayMode(pet) == PetsConfig.PetDisplayMode.NAME_ONLY && color != null)
 		{
 			drawOnlyNamePet(graphics, pet, petName, color);
 		}

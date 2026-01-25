@@ -366,6 +366,7 @@ public class PetInfoPlugin extends Plugin
 		{
 			return false;
 		}
+
 		int size = transformedComposition.getSize();
 
 
@@ -380,17 +381,20 @@ public class PetInfoPlugin extends Plugin
 		final int northEastX = lp.getX() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
 		final int northEastY = lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
 		final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY, wv);
+		if (northEastLp == null)
+		{
+			return false;
+		}
+
 		int height = Perspective.getTileHeight(client, northEastLp, wv.getPlane());
 
 		Model npc_model = npc.getModel();
-
 		if (npc_model == null)
 		{
 			return false;
 		}
 
         SimplePolygon aabb = RLUtils.calculateAABB(client, npc_model, npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
-
 		if (aabb == null)
 		{
 			return false;
@@ -405,6 +409,7 @@ public class PetInfoPlugin extends Plugin
 			{
 				return true;
 			}
+			// We want to do the more precise (but expensive) check
 			else {
 				Shape npcHull = npc.getConvexHull();    // Gets a Shape representing an outline of the npc
 				if (npcHull != null) {

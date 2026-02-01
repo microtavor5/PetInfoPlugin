@@ -214,7 +214,7 @@ public interface PetsConfig extends Config
 	@ConfigItem(
 			position = 14,
 			keyName = "showOther",
-			name = "Show Other Pets",
+			name = "Highlight Other Pets",
 			description = "Toggles highlighting for other pets (like cats)",
 			section = highlightSection
 	)

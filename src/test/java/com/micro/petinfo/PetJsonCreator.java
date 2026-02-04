@@ -211,6 +211,8 @@ public class PetJsonCreator
 	private static final String SNAKELING_EXAMINE = "Spawn of Zulrah.";
 	private static final String SRARACHA_INFO = "is dropped by Sarachnis, at a rate of 1/3000.";
 	private static final String SRARACHA_EXAMINE = "Good thing there's no such thing as Sarachnophobia.";
+	private static final String SOUP_INFO = "is obtained while training Sailing";
+	private static final String SOUP_EXAMINE = "A connoisseur of all liquid based foods.";
 	private static final String TANGLEROOT_INFO = "is obtained while training Farming.";
 	private static final String TANGLEROOT_EXAMINE = "Don't be hasty.";
 	private static final String TINY_TEMPOR_INFO = "is obtained from the Tempoross minigame, at a rate of 1/8000.";
@@ -745,6 +747,9 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.SARACHNISPET_ORANGE, SRARACHA_INFO + SRARACHA_ORANGE, SRARACHA_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.POH_MENAGERIE_SARACHNISPET_BLUE, SRARACHA_INFO + SRARACHA_BLUE, SRARACHA_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.SARACHNISPET_BLUE, SRARACHA_INFO + SRARACHA_BLUE, SRARACHA_EXAMINE),
+
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_SAILING, SOUP_INFO, SOUP_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_SAILING, SOUP_INFO, SOUP_EXAMINE),
 
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_FARMING, TANGLEROOT_INFO, TANGLEROOT_EXAMINE),	// Acorn
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_FARMING, TANGLEROOT_INFO + " This is the Acorn variant.", TANGLEROOT_EXAMINE),	// Acorn

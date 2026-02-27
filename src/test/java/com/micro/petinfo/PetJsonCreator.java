@@ -61,6 +61,8 @@ public class PetJsonCreator
 	private static final String BARON_EXAMINE = "Better keep an eye on this one.";
 	private static final String BEAVER_INFO = "is obtained while training Woodcutting.";
 	private static final String BEAVER_EXAMINE = "Looks like it's gotten through a lot of wood.";
+	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/100, or Demonic Brutus at a rate of ~1/500";
+	private static final String BEEF_EXAMINE = "Commonly referred to as Sir Loin.";
 	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1000.";
 	private static final String BLOODHOUND_EXAMINE = "Tracking down clues with logic and a pipe.";
 	private static final String BRAN_INFO = "is dropped by the Royal Titans, Branda the Fire Queen and Eldric the Ice King, at rates from 1/1500 to 1/3000.";
@@ -379,8 +381,11 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_REDWOOD, BEAVER_INFO + BEAVER_REDWOOD, BEAVER_EXAMINE),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_REDWOOD, BEAVER_INFO + BEAVER_REDWOOD, BEAVER_EXAMINE),
 
+			new Pet(PetGroup.OTHER, NpcID.COWBOSS_PET, BEEF_INFO, BEEF_EXAMINE),
+			new Pet(PetGroup.OTHER, NpcID.POH_COWBOSS_PET, BEEF_INFO, BEEF_EXAMINE),
+
 			new Pet(PetGroup.OTHER, NpcID.POH_BLOODHOUNDPET, BLOODHOUND_INFO, BLOODHOUND_EXAMINE),
-			new Pet(PetGroup.OTHER, NpcID.BLOODHOUNDPET, BLOODHOUND_INFO, BLOODHOUND_EXAMINE),	// Seen in game, other players
+			new Pet(PetGroup.OTHER, NpcID.BLOODHOUNDPET, BLOODHOUND_INFO, BLOODHOUND_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.POH_VARDORVIS_PET, BUTCH, BUTCH_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.VARDORVIS_PET, BUTCH, BUTCH_EXAMINE),

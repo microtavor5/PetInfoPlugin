@@ -61,7 +61,7 @@ public class PetJsonCreator
 	private static final String BARON_EXAMINE = "Better keep an eye on this one.";
 	private static final String BEAVER_INFO = "is obtained while training Woodcutting.";
 	private static final String BEAVER_EXAMINE = "Looks like it's gotten through a lot of wood.";
-	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/100, or Demonic Brutus at a rate of ~1/500";
+	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/1000, or Demonic Brutus at a rate of ~1/500";
 	private static final String BEEF_EXAMINE = "Commonly referred to as Sir Loin.";
 	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1000.";
 	private static final String BLOODHOUND_EXAMINE = "Tracking down clues with logic and a pipe.";

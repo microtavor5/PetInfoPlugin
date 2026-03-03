@@ -105,6 +105,8 @@ public class PetJsonCreator
 	private static final String GENERAL_GRAARDOR_JR_EXAMINE = "Totally unintelligible.";
 	private static final String GIANT_SQUIRREL_INFO = "is obtained by training Agility.";
 	private static final String GIANT_SQUIRREL_EXAMINE = "A giant squirrel with beautiful markings.";
+	private static final String GULL_INFO = "is obtained by defeating the Shellbane Gryphon at a rate of 1/3000.";
+	private static final String GULL_EXAMINE = "Quite the scrongly little chicken.";
 	private static final String BONE_SQUIRREL_EXAMINE = "A giant squirrel with a skeletal aesthetic.";
 	private static final String HELLCAT_INFO = "is obtained by having a pet Cat hunt Hell-Rats.";
 	private static final String HELLCAT_EXAMINE = "A hellish pet cat!";
@@ -272,6 +274,8 @@ public class PetJsonCreator
 
 	private static final String GREAT_BLUE_HERON_INFO = " This is a variant of the Heron, obtained by feeding the Heron 3,000 Spirit Flakes.";
 	private static final String GREATISH_GUARDIAN = " This is a variant of the Rift Guardian, that can be obtained by using the Guardian's Eye reward from the Guardians of the Rift minigame on a Rift Guardian.";
+	private static final String GULLIVER_INFO = " This is a variant of the Gull pet, obtained by feeding the Gull 50 fish (this is irreversible).";
+	private static final String GULLIVER_EXAMINE = "Small, but somehow still looks down on me.";
 
 	private static final String LITTLE_PARASITE_INFO = " This is a variant of the the Little Nightmare, obtained by using a Parasitic Egg on her.";
 
@@ -423,6 +427,12 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.POH_GAUNTLET_PET_CORRUPT, CORRUPTED_YOUNGLLEF_INFO, CORRUPTED_YOUNGLLEF_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.GAUNTLET_PET_CORRUPT, CORRUPTED_YOUNGLLEF_INFO, CORRUPTED_YOUNGLLEF_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.GRYPHONBOSS_PET, GULL_INFO, GULL_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.POH_GRYPHONBOSS_PET, GULL_INFO, GULL_EXAMINE),
+
+			new Pet(PetGroup.BOSS, NpcID.GRYPHONBOSS_PET_ADULT, GULL_INFO + GULLIVER_INFO, GULLIVER_INFO),
+			new Pet(PetGroup.BOSS, NpcID.POH_GRYPHONBOSS_PET_ADULT, GULL_INFO + GULLIVER_INFO, GULLIVER_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.POH_PRIME_PET, DAGANNOTH_PRIME_JR_INFO, DAGANNOTH_PRIME_JR_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.PRIME_PET, DAGANNOTH_PRIME_JR_INFO, DAGANNOTH_PRIME_JR_EXAMINE),

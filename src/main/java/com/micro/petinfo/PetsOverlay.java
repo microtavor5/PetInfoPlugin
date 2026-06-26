@@ -35,6 +35,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class PetsOverlay extends Overlay
@@ -61,7 +62,6 @@ public class PetsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		List<NPC> pets = plugin.getPets();
-
 		if (config.highlight() == PetsConfig.HighlightMode.OFF || pets.isEmpty())
 		{
 			return null;
@@ -72,13 +72,10 @@ public class PetsOverlay extends Overlay
 		}
 		if (config.highlight() == PetsConfig.HighlightMode.OWN)
 		{
-			final Player localPlayer =  client.getLocalPlayer();
-			pets.forEach(pet ->
+			List<NPC> ownPets = plugin.getOwnPets();
+			ownPets.forEach(pet ->
 				{
-					if (pet.getInteracting() == localPlayer)
-					{
-						drawPet(graphics, pet);
-					}
+					drawPet(graphics, pet);
 				});
 		}
 

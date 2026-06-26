@@ -62,6 +62,7 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,6 +77,9 @@ public class PetInfoPlugin extends Plugin
 	// Use these two arrays instead of cachedNPC index to guard against despawn race-condition
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> pets = new ArrayList<>();	// Used to keep track of the current pets in the game
+
+	@Getter(AccessLevel.PACKAGE)
+	private final List<NPC> ownPets = new ArrayList<>();	// Used to keep track of players own pets
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Color defaultWhite = new Color(0xffffff);
@@ -138,6 +142,7 @@ public class PetInfoPlugin extends Plugin
 	protected void shutDown()
 	{
 		pets.clear();
+		ownPets.clear();
 		overlayManager.remove(overlay);
 	}
 
@@ -154,6 +159,40 @@ public class PetInfoPlugin extends Plugin
 		{
 			pets.add(npc);
 		}
+
+		if (isOwnPet(npc))
+		{
+			ownPets.add(npc);
+		}
+	}
+
+	private Boolean isOwnPet(NPC npc) {
+		// Track own pets
+		final Player localPlayer =  client.getLocalPlayer();
+		if (localPlayer == null)
+		{
+			return false;
+		}
+		Boolean isOwnPet = npc.getInteracting() == localPlayer;
+
+		// Try for POH pet
+		if (!isOwnPet)
+		{
+			NPCComposition petComp = npc.getComposition();
+			if (petComp == null)
+			{
+				return false;
+			}
+			String[] actions = petComp.getActions();
+			if (actions == null)
+			{
+				return false;
+			}
+			if (!petComp.isFollower() && Arrays.asList(actions).contains("Pick-up")){
+				isOwnPet = true;
+			}
+		}
+		return isOwnPet;
 	}
 
 	/**
@@ -171,6 +210,9 @@ public class PetInfoPlugin extends Plugin
 			{
 				pets.add(npc);
 			}
+			if (!ownPets.contains(npc) && isOwnPet(npc)){
+				ownPets.add(npc);
+			}
 		}
 	}
 
@@ -184,6 +226,7 @@ public class PetInfoPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
 			pets.clear();
+			ownPets.clear();
 		}
 	}
 
@@ -194,13 +237,9 @@ public class PetInfoPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
-		if (pets.isEmpty())
-		{
-			return;
-		}
-
 		NPC npc = npcDespawned.getNpc();
 		pets.remove(npc);
+		ownPets.remove(npc);
 	}
 
 	/**
@@ -465,7 +504,7 @@ public class PetInfoPlugin extends Plugin
 			// Add examine menu
 			if (config.menu().equals(PetsConfig.MenuMode.EXAMINE) || config.menu().equals(PetsConfig.MenuMode.BOTH))
 			{
-				if (pet.getInteracting() == client.getLocalPlayer()) {
+				if (ownPets.contains(pet)) {
 					return;
 				}
 				else

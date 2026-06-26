@@ -415,7 +415,7 @@ public class PetInfoPlugin extends Plugin
 		}
 
 		// Get an Axis Aligned Bounding Box for fast elimination of pets not near cursor
-        SimplePolygon aabb = RLUtils.calculateAABB(client, npc_model, npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
+        SimplePolygon aabb = RLUtils.calculateAABB(client, wv, npc_model, npc.getCurrentOrientation(), lp.getX(), lp.getY(), height);
 		if (aabb == null)
 		{
 			return false;

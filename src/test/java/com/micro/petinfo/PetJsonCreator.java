@@ -155,6 +155,8 @@ public class PetJsonCreator
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/4000.";
 	private static final String LITTLE_NIGHTMARE_EXAMINE = "Quite the little nightmare.";
 	private static final String LITTLE_PARASITE_EXAMINE = "So cute!";
+	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3600.";
+	private static final String MAGGOT_MARQUESS_EXAMINE = "Best not to think too much about the venator it inhabits.";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MAZ_EXAMINE = "Looking after trees as if they were home.";
 	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3000.";
@@ -582,6 +584,9 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.POH_NIGHTMARE_PET, LITTLE_NIGHTMARE_INFO, LITTLE_NIGHTMARE_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.NIGHTMARE_PET, LITTLE_NIGHTMARE_INFO, LITTLE_NIGHTMARE_EXAMINE),
+
+			new Pet(PetGroup.OTHER, NpcID.MAGGOT_KING_PET, MAGGOT_MARQUESS, MAGGOT_MARQUESS_EXAMINE),
+			new Pet(PetGroup.OTHER, NpcID.POH_MAGGOT_KING_PET, MAGGOT_MARQUESS, MAGGOT_MARQUESS_EXAMINE),
 
 			new Pet(PetGroup.OTHER, NpcID.MAZ, MAZ_INFO, MAZ_EXAMINE),	// Not a real pet, but close enough for me to want to add it
 

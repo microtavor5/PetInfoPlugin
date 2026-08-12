@@ -258,58 +258,22 @@ public class PetInfoPlugin extends Plugin
 	}
 
 	/**
-	 * Prints to chat the appropriate text for the given menu
+	 * Prints to chat the appropriate text for the info menu
 	 */
-	public void onMenuOptionClicked(MenuEntry event)
+	public void onInfoMenuOptionClicked(MenuEntry event)
 	{
 		// If the player did not click on an INFO menu entry (hopefully should lever happen with new api)
-		if (event.getType() != MenuAction.RUNELITE)
-		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
-			return;
-		}
-
-		if (config.menu() == PetsConfig.MenuMode.INFO && !(event.getOption().startsWith("Info")))
-		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
-			return;
-		}
-
-		if (config.menu() == PetsConfig.MenuMode.EXAMINE && !(event.getOption().startsWith("Examine")))
-		{
-			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
-			return;
-		}
-
-		if (config.menu() == PetsConfig.MenuMode.BOTH &&
-				!(event.getOption().startsWith("Info")) && !(event.getOption().startsWith("Examine")))
+		if (event.getType() != MenuAction.RUNELITE ||
+				(config.menu() != PetsConfig.MenuMode.INFO && config.menu() != PetsConfig.MenuMode.BOTH) ||
+				!event.getOption().startsWith(MENU_OPTION_INFO))
 		{
 			log.error("[Pet-Info]\tSomehow got an incorrect menu entry? " + event);
 			return;
 		}
 
 		// We get the info text based off of the pet's NPCid
-		if (config.menu() == PetsConfig.MenuMode.INFO)
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
-					+ " " + petInfo.getInfo(event.getIdentifier()), "");
-		}
-		else if (config.menu() == PetsConfig.MenuMode.EXAMINE)
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", petInfo.getExamine(event.getIdentifier()), "");
-		}
-		else if (config.menu() == PetsConfig.MenuMode.BOTH)
-		{
-			if (event.getOption().startsWith("Info"))
-			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
-						+ " " + petInfo.getInfo(event.getIdentifier()), "");
-			}
-			else
-			{
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", petInfo.getExamine(event.getIdentifier()), "");
-			}
-		}
+		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "The " + event.getTarget()
+				+ " " + petInfo.getInfo(event.getIdentifier()), "");
 	}
 
 	/**
@@ -523,41 +487,46 @@ public class PetInfoPlugin extends Plugin
 	private void addPetMenu(NPC pet, String option)
 	{
 		// Determine if we should add the pet owner's name
-		if(pet.getInteracting() != null && config.showPetOwner())
+		if (pet.getInteracting() != null && config.showPetOwner())
 		{
-			option += " " + colorOwnerName(pet.getInteracting()) + "'s";
+			option += " " + colorOwnerName(pet);
 		}
 
 		// Add the menu option
 		Menu menu = client.getMenu();
 
-		menu.createMenuEntry(0)
-				.setOption(option)
-				.setTarget(colorPetName(pet))
-				.setType(MenuAction.RUNELITE)
-				.setIdentifier(pet.getId())
-				.onClick(this::onMenuOptionClicked);
+		if (option.startsWith(MENU_OPTION_INFO))
+		{
+			menu.createMenuEntry(1)
+					.setOption(option)
+					.setTarget(colorPetName(pet))
+					.setIdentifier(pet.getId())
+					.setType(MenuAction.RUNELITE)
+					.onClick(this::onInfoMenuOptionClicked);
+		}
+		else if (option.startsWith(MENU_OPTION_EXAMINE))
+		{
+			menu.createMenuEntry(1)
+					.setOption(option)
+					.setTarget(colorPetName(pet))
+					.setIdentifier(pet.getIndex())
+					.setType(MenuAction.EXAMINE_NPC);
+		}
 	}
 
 	/**
-	 * Gets the name of an actor, and colors it to match the option specified in the config.
-	 * @param owner The actor representing the owner of a pet.
-	 * @return The
+	 * Gets the pet's owner name, and colors it to match the option specified in the config.
+	 * @param pet The pet to get the owner name of
+	 * @return The owner's name, colored
 	 */
-	private String colorOwnerName(Actor owner)
+	private String colorOwnerName(NPC pet)
 	{
+		Actor owner = pet.getInteracting();
 		Color ownerColor;
+		Color petColor;
 
 		switch (config.petOwnerColor())
 		{
-			case WHITE:
-				ownerColor = defaultWhite;
-				break;
-
-			case YELLOW:
-				ownerColor = defaultYellow;
-				break;
-
 			case COMBAT:
 				Actor player = client.getLocalPlayer();
 
@@ -573,11 +542,29 @@ public class PetInfoPlugin extends Plugin
 				}
 				break;
 
+			case WHITE:
+				ownerColor = defaultWhite;
+				break;
+
+			case YELLOW:
 			default:
-				return  owner.getName();
+				ownerColor = defaultYellow;
+				break;
 		}
 
-		return colorChatString(ownerColor, owner.getName());
+		switch (config.petInfoColor())
+		{
+			case HIGHLIGHT:
+				petColor = npcToColor(pet);
+				break;
+
+			case YELLOW:
+			default:
+				petColor = defaultYellow;
+				break;
+		}
+
+		return colorChatString(ownerColor, owner.getName()) + colorChatString(petColor, "'s");
 	}
 
 	/**

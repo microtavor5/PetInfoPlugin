@@ -51,6 +51,7 @@ public class PetJsonCreator
 	 */
 	private static final String ABYSSAL_ORPHAN_INFO = "is obtained by placing an unsired on the Font of Consumption, at a rate of 5/128.";
 	private static final String ABYSSAL_PROTECTOR_INFO = "is obtained from the Guardians of the Rift minigame.";
+	private static final String AGGY_INFO = "is obtained by defeating the Mad Angel, at a rate of 1/2000.";
 	private static final String BABY_CHINCHOMPA_INFO = "is obtained while catching chinchompas.";
 	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3000.";
 	private static final String BARON = "is obtained by killing Duke Sucellus, at a rate of 1/2500.";
@@ -71,7 +72,7 @@ public class PetJsonCreator
 	private static final String DAGANNOTH_REX_JR_INFO = "is dropped by Dagannoth Rex, at a rate of 1/5000.";
 	private static final String DAGANNOTH_SUPREME_JR_INFO = "is dropped by Dagannoth Supreme, at a rate of 1/5000.";
 	private static final String DARK_CORE_INFO = "is dropped by the Corporeal Beast, at a rate of 1/5000.";
-	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only staring on level 6 of a delve, at varying rates from 1/1000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
+	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only starting on level 6 of a delve, at varying rates from 1/1000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
 	private static final String EEK_INFO = "was obtained during the 2018 Halloween event.";
 	private static final String FISHBOWL_INFO = "can be caught in Harry's Fishing Shop";
 	private static final String GENERAL_GRAARDOR_JR_INFO = "is dropped by General Graardor, at a rate of 1/5000";
@@ -101,6 +102,7 @@ public class PetJsonCreator
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String MOXI_INFO = "is dropped by Amoxliatl at a rate of 1/3000.";
+	private static final String MR_MCGROOT_INFO = "is obtained by hunting goats on Wyrmscraig, at various rate based on Hunter level.";
 	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2500.";
 	private static final String NEXLING_INFO = "is dropped by Nex at a rate of 1/500.";
 	private static final String NID_INFO = "is dropped by Araxxor at a base rate of 1/3000 when harvesting Araxxor's corpse, or 1/1500 when destroying the corpse instead of harvesting.";
@@ -202,6 +204,9 @@ public class PetJsonCreator
 	private static final String OLMLET_CM_VARIANTS = " This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.";
 
 	private static Pet[] pets1 = {
+  		new Pet(PetGroup.BOSS, NpcID.POH_MAD_ANGEL_PET, AGGY_INFO),
+			new Pet(PetGroup.BOSS, NpcID.MAD_ANGEL_PET, AGGY_INFO),
+    
 			new Pet(PetGroup.BOSS, NpcID.POH_ABYSSALSIRE_PET, ABYSSAL_ORPHAN_INFO),
 			new Pet(PetGroup.BOSS, NpcID.ABYSSALSIRE_PET, ABYSSAL_ORPHAN_INFO),
 
@@ -521,6 +526,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_PHEASANT, BEAVER_INFO + PHEASANT),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_PHEASANT, BEAVER_INFO + PHEASANT),
 
+			new Pet(PetGroup.SKILLING, NpcID.POH_GOAT_PIT_PET, MR_MCGROOT_INFO),
+			new Pet(PetGroup.SKILLING, NpcID.GOAT_PIT_PET, MR_MCGROOT_INFO),
 
 			new Pet(PetGroup.SKILLING, NpcID.POH_PHOENIX_PET_GREEN, PHOENIX_INFO),	// Green
 			new Pet(PetGroup.SKILLING, NpcID.POH_PHOENIX_PET_BLUE, PHOENIX_INFO),	// Blue

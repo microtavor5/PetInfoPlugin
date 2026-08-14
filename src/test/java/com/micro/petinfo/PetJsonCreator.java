@@ -53,6 +53,8 @@ public class PetJsonCreator
 	private static final String ABYSSAL_ORPHAN_EXAMINE = "Born in the death throes of an Abyssal Sire.";
 	private static final String ABYSSAL_PROTECTOR_INFO = "is obtained from the Guardians of the Rift minigame.";
 	private static final String ABYSSAL_PROTECTOR_EXAMINE = "Your own personal abyssal horror.";
+	private static final String AGGY_INFO = "is obtained by defeating the Mad Angel, at a rate of 1/2000.";
+	private static final String AGGY_EXAMINE = "A cute angel.";
 	private static final String BABY_CHINCHOMPA_INFO = "is obtained while catching chinchompas.";
 	private static final String BABY_CHINCHOMPA_EXAMINE = "Fluffy and cute, keep away from fire!";
 	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3000.";
@@ -93,7 +95,7 @@ public class PetJsonCreator
 	private static final String DAGANNOTH_SUPREME_JR_EXAMINE = "Wouldn't want that sleeping at the end of my bed.";
 	private static final String DARK_CORE_INFO = "is dropped by the Corporeal Beast, at a rate of 1/5000.";
 	private static final String DARK_CORE_EXAMINE = "Isn't so annoying when in pet form.";
-	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only staring on level 6 of a delve, at varying rates from 1/1000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
+	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only starting on level 6 of a delve, at varying rates from 1/1000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
 	private static final String DOM_EXAMINE = "Doom on a small scale.";
 	private static final String EEK_INFO = "was obtained during the 2018 Halloween event.";
 	private static final String EEK_EXAMINE = "She's a keen spinner of webs.";
@@ -163,6 +165,8 @@ public class PetJsonCreator
 	private static final String MIDNIGHT_EXAMINE = "The mini Guardian of Dusk!";
 	private static final String MOXI_INFO = "is dropped by Amoxliatl at a rate of 1/3000.";
 	private static final String MOXI_EXAMINE = "A tiny frost nagua.";
+	private static final String MR_MCGROOT_INFO = "is obtained by hunting goats on Wyrmscraig, at various rate based on Hunter level.";
+	private static final String MR_MCGROOT_EXAMINE = "He is McGroot.";
 	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2500.";
 	private static final String MUPHIN_EXAMINE = "An oversized grub with arms.";
 	private static final String NEXLING_INFO = "is dropped by Nex at a rate of 1/500.";
@@ -321,6 +325,9 @@ public class PetJsonCreator
 	private static final String OLMLET_CM_VARIANTS = " This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.";
 
 	private static Pet[] pets1 = {
+			new Pet(PetGroup.BOSS, NpcID.POH_MAD_ANGEL_PET, AGGY_INFO, AGGY_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.MAD_ANGEL_PET, AGGY_INFO, AGGY_EXAMINE),
+
 			new Pet(PetGroup.BOSS, NpcID.POH_ABYSSALSIRE_PET, ABYSSAL_ORPHAN_INFO, ABYSSAL_ORPHAN_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.ABYSSALSIRE_PET, ABYSSAL_ORPHAN_INFO, ABYSSAL_ORPHAN_EXAMINE),
 
@@ -433,8 +440,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.GRYPHONBOSS_PET, GULL_INFO, GULL_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.POH_GRYPHONBOSS_PET, GULL_INFO, GULL_EXAMINE),
 
-			new Pet(PetGroup.BOSS, NpcID.GRYPHONBOSS_PET_ADULT, GULL_INFO + GULLIVER_INFO, GULLIVER_INFO),
-			new Pet(PetGroup.BOSS, NpcID.POH_GRYPHONBOSS_PET_ADULT, GULL_INFO + GULLIVER_INFO, GULLIVER_INFO),
+			new Pet(PetGroup.BOSS, NpcID.GRYPHONBOSS_PET_ADULT, GULL_INFO + GULLIVER_INFO, GULLIVER_EXAMINE),
+			new Pet(PetGroup.BOSS, NpcID.POH_GRYPHONBOSS_PET_ADULT, GULL_INFO + GULLIVER_INFO, GULLIVER_EXAMINE),
 
 			new Pet(PetGroup.BOSS, NpcID.POH_PRIME_PET, DAGANNOTH_PRIME_JR_INFO, DAGANNOTH_PRIME_JR_EXAMINE),
 			new Pet(PetGroup.BOSS, NpcID.PRIME_PET, DAGANNOTH_PRIME_JR_INFO, DAGANNOTH_PRIME_JR_EXAMINE),
@@ -640,6 +647,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_PHEASANT, BEAVER_INFO + PHEASANT, PHEASANT_EXAMINE),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_PHEASANT, BEAVER_INFO + PHEASANT, PHEASANT_EXAMINE),
 
+			new Pet(PetGroup.SKILLING, NpcID.POH_GOAT_PIT_PET, MR_MCGROOT_INFO, MR_MCGROOT_EXAMINE),
+			new Pet(PetGroup.SKILLING, NpcID.GOAT_PIT_PET, MR_MCGROOT_INFO, MR_MCGROOT_EXAMINE),
 
 			new Pet(PetGroup.SKILLING, NpcID.POH_PHOENIX_PET_GREEN, PHOENIX_INFO, PHOENIX_EXAMINE),	// Green
 			new Pet(PetGroup.SKILLING, NpcID.POH_PHOENIX_PET_BLUE, PHOENIX_INFO, PHOENIX_EXAMINE),	// Blue

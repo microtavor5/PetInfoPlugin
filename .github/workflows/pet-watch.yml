@@ -1,0 +1,104 @@
+name: Pet watch
+
+# Checks the OSRS Wiki for pets and pet variants that PetInfoPlugin does not
+# register yet, and opens an issue when it finds any. GitHub emails you about
+# issues opened on your own repository, so no extra notification setup is
+# needed for the email path.
+
+on:
+  schedule:
+    # Mondays at 09:17 UTC. Off the hour so it is not queued behind the crowd.
+    - cron: '17 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Report every missing variant, not just ones new since the last run'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: pet-watch
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      # Read here rather than in the step: the secrets context is not available
+      # in a step-level `if`, but the env context is.
+      PETWATCH_WEBHOOK: ${{ secrets.PETWATCH_WEBHOOK }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check the wiki
+        id: check
+        env:
+          PETWATCH_UA: 'PetInfoPlugin-petwatch/1.0 (https://github.com/${{ github.repository }})'
+        run: |
+          set +e
+          python tools/petwatch/petwatch.py \
+            --report "$RUNNER_TEMP/report.md" \
+            --json "$RUNNER_TEMP/findings.json" \
+            ${{ inputs.full && '--all' || '' }} \
+            --verbose
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Fail on error
+        if: steps.check.outputs.status == '1'
+        run: |
+          echo "petwatch errored; see the previous step" >&2
+          exit 1
+
+      - name: Open an issue
+        if: steps.check.outputs.status == '10'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            cat "$RUNNER_TEMP/report.md"
+            echo
+            echo "---"
+            echo "Found by \`tools/petwatch\` in [this run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+          } > "$RUNNER_TEMP/issue.md"
+          gh issue create \
+            --title "Pets to add: wiki check $(date -u +%Y-%m-%d)" \
+            --body-file "$RUNNER_TEMP/issue.md"
+
+      # Optional. Set the PETWATCH_WEBHOOK secret to also get a push/WhatsApp
+      # ping (Twilio, CallMeBot, ntfy, a Zapier/Make hook, ...). Skipped when
+      # the secret is not set.
+      - name: Ping webhook
+        if: steps.check.outputs.status == '10' && env.PETWATCH_WEBHOOK != ''
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          findings = json.load(open(os.environ["RUNNER_TEMP"] + "/findings.json"))
+          n = len(findings["missing"])
+          text = f"PetInfoPlugin: {n} new pet variant(s) on the OSRS Wiki. See the new issue."
+          req = urllib.request.Request(
+              os.environ["PETWATCH_WEBHOOK"],
+              data=json.dumps({"text": text, "message": text}).encode(),
+              headers={"Content-Type": "application/json"},
+          )
+          urllib.request.urlopen(req, timeout=30).read()
+          PY
+
+      - name: Record what has been seen
+        if: steps.check.outputs.status != '1'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tools/petwatch/state/snapshot.json
+          if git diff --cached --quiet; then
+            echo "snapshot unchanged"
+          else
+            git commit -m 'petwatch: update wiki snapshot'
+            git push
+          fi

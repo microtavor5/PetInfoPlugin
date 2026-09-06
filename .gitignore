@@ -1,3 +1,5 @@
 .gradle/
 .idea/
 build/
+# petwatch downloads a ~1.2MB copy of RuneLite NpcID.java as a cache
+tools/petwatch/state/NpcID-*.java

@@ -17,9 +17,20 @@ How it works
 5. Reports any wiki variant whose ids are entirely absent from the plugin, split
    by whether you can act on it yet (see STATUS_HEADINGS).
 
-The comparison is stateless, so it reports real gaps rather than only changes
-since the last run. A snapshot is also kept so the report can additionally call
-out what is new since you last looked.
+Cheap repeat checks
+-------------------
+Steps 3-5 are preceded by a probe that only asks for revision ids, the category
+listing and the RuneLite release number - roughly 46KB against ~1.8MB for the
+full check. If no pet page has been edited, the category is unchanged, the
+RuneLite release is unchanged and PetJsonCreator.java is unchanged, the run
+stops there. This makes running daily about as cheap as running weekly, so a
+wiki edit that lands late is picked up the next day instead of the next week.
+
+Two state files, with different jobs:
+  acknowledged.json - what you have already been told about. Durable, small,
+                      meant to be committed.
+  cache.json        - revision ids and parsed variants from the last run. Purely
+                      an optimisation; deleting it only costs one full check.
 
 Exit codes: 0 = nothing to do, 10 = findings, 1 = error.
 """
@@ -27,6 +38,7 @@ Exit codes: 0 = nothing to do, 10 = findings, 1 = error.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -77,11 +89,44 @@ def http_get(url: str, retries: int = 3) -> bytes:
     raise RuntimeError("GET " + url + " failed after " + str(retries) + " attempts: " + str(last))
 
 
+def http_get_conditional(url: str, validators: dict):
+    """GET with If-None-Match/If-Modified-Since.
+
+    Returns (body, validators). body is None when the server answers 304, which
+    costs a few hundred bytes instead of the whole document.
+    """
+    headers = {"User-Agent": DEFAULT_UA}
+    if validators.get("etag"):
+        headers["If-None-Match"] = validators["etag"]
+    if validators.get("last_modified"):
+        headers["If-Modified-Since"] = validators["last_modified"]
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return resp.read(), {
+                "etag": resp.headers.get("ETag"),
+                "last_modified": resp.headers.get("Last-Modified"),
+            }
+    except urllib.error.HTTPError as exc:
+        if exc.code == 304:
+            return None, validators
+        raise
+
+
 def api(**params) -> dict:
     params.setdefault("format", "json")
     params.setdefault("formatversion", "2")
     url = WIKI_API + "?" + urllib.parse.urlencode(params)
     return json.loads(http_get(url).decode("utf-8"))
+
+
+def load_json(path: Path) -> dict:
+    if path.exists():
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            return {}
+    return {}
 
 
 # --------------------------------------------------------------------------
@@ -90,23 +135,31 @@ def api(**params) -> dict:
 NPCID_DECL = re.compile(r"public static final int ([A-Z0-9_]+)\s*=\s*(\d+)\s*;")
 
 
-def released_runelite_version() -> str:
-    """The version Gradle's 'latest.release' resolves to (snapshots excluded)."""
-    xml = http_get(RUNELITE_METADATA).decode("utf-8")
+def parse_release(xml: str) -> str:
     m = re.search(r"<release>([^<]+)</release>", xml)
     if not m:
         raise RuntimeError("no <release> element in " + RUNELITE_METADATA)
     return m.group(1).strip()
 
 
+def released_runelite_version() -> str:
+    """The version Gradle's 'latest.release' resolves to (snapshots excluded)."""
+    return parse_release(http_get(RUNELITE_METADATA).decode("utf-8"))
+
+
 def load_npcid_map(state_dir: Path, ref: str, max_age_hours: float = 24.0) -> dict:
-    """name -> numeric id, from gameval NpcID.java at a git ref (cached on disk)."""
+    """name -> numeric id, from gameval NpcID.java at a git ref (cached on disk).
+
+    A release tag is immutable, so its cached copy never expires. Only `master`
+    is re-fetched once it goes stale.
+    """
     safe = re.sub(r"[^A-Za-z0-9._-]", "_", ref)
     cache = state_dir / ("NpcID-" + safe + ".java")
+    immutable = ref != "master"
     fresh = (
         cache.exists()
-        and (time.time() - cache.stat().st_mtime) < max_age_hours * 3600
         and cache.stat().st_size > 100_000
+        and (immutable or (time.time() - cache.stat().st_mtime) < max_age_hours * 3600)
     )
     if not fresh:
         cache.parent.mkdir(parents=True, exist_ok=True)
@@ -127,10 +180,13 @@ def index_by_number(mapping: dict) -> dict:
     return by_number
 
 
-def load_plugin_ids(java: Path, npcids: dict):
-    """Numeric NPC ids the plugin registers, plus constants that do not resolve."""
+def plugin_constant_names(java: Path) -> list:
     text = java.read_text(encoding="utf-8", errors="replace")
-    names = sorted(set(re.findall(r"NpcID\.([A-Z0-9_]+)", text)))
+    return sorted(set(re.findall(r"NpcID\.([A-Z0-9_]+)", text)))
+
+
+def resolve_plugin_ids(names: list, npcids: dict):
+    """Numeric NPC ids the plugin registers, plus constants that do not resolve."""
     ids, unresolved = set(), []
     for name in names:
         if name in npcids:
@@ -160,29 +216,37 @@ def category_members(category: str) -> list:
         cont = data["continue"]
 
 
-def page_wikitext(titles: list) -> dict:
-    """Raw wikitext for many pages, 50 at a time, following redirects."""
-    out = {}
+def _query_pages(titles: list, **extra) -> list:
+    """Yield (asked-for title, page) for many pages, 50 at a time."""
+    out = []
     for i in range(0, len(titles), 50):
-        chunk = titles[i : i + 50]
-        data = api(
-            action="query",
-            prop="revisions",
-            rvprop="content",
-            rvslots="main",
-            redirects="1",
-            titles="|".join(chunk),
-        )
+        data = api(action="query", redirects="1", titles="|".join(titles[i : i + 50]), **extra)
         query = data.get("query", {})
         # map redirect targets back to the name we asked for
         redirects = {r["to"]: r["from"] for r in query.get("redirects", [])}
         for page in query.get("pages", []):
             if page.get("missing"):
                 continue
-            revs = page.get("revisions")
-            if not revs:
-                continue
-            title = redirects.get(page["title"], page["title"])
+            out.append((redirects.get(page["title"], page["title"]), page))
+    return out
+
+
+def page_revids(titles: list) -> dict:
+    """Latest revision id per page. Metadata only - a fraction of the content."""
+    out = {}
+    for title, page in _query_pages(titles, prop="revisions", rvprop="ids"):
+        revs = page.get("revisions")
+        if revs:
+            out[title] = revs[0]["revid"]
+    return out
+
+
+def page_wikitext(titles: list) -> dict:
+    """Raw wikitext for many pages."""
+    out = {}
+    for title, page in _query_pages(titles, prop="revisions", rvprop="content", rvslots="main"):
+        revs = page.get("revisions")
+        if revs:
             out[title] = revs[0]["slots"]["main"]["content"]
     return out
 
@@ -420,15 +484,16 @@ def main() -> int:
         description="Detect OSRS Wiki pets/variants missing from PetInfoPlugin.",
     )
     ap.add_argument("--repo", type=Path, default=default_repo, help="PetInfoPlugin checkout (default: %(default)s)")
-    ap.add_argument("--state", type=Path, default=here.parent / "state", help="snapshot + cache directory")
+    ap.add_argument("--state", type=Path, default=here.parent / "state", help="state + cache directory")
     ap.add_argument("--json", type=Path, help="also write raw findings as JSON here")
     ap.add_argument("--report", type=Path, help="also write the markdown report here")
-    ap.add_argument("--no-save", action="store_true", help="do not update the stored snapshot")
+    ap.add_argument("--no-save", action="store_true", help="do not update the stored state")
     ap.add_argument("--all", action="store_true", help="report every missing variant, not just ones new since the last run")
+    ap.add_argument("--force", action="store_true", help="do the full check even if the probe finds nothing changed")
     ap.add_argument(
         "--runelite-release",
         metavar="VERSION",
-        help="check against this RuneLite version instead of whatever 'latest.release' resolves to (e.g. 1.12.37)",
+        help="check against this RuneLite version instead of whatever 'latest.release' resolves to (e.g. 1.12.38)",
     )
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args()
@@ -440,36 +505,97 @@ def main() -> int:
 
     state_dir = args.state
     state_dir.mkdir(parents=True, exist_ok=True)
-    snapshot_file = state_dir / "snapshot.json"
+    ack_file = state_dir / "acknowledged.json"
+    cache_file = state_dir / "cache.json"
+    ack = load_json(ack_file)
+    cache = load_json(cache_file)
+    force = args.force or args.all
 
     def log(*a):
         if args.verbose:
             print(*a, file=sys.stderr)
 
-    log("resolving the RuneLite API version...")
-    release = args.runelite_release or released_runelite_version()
-    release_tag = RELEASE_TAG.format(version=release)
-    log("  build.gradle 'latest.release' -> " + release + " (tag " + release_tag + ")")
+    # ---- probe: cheap signals only -------------------------------------
+    names = plugin_constant_names(java)
+    plugin_digest = hashlib.sha256("\n".join(names).encode()).hexdigest()
 
+    validators = cache.get("runelite_validators", {})
+    if args.runelite_release:
+        release = args.runelite_release
+    elif validators and cache.get("runelite_release"):
+        body, validators = http_get_conditional(RUNELITE_METADATA, validators)
+        release = cache["runelite_release"] if body is None else parse_release(body.decode("utf-8"))
+    else:
+        body, validators = http_get_conditional(RUNELITE_METADATA, {})
+        release = parse_release(body.decode("utf-8"))
+    release_tag = RELEASE_TAG.format(version=release)
+    log("runelite 'latest.release' -> " + release)
+
+    cat = category_members("Category:Pets")
+    known = cache.get("titles", [])
+    revids = page_revids(sorted(set(cat) | set(known) | {"Pet"}))
+
+    if revids.get("Pet") != cache.get("pet_article_revid") or not known:
+        log("Pet article changed, re-reading its tables")
+        sections = pets_from_pet_article(page_wikitext(["Pet"]).get("Pet", ""))
+    else:
+        sections = cache.get("sections", {})
+
+    titles = sorted((set(cat) | set(sections)) - PAGE_BLOCKLIST)
+    absent = [t for t in titles if t not in revids]
+    if absent:
+        revids.update(page_revids(absent))
+
+    prev_revids = cache.get("page_revids", {})
+    cached_variants = cache.get("page_variants") or {}
+    changed = sorted(t for t in titles if revids.get(t) != prev_revids.get(t))
+    dropped = sorted(set(cached_variants) - set(titles))
+
+    settled = (
+        not changed
+        and not dropped
+        and cache.get("runelite_release") == release
+        and cache.get("plugin_digest") == plugin_digest
+        and cache.get("page_variants") is not None
+        # never stay quiet if nothing has been reported yet: deleting
+        # acknowledged.json is how you ask to be told everything again
+        and ack.get("missing_keys") is not None
+    )
+    log("probe: " + str(len(changed)) + " page(s) edited, " + str(len(dropped)) + " removed")
+
+    if settled and not force:
+        print(
+            "No change since the last check: "
+            + str(len(titles))
+            + " pet pages unedited, RuneLite still "
+            + release
+            + ", plugin unchanged."
+        )
+        if not args.no_save:
+            cache.update({"checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                          "runelite_validators": validators})
+            cache_file.write_text(json.dumps(cache, indent=2) + "\n", encoding="utf-8")
+        return 0
+
+    # ---- full check ----------------------------------------------------
     released = load_npcid_map(state_dir, release_tag)
     released_by_number = index_by_number(released)
-    log("  " + str(len(released)) + " constants in the released API")
+    log(str(len(released)) + " constants in the released API")
 
-    # master is only fetched if something is missing from the released API
-    cache = {}
+    npc_cache = {}
 
     def master():
-        if "map" not in cache:
-            log("  consulting RuneLite master for unreleased ids...")
-            cache["map"] = load_npcid_map(state_dir, "master")
-            cache["by_number"] = index_by_number(cache["map"])
-        return cache["map"]
+        if "map" not in npc_cache:
+            log("consulting RuneLite master for unreleased ids...")
+            npc_cache["map"] = load_npcid_map(state_dir, "master")
+            npc_cache["by_number"] = index_by_number(npc_cache["map"])
+        return npc_cache["map"]
 
     def master_by_number():
         master()
-        return cache["by_number"]
+        return npc_cache["by_number"]
 
-    plugin_ids, unresolved_names = load_plugin_ids(java, released)
+    plugin_ids, unresolved_names = resolve_plugin_ids(names, released)
     log("plugin registers " + str(len(plugin_ids)) + " npc ids")
 
     unresolved = {}
@@ -480,23 +606,19 @@ def main() -> int:
             )
         else:
             unresolved[name] = "not found in RuneLite master either"
-    if unresolved:
-        log("  warning: " + str(len(unresolved)) + " plugin constants do not resolve against " + release)
 
-    log("listing wiki pet pages...")
-    pet_article = page_wikitext(["Pet"]).get("Pet", "")
-    sections = pets_from_pet_article(pet_article)
-    titles = sorted((set(category_members("Category:Pets")) | set(sections)) - PAGE_BLOCKLIST)
-    log("  " + str(len(titles)) + " pages")
+    # only re-download pages that actually changed
+    page_variants = {t: v for t, v in cached_variants.items() if t in titles}
+    refetch = sorted(set(changed) | {t for t in titles if t not in page_variants})
+    if refetch:
+        log("fetching wikitext for " + str(len(refetch)) + " page(s)")
+        fetched = page_wikitext(refetch)
+        for t in refetch:
+            page_variants[t] = parse_variants(t, fetched.get(t, ""))
 
-    log("fetching pet page wikitext...")
-    pages = page_wikitext(titles)
-    log("  " + str(len(pages)) + " fetched")
-
-    missing, current_variants = [], {}
-    for title in sorted(pages):
-        for v in parse_variants(title, pages[title]):
-            current_variants[title + "::" + v["variant"]] = v["ids"]
+    missing = []
+    for title in sorted(page_variants):
+        for v in page_variants[title]:
             if any(i in plugin_ids for i in v["ids"]):
                 continue
             constants = sorted({c for i in v["ids"] for c in released_by_number.get(i, [])})
@@ -516,27 +638,21 @@ def main() -> int:
                 }
             )
 
-    prev = {}
-    if snapshot_file.exists():
-        prev = json.loads(snapshot_file.read_text(encoding="utf-8"))
-    prev_pages = set(prev.get("pages", []))
-    prev_missing = set(prev.get("missing_keys", []))
-
     # status is part of the key, so a variant that becomes buildable when the next
     # RuneLite release lands is reported again rather than staying silent.
     def key_of(m):
         return m["page"] + "::" + m["variant"] + "::" + m["status"]
 
-    new_pages = sorted(set(pages) - prev_pages) if prev_pages else []
-    if args.all or not prev_missing:
-        shown = missing
-    else:
-        shown = [m for m in missing if key_of(m) not in prev_missing]
+    prev_pages = set(ack.get("pages", []))
+    prev_missing = set(ack.get("missing_keys", []))
+    new_pages = sorted(set(titles) - prev_pages) if prev_pages else []
+    shown = missing if (args.all or not prev_missing) else [m for m in missing if key_of(m) not in prev_missing]
 
     findings = {
         "checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "pages_checked": len(pages),
-        "variants_checked": len(current_variants),
+        "pages_checked": len(page_variants),
+        "pages_refetched": len(refetch),
+        "variants_checked": sum(len(v) for v in page_variants.values()),
         "plugin_ids": len(plugin_ids),
         "missing": shown,
         "missing_total": len(missing),
@@ -545,7 +661,7 @@ def main() -> int:
         "runelite": {
             "release": release,
             "release_tag": release_tag,
-            "master_consulted": "map" in cache,
+            "master_consulted": "map" in npc_cache,
         },
     }
 
@@ -558,14 +674,37 @@ def main() -> int:
         args.json.write_text(json.dumps(findings, indent=2) + "\n", encoding="utf-8")
 
     if not args.no_save:
-        snapshot = {
-            "checked_at": findings["checked_at"],
-            "runelite_release": release,
-            "pages": sorted(pages),
-            "missing_keys": sorted(key_of(m) for m in missing),
-            "variants": current_variants,
-        }
-        snapshot_file.write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf-8")
+        ack_file.write_text(
+            json.dumps(
+                {
+                    "checked_at": findings["checked_at"],
+                    "runelite_release": release,
+                    "pages": sorted(titles),
+                    "missing_keys": sorted(key_of(m) for m in missing),
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        cache_file.write_text(
+            json.dumps(
+                {
+                    "checked_at": findings["checked_at"],
+                    "runelite_release": release,
+                    "runelite_validators": validators,
+                    "plugin_digest": plugin_digest,
+                    "pet_article_revid": revids.get("Pet"),
+                    "sections": sections,
+                    "titles": sorted(titles),
+                    "page_revids": {t: revids[t] for t in titles if t in revids},
+                    "page_variants": page_variants,
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
 
     return 10 if (shown or new_pages) else 0
 

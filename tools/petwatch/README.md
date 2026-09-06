@@ -20,6 +20,28 @@ left is the work list, reported with the `NpcID` constant names to paste in.
 The comparison is stateless, so it can find pre-existing gaps, not just changes
 since the last run.
 
+## Cheap repeat checks
+
+The full check costs about 1.8MB, most of it `NpcID.java` from GitHub plus the
+wikitext of ~98 pet pages. Running that daily to catch the occasional late wiki
+edit would be wasteful, so each run starts with a probe that asks only for
+revision ids, the category listing and the RuneLite release number.
+
+If no pet page has been edited, the category is unchanged, the RuneLite release
+is unchanged and `PetJsonCreator.java` is unchanged, the run stops there:
+
+| | requests | downloaded |
+| --- | --- | --- |
+| probe only, nothing changed | 5 | ~15KB |
+| full check | ~10 | ~1800KB |
+
+When something has changed, only the pages whose revision id moved are
+re-fetched; the rest are reused from the cache. The RuneLite metadata is
+requested with `If-None-Match`, so an unchanged release answers `304`.
+
+That makes a daily schedule cost about the same per week as a single weekly full
+check, which is why the workflow runs daily.
+
 ## RuneLite API version
 
 `build.gradle` asks for `latest.release`, so a constant is only usable once it
@@ -65,22 +87,35 @@ and is not affected by that cache.
 ```sh
 python tools/petwatch/petwatch.py            # new since the last run
 python tools/petwatch/petwatch.py --all      # every gap
-python tools/petwatch/petwatch.py --no-save  # leave the snapshot alone
+python tools/petwatch/petwatch.py --force    # full check even if the probe sees nothing
+python tools/petwatch/petwatch.py --no-save  # leave the state alone
 ```
 
 Python 3.9+, no dependencies. Exit codes: `0` nothing to do, `10` findings,
-`1` error. `--report FILE` and `--json FILE` also write the output.
+`1` error. `--report FILE` and `--json FILE` also write the output. `--all`
+implies `--force`.
 
-`state/snapshot.json` records what has been reported, so a gap you have chosen
-not to act on stops nagging; it is committed so scheduled and local runs agree.
-`state/NpcID-*.java` is a cache and is gitignored.
+Two state files in `state/`, with different jobs:
+
+- **`acknowledged.json`** - what you have already been told about, so a gap you
+  have chosen not to act on stops nagging. Small, changes only when the findings
+  do, and is committed.
+- **`cache.json`** and **`NpcID-*.java`** - revision ids, parsed variants and the
+  downloaded API. Purely an optimisation, gitignored; deleting them costs one
+  full check.
 
 ## Automation
 
-`.github/workflows/pet-watch.yml` runs weekly, opens an issue on findings, and
-commits the snapshot. GitHub emails you about issues on your own repository, so
-the email path needs no setup. Run it by hand from the Actions tab; tick **full**
-for `--all`.
+`.github/workflows/pet-watch.yml` runs daily at 17:17 UTC, opens an issue on
+findings, and commits `acknowledged.json`. GitHub emails you about issues on your
+own repository, so the email path needs no setup. Run it by hand from the Actions
+tab; tick **full** for `--all`.
+
+Wednesday is the run that matters - the game update lands around 11:30 and takes
+about half an hour, so 17:17 leaves the wiki roughly five hours. The other six
+days are the safety net for when the wiki is slower than that, and cost ~15KB
+each thanks to the probe. The probe cache is carried between runs by
+`actions/cache`; quiet days produce no commit.
 
 For a notification via an external service (like a text or WhatsApp), set a
 `PETWATCH_WEBHOOK` repository secret to a URL accepting a JSON `POST` (Twilio,

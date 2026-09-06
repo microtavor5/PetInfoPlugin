@@ -76,17 +76,38 @@ PAGE_BLOCKLIST = {
 # --------------------------------------------------------------------------
 # http
 # --------------------------------------------------------------------------
-def http_get(url: str, retries: int = 3) -> bytes:
+MAX_RESPONSE = 32 * 1024 * 1024  # nothing we fetch is remotely this big
+
+
+def _request(url: str, headers: dict, retries: int = 3):
+    """GET with retries. Returns (body, response headers); body is None on 304.
+
+    4xx answers are not retried: they mean the request was wrong, so repeating
+    it only adds load.
+    """
     last = None
     for attempt in range(retries):
-        req = urllib.request.Request(url, headers={"User-Agent": DEFAULT_UA})
+        req = urllib.request.Request(url, headers=dict(headers, **{"User-Agent": DEFAULT_UA}))
         try:
             with urllib.request.urlopen(req, timeout=60) as resp:
-                return resp.read()
+                body = resp.read(MAX_RESPONSE + 1)
+                if len(body) > MAX_RESPONSE:
+                    raise RuntimeError("response from " + url + " exceeds " + str(MAX_RESPONSE) + " bytes")
+                return body, resp.headers
+        except urllib.error.HTTPError as exc:
+            if exc.code == 304:
+                return None, exc.headers
+            if 400 <= exc.code < 500:
+                raise RuntimeError("GET " + url + " failed: " + str(exc)) from exc
+            last = exc
         except (urllib.error.URLError, TimeoutError) as exc:
             last = exc
-            time.sleep(2 * (attempt + 1))
+        time.sleep(2 * (attempt + 1))
     raise RuntimeError("GET " + url + " failed after " + str(retries) + " attempts: " + str(last))
+
+
+def http_get(url: str, retries: int = 3) -> bytes:
+    return _request(url, {}, retries)[0]
 
 
 def http_get_conditional(url: str, validators: dict):
@@ -95,22 +116,18 @@ def http_get_conditional(url: str, validators: dict):
     Returns (body, validators). body is None when the server answers 304, which
     costs a few hundred bytes instead of the whole document.
     """
-    headers = {"User-Agent": DEFAULT_UA}
+    headers = {}
     if validators.get("etag"):
         headers["If-None-Match"] = validators["etag"]
     if validators.get("last_modified"):
         headers["If-Modified-Since"] = validators["last_modified"]
-    req = urllib.request.Request(url, headers=headers)
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            return resp.read(), {
-                "etag": resp.headers.get("ETag"),
-                "last_modified": resp.headers.get("Last-Modified"),
-            }
-    except urllib.error.HTTPError as exc:
-        if exc.code == 304:
-            return None, validators
-        raise
+    body, resp_headers = _request(url, headers)
+    if body is None:
+        return None, validators
+    return body, {
+        "etag": resp_headers.get("ETag"),
+        "last_modified": resp_headers.get("Last-Modified"),
+    }
 
 
 def api(**params) -> dict:
@@ -135,11 +152,22 @@ def load_json(path: Path) -> dict:
 NPCID_DECL = re.compile(r"public static final int ([A-Z0-9_]+)\s*=\s*(\d+)\s*;")
 
 
+# A version string is interpolated straight into a URL, so keep it to something
+# that cannot escape the path even if the metadata is malformed or hostile.
+VERSION_RE = re.compile(r"^[0-9][0-9A-Za-z._-]*$")
+
+
+def check_version(version: str) -> str:
+    if not VERSION_RE.match(version):
+        raise RuntimeError("refusing to use implausible RuneLite version " + repr(version))
+    return version
+
+
 def parse_release(xml: str) -> str:
     m = re.search(r"<release>([^<]+)</release>", xml)
     if not m:
         raise RuntimeError("no <release> element in " + RUNELITE_METADATA)
-    return m.group(1).strip()
+    return check_version(m.group(1).strip())
 
 
 def released_runelite_version() -> str:
@@ -180,9 +208,24 @@ def index_by_number(mapping: dict) -> dict:
     return by_number
 
 
-def plugin_constant_names(java: Path) -> list:
+# Only constants actually passed to a Pet entry count as registered. A bare
+# NpcID reference in a comment or helper must not make a pet look covered.
+PET_ENTRY = re.compile(r"new\s+Pet\s*\([^()]*?NpcID\.([A-Z0-9_]+)", re.S)
+ANY_NPCID = re.compile(r"NpcID\.([A-Z0-9_]+)")
+
+
+def plugin_constant_names(java: Path):
+    """Constants registered as pets, and any others merely mentioned in the file."""
     text = java.read_text(encoding="utf-8", errors="replace")
-    return sorted(set(re.findall(r"NpcID\.([A-Z0-9_]+)", text)))
+    registered = sorted(set(PET_ENTRY.findall(text)))
+    mentioned = sorted(set(ANY_NPCID.findall(text)) - set(registered))
+    if not registered and mentioned:
+        # the file's shape changed; reporting every pet as missing would be worse
+        raise RuntimeError(
+            "found NpcID references in " + java.name + " but none inside a `new Pet(...)` call; "
+            "PET_ENTRY needs updating for the new style"
+        )
+    return registered, mentioned
 
 
 def resolve_plugin_ids(names: list, npcids: dict):
@@ -217,27 +260,52 @@ def category_members(category: str) -> list:
 
 
 def _query_pages(titles: list, **extra) -> list:
-    """Yield (asked-for title, page) for many pages, 50 at a time."""
+    """Return (asked-for title, page) for many pages, 50 at a time.
+
+    MediaWiki answers under the *canonical* title, having first normalised what
+    we asked for ("Rock_golem" -> "Rock golem") and then followed any redirect.
+    Both hops have to be walked forward or results come back under a title the
+    caller never asked about, and the page is silently treated as empty.
+    """
     out = []
     for i in range(0, len(titles), 50):
-        data = api(action="query", redirects="1", titles="|".join(titles[i : i + 50]), **extra)
+        chunk = titles[i : i + 50]
+        data = api(action="query", redirects="1", titles="|".join(chunk), **extra)
         query = data.get("query", {})
-        # map redirect targets back to the name we asked for
-        redirects = {r["to"]: r["from"] for r in query.get("redirects", [])}
+
+        forward = {}
+        for step in ("normalized", "redirects"):
+            for entry in query.get(step, []):
+                forward[entry["from"]] = entry["to"]
+
+        def canonical(title):
+            seen = set()
+            while title in forward and title not in seen:
+                seen.add(title)
+                title = forward[title]
+            return title
+
+        # several asked-for titles can collapse onto one page; keep them all
+        by_canonical = {}
+        for asked in chunk:
+            by_canonical.setdefault(canonical(asked), []).append(asked)
+
         for page in query.get("pages", []):
             if page.get("missing"):
                 continue
-            out.append((redirects.get(page["title"], page["title"]), page))
+            for asked in by_canonical.get(page["title"], [page["title"]]):
+                out.append((asked, page))
     return out
 
 
-def page_revids(titles: list) -> dict:
-    """Latest revision id per page. Metadata only - a fraction of the content."""
+def page_meta(titles: list) -> dict:
+    """Latest revision id and page id per title. Metadata only - a fraction of
+    the content, and the page id is what identifies aliases of the same page."""
     out = {}
     for title, page in _query_pages(titles, prop="revisions", rvprop="ids"):
         revs = page.get("revisions")
         if revs:
-            out[title] = revs[0]["revid"]
+            out[title] = {"revid": revs[0]["revid"], "pageid": page.get("pageid")}
     return out
 
 
@@ -391,6 +459,25 @@ def wiki_url(title: str) -> str:
     return "https://oldschool.runescape.wiki/w/" + urllib.parse.quote(title.replace(" ", "_"))
 
 
+# Whitespace is collapsed first, so the text can never reach the start of a line;
+# that leaves only inline syntax (links, images, code, emphasis, HTML, tables) to
+# neutralise, and escaping `#`/`-`/`+` as well would just add visible noise.
+MD_SPECIAL = re.compile(r"([\\`*_\[\]()<>|~])")
+
+
+def md(text, limit: int = 120) -> str:
+    """Neutralise wiki-supplied text before it goes into a GitHub issue body.
+
+    Variant and section names are free text that any wiki editor controls, and
+    the report is posted verbatim as Markdown, so escape the syntax and cap the
+    length rather than trusting it.
+    """
+    flat = re.sub(r"\s+", " ", str(text)).strip()
+    if len(flat) > limit:
+        flat = flat[: limit - 1] + "…"
+    return MD_SPECIAL.sub(r"\\\1", flat)
+
+
 STATUS_HEADINGS = {
     "ready": "ready to add",
     "pending-release": "waiting on a RuneLite release",
@@ -423,7 +510,7 @@ def build_report(findings: dict) -> str:
     new_pages = findings["new_pages"]
     api_info = findings["runelite"]
 
-    if not missing and not new_pages:
+    if not missing and not new_pages and not findings.get("fetch_failures"):
         return (
             "No new pets or variants. The plugin covers every NPC id on the wiki pet "
             "pages, checked against RuneLite " + api_info["release"] + "."
@@ -441,12 +528,12 @@ def build_report(findings: dict) -> str:
             by_page.setdefault(m["page"], []).append(m)
         for page in sorted(by_page):
             entries = by_page[page]
-            note = " - " + entries[0]["section"] if entries[0].get("section") else ""
-            lines.append("- **[" + page + "](" + wiki_url(page) + ")**" + note)
+            note = " - " + md(entries[0]["section"]) if entries[0].get("section") else ""
+            lines.append("- **[" + md(page) + "](" + wiki_url(page) + ")**" + note)
             for e in entries:
                 names = ", ".join("`NpcID." + c + "`" for c in e["constants"]) or "no matching NpcID constant"
                 ids = ", ".join(str(i) for i in e["ids"])
-                label = "" if e["variant"] == page else "*" + e["variant"] + "* - "
+                label = "" if e["variant"] == page else "*" + md(e["variant"]) + "* - "
                 lines.append("  - " + label + "ids `" + ids + "` -> " + names)
         lines.append("")
         lines.append(STATUS_NOTES[status])
@@ -456,7 +543,14 @@ def build_report(findings: dict) -> str:
         lines.append("### " + str(len(new_pages)) + " new pet page(s) since the last check")
         lines.append("")
         for p in sorted(new_pages):
-            lines.append("- [" + p + "](" + wiki_url(p) + ")")
+            lines.append("- [" + md(p) + "](" + wiki_url(p) + ")")
+        lines.append("")
+
+    if findings.get("fetch_failures"):
+        lines.append("### Pages that could not be read")
+        lines.append("")
+        for p in sorted(findings["fetch_failures"]):
+            lines.append("- [" + md(p) + "](" + wiki_url(p) + ") - not checked this run")
         lines.append("")
 
     if findings["unresolved_constants"]:
@@ -516,8 +610,10 @@ def main() -> int:
             print(*a, file=sys.stderr)
 
     # ---- probe: cheap signals only -------------------------------------
-    names = plugin_constant_names(java)
+    names, mentioned = plugin_constant_names(java)
     plugin_digest = hashlib.sha256("\n".join(names).encode()).hexdigest()
+    log(str(len(names)) + " constants registered as pets"
+        + (", " + str(len(mentioned)) + " mentioned but not registered" if mentioned else ""))
 
     validators = cache.get("runelite_validators", {})
     if args.runelite_release:
@@ -533,18 +629,32 @@ def main() -> int:
 
     cat = category_members("Category:Pets")
     known = cache.get("titles", [])
-    revids = page_revids(sorted(set(cat) | set(known) | {"Pet"}))
+    meta = page_meta(sorted(set(cat) | set(known) | {"Pet"}))
 
-    if revids.get("Pet") != cache.get("pet_article_revid") or not known:
+    if meta.get("Pet", {}).get("revid") != cache.get("pet_article_revid") or not known:
         log("Pet article changed, re-reading its tables")
         sections = pets_from_pet_article(page_wikitext(["Pet"]).get("Pet", ""))
     else:
         sections = cache.get("sections", {})
 
     titles = sorted((set(cat) | set(sections)) - PAGE_BLOCKLIST)
-    absent = [t for t in titles if t not in revids]
+    absent = [t for t in titles if t not in meta]
     if absent:
-        revids.update(page_revids(absent))
+        meta.update(page_meta(absent))
+
+    # The category and the Pet article can name the same page differently (one
+    # being a redirect). Collapse those so a pet is not reported twice.
+    titles, seen_pageid = [], {}
+    for t in sorted((set(cat) | set(sections)) - PAGE_BLOCKLIST):
+        pageid = meta.get(t, {}).get("pageid")
+        if pageid is not None and pageid in seen_pageid:
+            log("skipping " + t + ": same page as " + seen_pageid[pageid])
+            continue
+        if pageid is not None:
+            seen_pageid[pageid] = t
+        titles.append(t)
+
+    revids = {t: m["revid"] for t, m in meta.items()}
 
     prev_revids = cache.get("page_revids", {})
     cached_variants = cache.get("page_variants") or {}
@@ -610,11 +720,21 @@ def main() -> int:
     # only re-download pages that actually changed
     page_variants = {t: v for t, v in cached_variants.items() if t in titles}
     refetch = sorted(set(changed) | {t for t in titles if t not in page_variants})
+    fetch_failures = []
     if refetch:
         log("fetching wikitext for " + str(len(refetch)) + " page(s)")
         fetched = page_wikitext(refetch)
         for t in refetch:
-            page_variants[t] = parse_variants(t, fetched.get(t, ""))
+            if t in fetched:
+                page_variants[t] = parse_variants(t, fetched[t])
+            else:
+                # never record "no pets here" for a page we failed to read, and
+                # do not let the stale revid mark it as checked
+                fetch_failures.append(t)
+                revids.pop(t, None)
+        if fetch_failures:
+            log("warning: no wikitext returned for " + str(len(fetch_failures)) + " page(s): "
+                + ", ".join(fetch_failures[:5]))
 
     missing = []
     for title in sorted(page_variants):
@@ -657,6 +777,7 @@ def main() -> int:
         "missing": shown,
         "missing_total": len(missing),
         "new_pages": new_pages,
+        "fetch_failures": fetch_failures,
         "unresolved_constants": unresolved,
         "runelite": {
             "release": release,
@@ -694,7 +815,7 @@ def main() -> int:
                     "runelite_release": release,
                     "runelite_validators": validators,
                     "plugin_digest": plugin_digest,
-                    "pet_article_revid": revids.get("Pet"),
+                    "pet_article_revid": meta.get("Pet", {}).get("revid"),
                     "sections": sections,
                     "titles": sorted(titles),
                     "page_revids": {t: revids[t] for t in titles if t in revids},
@@ -706,7 +827,7 @@ def main() -> int:
             encoding="utf-8",
         )
 
-    return 10 if (shown or new_pages) else 0
+    return 10 if (shown or new_pages or fetch_failures) else 0
 
 
 if __name__ == "__main__":

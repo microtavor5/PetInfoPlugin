@@ -32,6 +32,7 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       # Read here rather than in the step: the secrets context is not available
       # in a step-level `if`, but the env context is.
@@ -98,8 +99,14 @@ jobs:
           python - <<'PY'
           import json, os, urllib.request
           findings = json.load(open(os.environ["RUNNER_TEMP"] + "/findings.json"))
-          n = len(findings["missing"])
-          text = f"PetInfoPlugin: {n} new pet variant(s) on the OSRS Wiki. See the new issue."
+          bits = []
+          if findings["missing"]:
+              bits.append(f"{len(findings['missing'])} pet variant(s) to add")
+          if findings["new_pages"]:
+              bits.append(f"{len(findings['new_pages'])} new pet page(s)")
+          if findings.get("fetch_failures"):
+              bits.append(f"{len(findings['fetch_failures'])} page(s) unreadable")
+          text = "PetInfoPlugin: " + ", ".join(bits) + ". See the new issue."
           req = urllib.request.Request(
               os.environ["PETWATCH_WEBHOOK"],
               data=json.dumps({"text": text, "message": text}).encode(),
@@ -119,7 +126,16 @@ jobs:
           git add tools/petwatch/state/acknowledged.json
           if git diff --cached --quiet; then
             echo "nothing new to acknowledge"
-          else
-            git commit -m 'petwatch: record reported findings'
-            git push
+            exit 0
           fi
+          git commit -m 'petwatch: record reported findings'
+          # someone may have pushed while this was running; rebase and retry
+          for attempt in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejected, rebasing (attempt $attempt)"
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || exit 1
+          done
+          echo "could not push the acknowledgement after 3 attempts" >&2
+          exit 1

@@ -97,7 +97,7 @@ public class PetJsonCreator
 	private static final String LIL_CREATOR_INFO = "is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.";
 	private static final String LIL_VIATHAN = "is obtained by killing The Leviathan, at a rate of 1/2500.";
 	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
-	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/4000.";
+	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/1400.";
 	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3600.";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3000.";

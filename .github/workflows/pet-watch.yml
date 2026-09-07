@@ -40,9 +40,14 @@ jobs:
       # Holds acknowledged.json alone, off the default branch.
       STATE_BRANCH: petwatch-state
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          # "Record what has been reported" pushes with these credentials. This
+          # is the default, but stating it keeps the last step working if the
+          # default ever flips.
+          persist-credentials: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -50,7 +55,7 @@ jobs:
       # between runs so a daily check costs ~15KB instead of ~1.8MB. Losing the
       # cache is harmless: the next run just does the full check once.
       - name: Restore probe cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             tools/petwatch/state/cache.json

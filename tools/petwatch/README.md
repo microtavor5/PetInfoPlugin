@@ -177,6 +177,23 @@ tools like this one; Wikipedia's `robots.txt` does the same thing for the same
 reason. A low-volume, clearly identified API client is what they have asked for,
 while HTML scraping is not - which is why the tool does none.
 
+## When it refuses to run
+
+A monitor that reports "all clear" after checking nothing is worse than one that
+fails, so petwatch exits non-zero rather than continue when:
+
+- `Category:Pets` or the Pet article's tables come back empty, or the pet page
+  list falls below 50, or it shrinks by more than a fifth against the cached
+  list. A genuine large drop is accepted by deleting `state/cache.json`.
+- `PetJsonCreator.java` has no `new Pet(...)` entries. An empty, truncated or
+  restyled file would otherwise make every pet on the wiki look missing.
+- A page could not be read. It keeps whatever was known about that page, retries
+  it next run, and lists it under "Pages that could not be read".
+
+Corrupt state files are not an error: `cache.json` and `acknowledged.json` are
+discarded and rebuilt, as is a cache written by an older version. A missing or
+malformed `pets.json` only disables the drop rate comparison.
+
 ## Limitations
 
 - Ids come from the wiki, so a pet is invisible to the id comparison until an

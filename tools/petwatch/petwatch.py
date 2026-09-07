@@ -78,6 +78,15 @@ PAGE_BLOCKLIST = {
 # --------------------------------------------------------------------------
 MAX_RESPONSE = 32 * 1024 * 1024  # nothing we fetch is remotely this big
 
+# Bumped whenever cache.json's shape changes. A cache from another version is
+# discarded rather than half-read, which would silently drop pets.
+CACHE_SCHEMA = 3
+
+# The article has listed on the order of 100 pets for years. Far below that means
+# something went wrong upstream, and reporting "all clear" would be a lie.
+MIN_EXPECTED_PAGES = 50
+MAX_SHRINK = 0.8
+
 
 def _request(url: str, headers: dict, retries: int = 3):
     """GET with retries. Returns (body, response headers); body is None on 304.
@@ -232,11 +241,17 @@ def plugin_constant_names(java: Path):
     text = java.read_text(encoding="utf-8", errors="replace")
     registered = sorted(set(PET_ENTRY.findall(text)))
     mentioned = sorted(set(ANY_NPCID.findall(text)) - set(registered))
-    if not registered and mentioned:
-        # the file's shape changed; reporting every pet as missing would be worse
+    if not registered:
+        # With no registered ids every pet on the wiki looks missing, so an
+        # empty, truncated or restyled file would raise hundreds of false
+        # findings. Refuse instead.
         raise RuntimeError(
-            "found NpcID references in " + java.name + " but none inside a `new Pet(...)` call; "
-            "PET_ENTRY needs updating for the new style"
+            "no `new Pet(...)` entries found in " + java.name
+            + (
+                "; the file has NpcID references, so PET_ENTRY needs updating for a new style"
+                if mentioned
+                else "; the file looks empty or truncated"
+            )
         )
     return registered, mentioned
 
@@ -789,6 +804,12 @@ def main() -> int:
     cache_file = state_dir / "cache.json"
     ack = load_json(ack_file)
     cache = load_json(cache_file)
+    # A cache from another version, or one missing anything we rely on, is
+    # discarded whole. Half-reading it silently drops pets from the check.
+    if cache.get("schema") != CACHE_SCHEMA or not all(
+        k in cache for k in ("titles", "page_revids", "page_variants", "pet_rows", "page_rates")
+    ):
+        cache = {}
     force = args.force or args.all
 
     def log(*a):
@@ -819,6 +840,10 @@ def main() -> int:
     log("runelite 'latest.release' -> " + release)
 
     cat = category_members("Category:Pets")
+    if not cat:
+        # this category has never been empty; an empty answer is a failed query,
+        # and continuing would quietly check only part of the list
+        raise RuntimeError("Category:Pets came back empty; treating that as a failed query")
     known = cache.get("titles", [])
     meta = page_meta(sorted(set(cat) | set(known) | {"Pet"}))
 
@@ -827,8 +852,12 @@ def main() -> int:
     if pet_article_changed or not known:
         log("Pet article changed, re-reading its tables")
         pet_rows = parse_pet_rows(page_wikitext(["Pet"]).get("Pet", ""))
+        if not pet_rows:
+            # the article always has the tables; empty means the fetch or the
+            # parse failed, and drop rate tracking would silently go dead
+            raise RuntimeError("no pet rows parsed from the Pet article; refusing to run on that")
     else:
-        pet_rows = cache.get("pet_rows", {})
+        pet_rows = cache["pet_rows"]
     sections = {page: row.get("section", "") for page, row in pet_rows.items()}
 
     titles = sorted((set(cat) | set(sections)) - PAGE_BLOCKLIST)
@@ -847,6 +876,21 @@ def main() -> int:
         if pageid is not None:
             seen_pageid[pageid] = t
         titles.append(t)
+
+    # Better to fail loudly than to check a truncated list and call it all clear.
+    previous = len(cache.get("titles", []))
+    if len(titles) < MIN_EXPECTED_PAGES:
+        raise RuntimeError(
+            "only " + str(len(titles)) + " pet pages found (expected at least "
+            + str(MIN_EXPECTED_PAGES) + "); Category:Pets or the Pet article did not "
+            "come back as expected, so this run would under-report"
+        )
+    if previous and len(titles) < previous * MAX_SHRINK:
+        raise RuntimeError(
+            "pet page list shrank from " + str(previous) + " to " + str(len(titles))
+            + "; refusing to report against a partial list. If the drop is genuine, "
+            "delete " + str(cache_file.name) + " to accept the new list."
+        )
 
     revids = {t: m["revid"] for t, m in meta.items()}
 
@@ -1058,6 +1102,7 @@ def main() -> int:
         cache_file.write_text(
             json.dumps(
                 {
+                    "schema": CACHE_SCHEMA,
                     "checked_at": findings["checked_at"],
                     "runelite_release": release,
                     "runelite_validators": validators,

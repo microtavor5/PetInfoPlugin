@@ -1,0 +1,163 @@
+name: Pet watch
+
+# Checks the OSRS Wiki for pets, pet variants and drop rate changes that
+# PetInfoPlugin does not carry yet, and opens an issue when it finds any. GitHub
+# emails the repository owner about issues opened on their own repository, so no
+# extra notification setup is needed for the email path.
+
+on:
+  schedule:
+    # Daily at 17:17 UTC, off the hour so it is not queued behind the crowd.
+    #
+    # Wednesday is the run that matters: the game update lands around 11:30 and
+    # takes about half an hour, so 17:17 leaves the wiki roughly five hours to
+    # be updated. The other six days are the safety net for when it is not, and
+    # they are nearly free - petwatch probes revision ids first and stops after
+    # ~15KB unless something actually changed. See tools/petwatch/README.md.
+    - cron: '17 17 * * *'
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Report every missing variant, not just ones new since the last run'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: pet-watch
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Read here rather than in the step: the secrets context is not available
+      # in a step-level `if`, but the env context is.
+      PETWATCH_WEBHOOK: ${{ secrets.PETWATCH_WEBHOOK }}
+      # Holds acknowledged.json alone, off the default branch.
+      STATE_BRANCH: petwatch-state
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Carries revision ids, parsed variants and the NpcID.java download
+      # between runs so a daily check costs ~15KB instead of ~1.8MB. Losing the
+      # cache is harmless: the next run just does the full check once.
+      - name: Restore probe cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            tools/petwatch/state/cache.json
+            tools/petwatch/state/NpcID-*.java
+          key: petwatch-cache-${{ github.run_id }}
+          restore-keys: petwatch-cache-
+
+      # Cheap, offline, and worth failing on: a report from parsing code that no
+      # longer does what it claims is worse than no report.
+      - name: Run the tests
+        run: python -m unittest discover -s tools/petwatch
+
+      # acknowledged.json lives on its own branch, not on the default branch:
+      # the default branch requires a pull request, and this keeps bot commits
+      # out of the plugin's history. Absent on the first ever run.
+      - name: Restore what has already been reported
+        run: |
+          mkdir -p tools/petwatch/state
+          # Fetch into a named ref, not FETCH_HEAD: actions/checkout already set
+          # FETCH_HEAD to the default branch, so a failed fetch here would leave
+          # that behind and be mistaken for state.
+          ref="refs/remotes/origin/$STATE_BRANCH"
+          if git fetch --depth=1 origin "+refs/heads/$STATE_BRANCH:$ref" 2>/dev/null \
+             && git cat-file -e "$ref:acknowledged.json" 2>/dev/null; then
+            git show "$ref:acknowledged.json" > tools/petwatch/state/acknowledged.json
+            echo "restored from $STATE_BRANCH"
+          else
+            echo "no $STATE_BRANCH state yet; everything will be reported as new"
+          fi
+
+      - name: Check the wiki
+        id: check
+        env:
+          PETWATCH_UA: 'PetInfoPlugin-petwatch/1.0 (https://github.com/${{ github.repository }})'
+          # expressions go through env rather than being pasted into the script
+          FULL: ${{ inputs.full && '--all' || '' }}
+        run: |
+          set +e
+          # shellcheck disable=SC2086  # FULL is a single optional flag or empty
+          python tools/petwatch/petwatch.py \
+            --report "$RUNNER_TEMP/report.md" \
+            --json "$RUNNER_TEMP/findings.json" \
+            $FULL \
+            --verbose
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Fail on error
+        if: steps.check.outputs.status == '1'
+        run: |
+          echo "petwatch errored; see the previous step" >&2
+          exit 1
+
+      - name: Open an issue
+        if: steps.check.outputs.status == '10'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            cat "$RUNNER_TEMP/report.md"
+            echo
+            echo "---"
+            echo "Found by \`tools/petwatch\` in [this run]($RUN_URL)."
+            echo
+            echo "Data from the [Old School RuneScape Wiki](https://oldschool.runescape.wiki), [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)."
+          } > "$RUNNER_TEMP/issue.md"
+          gh issue create \
+            --title "Pets to add: wiki check $(date -u +%Y-%m-%d)" \
+            --body-file "$RUNNER_TEMP/issue.md"
+
+      # Optional. Set the PETWATCH_WEBHOOK secret to also get a push/WhatsApp
+      # ping (Twilio, CallMeBot, ntfy, a Zapier/Make hook, ...). Skipped when
+      # the secret is not set.
+      - name: Ping webhook
+        if: steps.check.outputs.status == '10' && env.PETWATCH_WEBHOOK != ''
+        run: |
+          python tools/petwatch/notify.py --findings "$RUNNER_TEMP/findings.json"
+
+      # Written straight to STATE_BRANCH with plumbing: no second checkout, no
+      # worktree, and the default branch is never touched. The branch holds one
+      # file and a linear history, so it is cheap to fetch at --depth=1.
+      - name: Record what has been reported
+        if: steps.check.outputs.status != '1'
+        run: |
+          ack=tools/petwatch/state/acknowledged.json
+          if [ ! -f "$ack" ]; then
+            echo "petwatch wrote no acknowledgement file; nothing to record"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          ref="refs/remotes/origin/$STATE_BRANCH"
+          git fetch --depth=1 origin "+refs/heads/$STATE_BRANCH:$ref" 2>/dev/null || true
+          parent=$(git rev-parse -q --verify "$ref" || true)
+          previous=$(git rev-parse -q --verify "$ref:acknowledged.json" || true)
+
+          blob=$(git hash-object -w "$ack")
+          if [ "$blob" = "$previous" ]; then
+            echo "nothing new to acknowledge"
+            exit 0
+          fi
+
+          tree=$(printf '100644 blob %s\tacknowledged.json\n' "$blob" | git mktree)
+          if [ -n "$parent" ]; then
+            commit=$(git commit-tree "$tree" -p "$parent" -m 'petwatch: record reported findings')
+          else
+            commit=$(git commit-tree "$tree" -m 'petwatch: record reported findings')
+          fi
+          git push origin "$commit:refs/heads/$STATE_BRANCH"

@@ -320,14 +320,71 @@ def page_wikitext(titles: list) -> dict:
 
 
 PLINKT = re.compile(r"\{\{plinkt\|([^|}]+)")
+CELL_ATTR = re.compile(r'^[a-zA-Z-]+\s*=\s*(?:"[^"]*"|\S*)\s*\|(?!\|)(.*)$', re.S)
 
 
-def pets_from_pet_article(text: str) -> dict:
-    """{{plinkt|Name}} entries inside the 'List of pets' tables -> section name."""
-    found = {}
-    section = ""
-    in_list = False
-    for line in text.splitlines():
+def _split_cells(line: str) -> list:
+    """Split a table line on ||, ignoring separators inside {{ }} or [[ ]]."""
+    out, buf, depth, i = [], [], 0, 0
+    while i < len(line):
+        pair = line[i : i + 2]
+        if pair in ("{{", "[["):
+            depth += 1
+            buf.append(pair)
+            i += 2
+        elif pair in ("}}", "]]"):
+            depth -= 1
+            buf.append(pair)
+            i += 2
+        elif pair == "||" and depth == 0:
+            out.append("".join(buf))
+            buf = []
+            i += 2
+        else:
+            buf.append(line[i])
+            i += 1
+    out.append("".join(buf))
+    return out
+
+
+def _cell_text(cell: str) -> str:
+    """Drop any leading cell attributes ('data-sort-value=2560 | 1/2,560')."""
+    cell = cell.strip()
+    m = CELL_ATTR.match(cell)
+    return (m.group(1) if m else cell).strip()
+
+
+def strip_footnotes(text: str) -> str:
+    """Remove {{efn|...}}, which repeats and qualifies rates rather than stating them."""
+    out, i = [], 0
+    while i < len(text):
+        if text[i:].startswith("{{efn"):
+            depth = 0
+            while i < len(text):
+                if text[i : i + 2] == "{{":
+                    depth += 1
+                    i += 2
+                elif text[i : i + 2] == "}}":
+                    depth -= 1
+                    i += 2
+                    if depth == 0:
+                        break
+                else:
+                    i += 1
+            continue
+        out.append(text[i])
+        i += 1
+    return "".join(out)
+
+
+def parse_pet_rows(text: str) -> dict:
+    """Rows of the 'List of pets' tables: page -> {section, rate cell}."""
+    rows = {}
+    section, in_list = "", False
+    lines = text.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
         heading = re.match(r"^(={2,3})\s*(.+?)\s*\1\s*$", line)
         if heading:
             level, title = len(heading.group(1)), heading.group(2)
@@ -336,12 +393,32 @@ def pets_from_pet_article(text: str) -> dict:
                 section = title if in_list else ""
             elif in_list:
                 section = title
+            i += 1
             continue
-        if not in_list:
+        if not (in_list and line.startswith("|-")):
+            i += 1
             continue
-        for m in PLINKT.finditer(line):
-            found.setdefault(m.group(1).strip(), section)
-    return found
+        cells = []
+        i += 1
+        while i < len(lines) and not lines[i].startswith(("|-", "|}", "=")):
+            if lines[i].startswith("|"):
+                cells.extend(_split_cells(lines[i][1:]))
+            elif cells:
+                cells[-1] += "\n" + lines[i]
+            i += 1
+        if not cells:
+            continue
+        name = PLINKT.search(cells[0])
+        if name:
+            # columns: pet | source | drop rate | release date
+            rate = _cell_text(cells[2]) if len(cells) >= 3 else ""
+            rows.setdefault(name.group(1).strip(), {"section": section, "rate": rate})
+    return rows
+
+
+def pets_from_pet_article(text: str) -> dict:
+    """{{plinkt|Name}} entries inside the 'List of pets' tables -> section name."""
+    return {page: row["section"] for page, row in parse_pet_rows(text).items()}
 
 
 def extract_template(text: str, name: str) -> list:
@@ -427,6 +504,72 @@ def parse_ids(raw: str) -> list:
     return [int(n) for n in re.findall(r"\d+", raw)]
 
 
+# --------------------------------------------------------------------------
+# drop rates
+# --------------------------------------------------------------------------
+RATE_RE = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s*/\s*(\d[\d,]*(?:\.\d+)?)")
+# "1/800 to 1/4,000", "1/250-1/1000": a span rather than a fixed rate
+RANGE_RE = re.compile(r"\d\s*(?:to|-|–|—)\s*~?\s*\d+\s*/")
+
+
+def extract_rates(text: str) -> list:
+    """Normalised 'a/b' rates, in order, deduplicated."""
+    seen, out = set(), []
+    for a, b in RATE_RE.findall(text or ""):
+        rate = a.replace(",", "") + "/" + b.replace(",", "")
+        if rate not in seen:
+            seen.add(rate)
+            out.append(rate)
+    return out
+
+
+def wiki_rate_info(cell: str) -> dict:
+    """What the Pet article states for one pet.
+
+    `stated` is the rate column proper; `supporting` also includes footnotes,
+    which often give an alternative framing (per kill vs per unsired) that the
+    plugin may legitimately use instead.
+    """
+    flat = re.sub(r"\s+", " ", cell or "")
+    stated = extract_rates(strip_footnotes(flat))
+    return {
+        "stated": stated,
+        "supporting": extract_rates(flat),
+        # a span, or an explicit "Varies", is not a number worth diffing
+        "ambiguous": bool(RANGE_RE.search(flat)) or "varies" in flat.lower(),
+    }
+
+
+def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
+    """page -> (rates the shipped plugin text states, one sample of that text)."""
+    if not pets_json.exists():
+        return {}
+    try:
+        entries = json.loads(pets_json.read_text(encoding="utf-8"))
+    except ValueError:
+        return {}
+    by_id = {}
+    for key, entry in entries.items():
+        info = (entry or {}).get("info")
+        if info:
+            by_id[str(key)] = info
+    out = {}
+    for page, variants in page_variants.items():
+        infos, rates = [], []
+        for v in variants:
+            for npc_id in v["ids"]:
+                info = by_id.get(str(npc_id))
+                if info and info not in infos:
+                    infos.append(info)
+        for info in infos:
+            for rate in extract_rates(info):
+                if rate not in rates:
+                    rates.append(rate)
+        if infos:
+            out[page] = {"rates": rates, "info": infos[0]}
+    return out
+
+
 def parse_variants(title: str, text: str) -> list:
     """Each visual variant of a pet with its NPC ids."""
     variants = []
@@ -510,13 +653,43 @@ def build_report(findings: dict) -> str:
     new_pages = findings["new_pages"]
     api_info = findings["runelite"]
 
-    if not missing and not new_pages and not findings.get("fetch_failures"):
+    rate_changes = findings.get("rate_changes") or []
+    rate_conflicts = findings.get("rate_conflicts") or []
+
+    if not any((missing, new_pages, findings.get("fetch_failures"), rate_changes, rate_conflicts)):
         return (
-            "No new pets or variants. The plugin covers every NPC id on the wiki pet "
-            "pages, checked against RuneLite " + api_info["release"] + "."
+            "No new pets, variants or drop rate changes. The plugin covers every NPC id "
+            "on the wiki pet pages, checked against RuneLite " + api_info["release"] + "."
         )
 
     lines = []
+
+    if rate_changes:
+        lines.append("### " + str(len(rate_changes)) + " drop rate(s) changed on the wiki")
+        lines.append("")
+        for c in sorted(rate_changes, key=lambda x: x["page"]):
+            note = " - " + md(c["section"]) if c.get("section") else ""
+            lines.append(
+                "- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note
+                + ": `" + ", ".join(c["was"]) + "` -> `" + ", ".join(c["now"]) + "`"
+            )
+        lines.append("")
+        lines.append("Update the matching info string in `PetJsonCreator.java` if it quotes a rate.")
+        lines.append("")
+
+    if rate_conflicts:
+        lines.append("### " + str(len(rate_conflicts)) + " drop rate(s) where the plugin disagrees with the wiki")
+        lines.append("")
+        for c in sorted(rate_conflicts, key=lambda x: x["page"]):
+            note = " - " + md(c["section"]) if c.get("section") else ""
+            lines.append("- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note)
+            lines.append("  - wiki: `" + ", ".join(c["wiki"]) + "`")
+            lines.append("  - plugin: `" + ", ".join(c["plugin"]) + "` - " + md(c["info"], 200))
+        lines.append("")
+        lines.append("Some of these are wording rather than errors: the plugin may describe a")
+        lines.append("different route to the pet than the rate column does. Anything you decide")
+        lines.append("to leave alone is recorded and will not be raised again.")
+        lines.append("")
     for status in ("ready", "pending-release", "no-constant"):
         group = [m for m in missing if m["status"] == status]
         if not group:
@@ -611,7 +784,12 @@ def main() -> int:
 
     # ---- probe: cheap signals only -------------------------------------
     names, mentioned = plugin_constant_names(java)
-    plugin_digest = hashlib.sha256("\n".join(names).encode()).hexdigest()
+    digest = hashlib.sha256("\n".join(names).encode())
+    # pets.json carries the shipped rate text, so regenerating it must re-check
+    pets_json = args.repo / "pets.json"
+    if pets_json.exists():
+        digest.update(pets_json.read_bytes())
+    plugin_digest = digest.hexdigest()
     log(str(len(names)) + " constants registered as pets"
         + (", " + str(len(mentioned)) + " mentioned but not registered" if mentioned else ""))
 
@@ -631,11 +809,14 @@ def main() -> int:
     known = cache.get("titles", [])
     meta = page_meta(sorted(set(cat) | set(known) | {"Pet"}))
 
-    if meta.get("Pet", {}).get("revid") != cache.get("pet_article_revid") or not known:
+    pet_revid = meta.get("Pet", {}).get("revid")
+    pet_article_changed = pet_revid != cache.get("pet_article_revid")
+    if pet_article_changed or not known:
         log("Pet article changed, re-reading its tables")
-        sections = pets_from_pet_article(page_wikitext(["Pet"]).get("Pet", ""))
+        pet_rows = parse_pet_rows(page_wikitext(["Pet"]).get("Pet", ""))
     else:
-        sections = cache.get("sections", {})
+        pet_rows = cache.get("pet_rows", {})
+    sections = {page: row.get("section", "") for page, row in pet_rows.items()}
 
     titles = sorted((set(cat) | set(sections)) - PAGE_BLOCKLIST)
     absent = [t for t in titles if t not in meta]
@@ -664,6 +845,9 @@ def main() -> int:
     settled = (
         not changed
         and not dropped
+        # drop rates live in the Pet article, so an edit there matters even when
+        # no individual pet page moved
+        and not pet_article_changed
         and cache.get("runelite_release") == release
         and cache.get("plugin_digest") == plugin_digest
         and cache.get("page_variants") is not None
@@ -758,15 +942,61 @@ def main() -> int:
                 }
             )
 
+    # ---- drop rates ----------------------------------------------------
+    # Only pets the article gives a concrete rate for. Skilling pets link to a
+    # formula ("See here") and the generic pets say "NA", so both drop out here
+    # without needing to be named.
+    plugin_rates = plugin_rates_by_page(args.repo / "pets.json", page_variants)
+    prev_rates = cache.get("page_rates", {})
+    page_rates, rate_changes, rate_conflicts = {}, [], []
+
+    for page in sorted(page_variants):
+        info = wiki_rate_info(pet_rows.get(page, {}).get("rate", ""))
+        if not info["stated"]:
+            continue
+        page_rates[page] = info["stated"]
+
+        was = prev_rates.get(page)
+        if was is not None and was != info["stated"]:
+            rate_changes.append({"page": page, "was": was, "now": info["stated"],
+                                 "section": sections.get(page, "")})
+
+        if info["ambiguous"]:
+            continue
+        plugin = plugin_rates.get(page)
+        if not plugin or not plugin["rates"]:
+            continue
+        # the plugin may quote a footnote's framing instead of the headline rate
+        if set(plugin["rates"]) <= set(info["supporting"]) and set(info["stated"]) <= set(plugin["rates"]):
+            continue
+        if set(plugin["rates"]) == set(info["stated"]):
+            continue
+        rate_conflicts.append({
+            "page": page,
+            "wiki": info["stated"],
+            "plugin": plugin["rates"],
+            "info": plugin["info"],
+            "section": sections.get(page, ""),
+        })
+
     # status is part of the key, so a variant that becomes buildable when the next
     # RuneLite release lands is reported again rather than staying silent.
     def key_of(m):
         return m["page"] + "::" + m["variant"] + "::" + m["status"]
 
+    def rate_key(c):
+        return c["page"] + "::" + ",".join(c["wiki"]) + "::" + ",".join(c["plugin"])
+
     prev_pages = set(ack.get("pages", []))
     prev_missing = set(ack.get("missing_keys", []))
+    prev_rate_keys = set(ack.get("rate_keys", []))
     new_pages = sorted(set(titles) - prev_pages) if prev_pages else []
     shown = missing if (args.all or not prev_missing) else [m for m in missing if key_of(m) not in prev_missing]
+    shown_conflicts = (
+        rate_conflicts
+        if (args.all or not prev_rate_keys)
+        else [c for c in rate_conflicts if rate_key(c) not in prev_rate_keys]
+    )
 
     findings = {
         "checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -778,6 +1008,9 @@ def main() -> int:
         "missing_total": len(missing),
         "new_pages": new_pages,
         "fetch_failures": fetch_failures,
+        "rate_changes": rate_changes,
+        "rate_conflicts": shown_conflicts,
+        "rates_tracked": len(page_rates),
         "unresolved_constants": unresolved,
         "runelite": {
             "release": release,
@@ -802,6 +1035,7 @@ def main() -> int:
                     "runelite_release": release,
                     "pages": sorted(titles),
                     "missing_keys": sorted(key_of(m) for m in missing),
+                    "rate_keys": sorted(rate_key(c) for c in rate_conflicts),
                 },
                 indent=2,
             )
@@ -815,8 +1049,9 @@ def main() -> int:
                     "runelite_release": release,
                     "runelite_validators": validators,
                     "plugin_digest": plugin_digest,
-                    "pet_article_revid": meta.get("Pet", {}).get("revid"),
-                    "sections": sections,
+                    "pet_article_revid": pet_revid,
+                    "pet_rows": pet_rows,
+                    "page_rates": page_rates,
                     "titles": sorted(titles),
                     "page_revids": {t: revids[t] for t in titles if t in revids},
                     "page_variants": page_variants,
@@ -827,7 +1062,7 @@ def main() -> int:
             encoding="utf-8",
         )
 
-    return 10 if (shown or new_pages or fetch_failures) else 0
+    return 10 if (shown or new_pages or fetch_failures or rate_changes or shown_conflicts) else 0
 
 
 if __name__ == "__main__":

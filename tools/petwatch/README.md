@@ -27,8 +27,9 @@ wikitext of ~98 pet pages. Running that daily to catch the occasional late wiki
 edit would be wasteful, so each run starts with a probe that asks only for
 revision ids, the category listing and the RuneLite release number.
 
-If no pet page has been edited, the category is unchanged, the RuneLite release
-is unchanged and `PetJsonCreator.java` is unchanged, the run stops there:
+If no pet page has been edited, the Pet article and the category are unchanged,
+the RuneLite release is unchanged and the plugin is unchanged, the run stops
+there:
 
 | | requests | downloaded |
 | --- | --- | --- |
@@ -81,6 +82,28 @@ Gradle caches `latest.release` for 24h, so petwatch can report a constant as
 available before your local build sees it - fix with
 `./gradlew --refresh-dependencies build`. petwatch reads the metadata over HTTP
 and is not affected by that cache.
+
+## Drop rates
+
+petwatch also reads the drop rate column of the Pet article's tables, reports
+when a rate changes, and compares it against the rate quoted in `pets.json`.
+
+Only pets the article gives a concrete rate for are considered, which excludes
+the ones you would not want to hear about without having to name them: skilling
+pets link to a formula (`See here`), the generic pets say `NA`, and rates given
+as a span (`1/800 to 1/4,000`) or described as varying are skipped. In practice
+that tracks the boss and collection-log pets and nothing else.
+
+Two kinds of finding:
+
+- **changed on the wiki** - the rate moved since the last check. Always reported.
+- **plugin disagrees** - `pets.json` quotes a different rate. Reported once, then
+  recorded, because some are wording rather than errors: the plugin may describe
+  a different route to the pet than the rate column does, as with Abyssal orphan
+  being quoted per unsired and the table per Sire kill.
+
+Rates are read from `pets.json` rather than `PetJsonCreator.java` because that is
+what actually ships; regenerating it re-runs the check.
 
 ## Usage
 

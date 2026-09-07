@@ -1,9 +1,9 @@
 name: Pet watch
 
-# Checks the OSRS Wiki for pets and pet variants that PetInfoPlugin does not
-# register yet, and opens an issue when it finds any. GitHub emails you about
-# issues opened on your own repository, so no extra notification setup is
-# needed for the email path.
+# Checks the OSRS Wiki for pets, pet variants and drop rate changes that
+# PetInfoPlugin does not carry yet, and opens an issue when it finds any. GitHub
+# emails the repository owner about issues opened on their own repository, so no
+# extra notification setup is needed for the email path.
 
 on:
   schedule:

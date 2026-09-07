@@ -5,32 +5,36 @@ yet registered in PetInfoPlugin's PetJsonCreator.java.
 
 How it works
 ------------
-1. Works out which RuneLite API your build compiles against (build.gradle asks
-   for 'latest.release'), and loads the NpcID constants for that version.
+1. Works out which RuneLite API the plugin builds against (build.gradle asks for
+   'latest.release'), and loads the NpcID constants for that version.
 2. Builds the set of NPC ids the plugin already covers, by parsing every
-   `NpcID.SOME_CONSTANT` reference out of PetJsonCreator.java and resolving each
-   constant against that API.
+   `NpcID.SOME_CONSTANT` passed to a `new Pet(...)` call in PetJsonCreator.java
+   and resolving each constant against that API.
 3. Builds the set of pet pages on the wiki: members of Category:Pets, unioned
    with every {{plinkt|...}} entry in the tables on the "Pet" article.
 4. Pulls the raw wikitext of each pet page and extracts each variant's NPC ids
    from its {{Infobox NPC}} (`|id =` / `|id1 =` ...).
 5. Reports any wiki variant whose ids are entirely absent from the plugin, split
-   by whether you can act on it yet (see STATUS_HEADINGS).
+   by whether it can be acted on yet (see STATUS_HEADINGS).
+6. Reads the drop rate column of the Pet article's tables, reports rates that
+   changed, and compares them against the rates quoted in pets.json. Only pets
+   given a concrete rate are considered, so skilling and generic pets drop out.
 
 Cheap repeat checks
 -------------------
-Steps 3-5 are preceded by a probe that only asks for revision ids, the category
-listing and the RuneLite release number - roughly 46KB against ~1.8MB for the
-full check. If no pet page has been edited, the category is unchanged, the
-RuneLite release is unchanged and PetJsonCreator.java is unchanged, the run
-stops there. This makes running daily about as cheap as running weekly, so a
-wiki edit that lands late is picked up the next day instead of the next week.
+Steps 3-6 are preceded by a probe that only asks for revision ids, the category
+listing and the RuneLite release number - about 15KB against ~1.8MB for the full
+check. The run stops there unless a pet page was edited, the Pet article or the
+category changed, the RuneLite release moved, or PetJsonCreator.java or
+pets.json changed. That makes running daily about as cheap as running weekly, so
+a wiki edit that lands late is picked up the next day instead of the next week.
 
-Two state files, with different jobs:
-  acknowledged.json - what you have already been told about. Durable, small,
-                      meant to be committed.
-  cache.json        - revision ids and parsed variants from the last run. Purely
-                      an optimisation; deleting it only costs one full check.
+State, with different jobs:
+  acknowledged.json - what has already been reported. Durable, small, meant to
+                      be committed.
+  cache.json        - revision ids, parsed variants and rates from the last run,
+                      plus the NpcID-*.java downloads alongside it. Purely an
+                      optimisation; deleting it only costs one full check.
 
 Exit codes: 0 = nothing to do, 10 = findings, 1 = error.
 """
@@ -190,11 +194,6 @@ def parse_release(xml: str) -> str:
     if not m:
         raise RuntimeError("no <release> element in " + RUNELITE_METADATA)
     return check_version(m.group(1).strip())
-
-
-def released_runelite_version() -> str:
-    """The version Gradle's 'latest.release' resolves to (snapshots excluded)."""
-    return parse_release(http_get(RUNELITE_METADATA).decode("utf-8"))
 
 
 def load_npcid_map(state_dir: Path, ref: str, max_age_hours: float = 24.0) -> dict:
@@ -442,11 +441,6 @@ def parse_pet_rows(text: str) -> dict:
             rate = _cell_text(cells[2]) if len(cells) >= 3 else ""
             rows.setdefault(name.group(1).strip(), {"section": section, "rate": rate})
     return rows
-
-
-def pets_from_pet_article(text: str) -> dict:
-    """{{plinkt|Name}} entries inside the 'List of pets' tables -> section name."""
-    return {page: row["section"] for page, row in parse_pet_rows(text).items()}
 
 
 def extract_template(text: str, name: str) -> list:

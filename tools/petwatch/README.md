@@ -64,8 +64,8 @@ Separating those last two is the only thing `master` is needed for, so petwatch
 downloads it only when the released API leaves an id unexplained. Most runs
 fetch one copy of `NpcID.java`, not two.
 
-Status is part of the snapshot key, so a pending pet is reported again once a
-release makes it buildable.
+Status is part of the key recorded in `acknowledged.json`, so a pending pet is
+reported again once a release makes it buildable.
 
 `--runelite-release VERSION` checks against a specific version instead of
 whatever `latest.release` currently resolves to.

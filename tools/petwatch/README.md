@@ -9,7 +9,7 @@ It compares both sides by **NPC id**, rather than watching pages for edits
 (which fires on every typo and misses new variants entirely):
 
 - **Plugin** - every `NpcID.*` constant in `PetJsonCreator.java`, resolved
-  against the RuneLite API your build compiles against.
+  against the RuneLite API the plugin builds against.
 - **Wiki** - every pet page (`Category:Pets`, plus the `{{plinkt|...}}` entries
   in the `Pet` article tables), read for the `|id =` / `|id1 =` parameters of
   its `{{Infobox NPC}}`. Those hold one entry per variant.
@@ -52,7 +52,7 @@ is in a *released* RuneLite - being on `master` is not enough. petwatch reads
 (the metadata Gradle resolves against) and takes `NpcID.java` from the matching
 `runelite-parent-<version>` tag.
 
-Findings are split by what you can act on:
+Findings are split by what can be acted on:
 
 | Status | Meaning |
 | --- | --- |
@@ -67,21 +67,21 @@ fetch one copy of `NpcID.java`, not two.
 Status is part of the snapshot key, so a pending pet is reported again once a
 release makes it buildable.
 
-Use `--runelite-release VERSION` to check against a specific version instead of
+`--runelite-release VERSION` checks against a specific version instead of
 whatever `latest.release` currently resolves to.
 
 ### Constants the released API does not have
 
 If `PetJsonCreator.java` references an `NpcID` constant that is missing from the
 released API, the report lists it under its own heading instead of mixing it in
-with the wiki findings. This is not a pet to add - it would mean the plugin does not
-currently compile against the version it resolves to, normally because a
+with the wiki findings. This is not a pet to add - it would mean the plugin does
+not currently compile against the version it resolves to, normally because a
 constant was added while it was still only on `master`.
 
 Gradle caches `latest.release` for 24h, so petwatch can report a constant as
-available before your local build sees it - fix with
-`./gradlew --refresh-dependencies build`. petwatch reads the metadata over HTTP
-and is not affected by that cache.
+available before a local build sees it; `./gradlew --refresh-dependencies build`
+clears that. petwatch reads the metadata over HTTP and is not affected by the
+Gradle cache.
 
 ## Drop rates
 
@@ -89,10 +89,10 @@ petwatch also reads the drop rate column of the Pet article's tables, reports
 when a rate changes, and compares it against the rate quoted in `pets.json`.
 
 Only pets the article gives a concrete rate for are considered, which excludes
-the ones you would not want to hear about without having to name them: skilling
-pets link to a formula (`See here`), the generic pets say `NA`, and rates given
-as a span (`1/800 to 1/4,000`) or described as varying are skipped. In practice
-that tracks the boss and collection-log pets and nothing else.
+the noisy ones without having to name them: skilling pets link to a formula
+(`See here`), the generic pets say `NA`, and rates given as a span
+(`1/800 to 1/4,000`) or described as varying are skipped. In practice that
+tracks the boss and collection-log pets and nothing else.
 
 Two kinds of finding:
 
@@ -120,9 +120,9 @@ implies `--force`.
 
 Two state files in `state/`, with different jobs:
 
-- **`acknowledged.json`** - what you have already been told about, so a gap you
-  have chosen not to act on stops nagging. Small, changes only when the findings
-  do, and is committed.
+- **`acknowledged.json`** - what has already been reported, so a finding that was
+  looked at and left alone stops being raised. Small, changes only when the
+  findings do, and is committed.
 - **`cache.json`** and **`NpcID-*.java`** - revision ids, parsed variants and the
   downloaded API. Purely an optimisation, gitignored; deleting them costs one
   full check.
@@ -130,9 +130,10 @@ Two state files in `state/`, with different jobs:
 ## Automation
 
 `.github/workflows/pet-watch.yml` runs daily at 17:17 UTC, opens an issue on
-findings, and commits `acknowledged.json`. GitHub emails you about issues on your
-own repository, so the email path needs no setup. Run it by hand from the Actions
-tab; tick **full** for `--all`.
+findings, and commits `acknowledged.json`. GitHub emails the repository owner
+about issues opened on their own repository, so the email path needs no setup.
+The workflow can also be run by hand from the Actions tab, with **full** ticked
+for `--all`.
 
 Wednesday is the run that matters - the game update lands around 11:30 and takes
 about half an hour, so 17:17 leaves the wiki roughly five hours. The other six
@@ -140,9 +141,9 @@ days are the safety net for when the wiki is slower than that, and cost ~15KB
 each thanks to the probe. The probe cache is carried between runs by
 `actions/cache`; quiet days produce no commit.
 
-For a notification via an external service (like a text or WhatsApp), set a
-`PETWATCH_WEBHOOK` repository secret to a URL accepting a JSON `POST` (Twilio,
-CallMeBot, ntfy). The step is skipped when the secret is unset.
+A `PETWATCH_WEBHOOK` repository secret, set to a URL accepting a JSON `POST`
+(Twilio, CallMeBot, ntfy), adds a notification through an external service such
+as a text message. The step is skipped when the secret is unset.
 
 To run it locally on a schedule instead:
 
@@ -153,6 +154,28 @@ $action = New-ScheduledTaskAction -Execute 'python' `
 $trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Monday -At 9am
 Register-ScheduledTask -TaskName 'OSRS pet watch' -Action $action -Trigger $trigger
 ```
+
+## Wiki etiquette
+
+The wiki's [stated position](https://oldschool.runescape.wiki/w/Forum:API_and_terms_of_use)
+is that a custom User-Agent is preferred and that request volume should "be
+reasonable". petwatch:
+
+- goes through `api.php` only - it never scrapes article HTML, `Special:` pages
+  or `?action=raw`, and it does not touch the disallowed `Bucket:` namespace;
+- sends an identifying User-Agent naming the tool and this repository, so the
+  operators can see what the traffic is and make contact. The `PETWATCH_UA`
+  environment variable overrides it;
+- makes requests serially - about 5 on a quiet day, ~10 when something changed,
+  once per day;
+- sends `maxlag=5`, so the servers turn it away while they are lagging rather
+  than being asked to absorb load, and honours `Retry-After` when they do.
+
+`robots.txt` disallows `/*api.php`. That directive is aimed at indexing
+crawlers, and the same operators separately document and encourage API use for
+tools like this one; Wikipedia's `robots.txt` does the same thing for the same
+reason. A low-volume, clearly identified API client is what they have asked for,
+while HTML scraping is not - which is why the tool does none.
 
 ## Limitations
 

@@ -85,6 +85,8 @@ jobs:
             echo
             echo "---"
             echo "Found by \`tools/petwatch\` in [this run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+            echo
+            echo "Data from the [Old School RuneScape Wiki](https://oldschool.runescape.wiki), [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)."
           } > "$RUNNER_TEMP/issue.md"
           gh issue create \
             --title "Pets to add: wiki check $(date -u +%Y-%m-%d)" \

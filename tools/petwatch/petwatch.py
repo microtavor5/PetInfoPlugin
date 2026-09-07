@@ -87,6 +87,7 @@ def _request(url: str, headers: dict, retries: int = 3):
     """
     last = None
     for attempt in range(retries):
+        delay = 2 * (attempt + 1)
         req = urllib.request.Request(url, headers=dict(headers, **{"User-Agent": DEFAULT_UA}))
         try:
             with urllib.request.urlopen(req, timeout=60) as resp:
@@ -100,9 +101,14 @@ def _request(url: str, headers: dict, retries: int = 3):
             if 400 <= exc.code < 500:
                 raise RuntimeError("GET " + url + " failed: " + str(exc)) from exc
             last = exc
+            # a lagging or overloaded server (maxlag answers 503) says how long
+            # to wait; honour that rather than our own guess
+            retry_after = (exc.headers or {}).get("Retry-After", "") or ""
+            if retry_after.strip().isdigit():
+                delay = min(int(retry_after.strip()), 60)
         except (urllib.error.URLError, TimeoutError) as exc:
             last = exc
-        time.sleep(2 * (attempt + 1))
+        time.sleep(delay)
     raise RuntimeError("GET " + url + " failed after " + str(retries) + " attempts: " + str(last))
 
 
@@ -133,8 +139,15 @@ def http_get_conditional(url: str, validators: dict):
 def api(**params) -> dict:
     params.setdefault("format", "json")
     params.setdefault("formatversion", "2")
+    # Standard MediaWiki courtesy: if the database replicas are lagging by more
+    # than this many seconds, have the server turn us away (503 + Retry-After)
+    # instead of adding load while it is already struggling.
+    params.setdefault("maxlag", "5")
     url = WIKI_API + "?" + urllib.parse.urlencode(params)
-    return json.loads(http_get(url).decode("utf-8"))
+    data = json.loads(http_get(url).decode("utf-8"))
+    if "error" in data:
+        raise RuntimeError("wiki API error: " + json.dumps(data["error"])[:300])
+    return data
 
 
 def load_json(path: Path) -> dict:

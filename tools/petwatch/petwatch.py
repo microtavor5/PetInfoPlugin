@@ -691,9 +691,10 @@ def build_report(findings: dict) -> str:
         lines.append("")
         for c in sorted(rate_changes, key=lambda x: x["page"]):
             note = " - " + md(c["section"]) if c.get("section") else ""
+            now = ", ".join(c["now"]) if c["now"] else "no fixed rate"
             lines.append(
                 "- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note
-                + ": `" + ", ".join(c["was"]) + "` -> `" + ", ".join(c["now"]) + "`"
+                + ": `" + ", ".join(c["was"]) + "` -> `" + now + "`"
             )
         lines.append("")
         lines.append("Update the matching info string in `PetJsonCreator.java` if it quotes a rate.")
@@ -1003,11 +1004,18 @@ def main() -> int:
 
     for page in sorted(page_variants):
         info = wiki_rate_info(pet_rows.get(page, {}).get("rate", ""))
-        if not info["stated"]:
-            continue
-        page_rates[page] = info["stated"]
-
         was = prev_rates.get(page)
+
+        if not info["stated"]:
+            # A pet that used to quote a fixed rate and no longer does has still
+            # changed - the article switched it to a formula, a span or "Varies".
+            # Report that rather than letting it fall out of tracking unnoticed.
+            if was:
+                rate_changes.append({"page": page, "was": was, "now": [],
+                                     "section": sections.get(page, "")})
+            continue
+
+        page_rates[page] = info["stated"]
         if was is not None and was != info["stated"]:
             rate_changes.append({"page": page, "was": was, "now": info["stated"],
                                  "section": sections.get(page, "")})

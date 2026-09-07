@@ -37,6 +37,8 @@ jobs:
       # Read here rather than in the step: the secrets context is not available
       # in a step-level `if`, but the env context is.
       PETWATCH_WEBHOOK: ${{ secrets.PETWATCH_WEBHOOK }}
+      # Holds acknowledged.json alone, off the default branch.
+      STATE_BRANCH: petwatch-state
     steps:
       - uses: actions/checkout@v4
 
@@ -55,6 +57,29 @@ jobs:
             tools/petwatch/state/NpcID-*.java
           key: petwatch-cache-${{ github.run_id }}
           restore-keys: petwatch-cache-
+
+      # Cheap, offline, and worth failing on: a report from parsing code that no
+      # longer does what it claims is worse than no report.
+      - name: Run the tests
+        run: python -m unittest discover -s tools/petwatch
+
+      # acknowledged.json lives on its own branch, not on the default branch:
+      # the default branch requires a pull request, and this keeps bot commits
+      # out of the plugin's history. Absent on the first ever run.
+      - name: Restore what has already been reported
+        run: |
+          mkdir -p tools/petwatch/state
+          # Fetch into a named ref, not FETCH_HEAD: actions/checkout already set
+          # FETCH_HEAD to the default branch, so a failed fetch here would leave
+          # that behind and be mistaken for state.
+          ref="refs/remotes/origin/$STATE_BRANCH"
+          if git fetch --depth=1 origin "+refs/heads/$STATE_BRANCH:$ref" 2>/dev/null \
+             && git cat-file -e "$ref:acknowledged.json" 2>/dev/null; then
+            git show "$ref:acknowledged.json" > tools/petwatch/state/acknowledged.json
+            echo "restored from $STATE_BRANCH"
+          else
+            echo "no $STATE_BRANCH state yet; everything will be reported as new"
+          fi
 
       - name: Check the wiki
         id: check
@@ -104,27 +129,35 @@ jobs:
         run: |
           python tools/petwatch/notify.py --findings "$RUNNER_TEMP/findings.json"
 
-      # Only acknowledged.json is committed, and it changes just when the
-      # findings do - so quiet days produce no commit at all. The probe cache is
-      # kept out of git deliberately; it churns on every wiki edit.
+      # Written straight to STATE_BRANCH with plumbing: no second checkout, no
+      # worktree, and the default branch is never touched. The branch holds one
+      # file and a linear history, so it is cheap to fetch at --depth=1.
       - name: Record what has been reported
         if: steps.check.outputs.status != '1'
         run: |
+          ack=tools/petwatch/state/acknowledged.json
+          if [ ! -f "$ack" ]; then
+            echo "petwatch wrote no acknowledgement file; nothing to record"
+            exit 0
+          fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add tools/petwatch/state/acknowledged.json
-          if git diff --cached --quiet; then
+
+          ref="refs/remotes/origin/$STATE_BRANCH"
+          git fetch --depth=1 origin "+refs/heads/$STATE_BRANCH:$ref" 2>/dev/null || true
+          parent=$(git rev-parse -q --verify "$ref" || true)
+          previous=$(git rev-parse -q --verify "$ref:acknowledged.json" || true)
+
+          blob=$(git hash-object -w "$ack")
+          if [ "$blob" = "$previous" ]; then
             echo "nothing new to acknowledge"
             exit 0
           fi
-          git commit -m 'petwatch: record reported findings'
-          # someone may have pushed while this was running; rebase and retry
-          for attempt in 1 2 3; do
-            if git push; then
-              exit 0
-            fi
-            echo "push rejected, rebasing (attempt $attempt)"
-            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || exit 1
-          done
-          echo "could not push the acknowledgement after 3 attempts" >&2
-          exit 1
+
+          tree=$(printf '100644 blob %s\tacknowledged.json\n' "$blob" | git mktree)
+          if [ -n "$parent" ]; then
+            commit=$(git commit-tree "$tree" -p "$parent" -m 'petwatch: record reported findings')
+          else
+            commit=$(git commit-tree "$tree" -m 'petwatch: record reported findings')
+          fi
+          git push origin "$commit:refs/heads/$STATE_BRANCH"

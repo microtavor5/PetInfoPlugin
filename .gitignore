@@ -1,6 +1,10 @@
 .gradle/
 .idea/
 build/
-# petwatch downloads a ~1.2MB copy of RuneLite NpcID.java as a cache
-tools/petwatch/state/NpcID-*.java
-tools/petwatch/state/cache.json
+# petwatch keeps its state and caches here. Nothing in it belongs on this
+# branch: acknowledged.json is pushed to the petwatch-state branch instead,
+# and the rest is a rebuildable cache.
+tools/petwatch/state/
+
+# running the petwatch tests byte-compiles the modules next to them
+__pycache__/

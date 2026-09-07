@@ -118,22 +118,30 @@ Python 3.9+, no dependencies. Exit codes: `0` nothing to do, `10` findings,
 `1` error. `--report FILE` and `--json FILE` also write the output. `--all`
 implies `--force`.
 
-Two state files in `state/`, with different jobs:
+`state/` holds two kinds of thing, with different jobs. All of it is gitignored
+on this branch:
 
 - **`acknowledged.json`** - what has already been reported, so a finding that was
-  looked at and left alone stops being raised. Small, changes only when the
-  findings do, and is committed.
-- **`cache.json`** and **`NpcID-*.java`** - revision ids, parsed variants and the
-  downloaded API. Purely an optimisation, gitignored; deleting them costs one
-  full check.
+  looked at and left alone stops being raised. Durable: in CI it is stored on a
+  separate `petwatch-state` branch (see below). Deleting it means everything
+  outstanding is reported again.
+- **`cache.json`** and **`NpcID-*.java`** - revision ids, parsed variants, rates
+  and the downloaded API. Purely an optimisation; deleting them costs one full
+  check.
 
 ## Automation
 
-`.github/workflows/pet-watch.yml` runs daily at 17:17 UTC, opens an issue on
-findings, and commits `acknowledged.json`. GitHub emails the repository owner
-about issues opened on their own repository, so the email path needs no setup.
-The workflow can also be run by hand from the Actions tab, with **full** ticked
-for `--all`.
+`.github/workflows/pet-watch.yml` runs daily at 17:17 UTC and opens an issue on
+findings. GitHub emails the repository owner about issues opened on their own
+repository, so the email path needs no setup. The workflow can also be run by
+hand from the Actions tab, with **full** ticked for `--all`.
+
+`acknowledged.json` is written to a dedicated **`petwatch-state`** branch rather
+than the default branch, which keeps bot commits out of the plugin's history and
+works where the default branch requires a pull request. The branch is created on
+first use, holds that one file, and is written with git plumbing - no second
+checkout, no worktree, and the default branch is never pushed to. Deleting the
+branch resets what has been reported; nothing else depends on it.
 
 Wednesday is the run that matters - the game update lands around 11:30 and takes
 about half an hour, so 17:17 leaves the wiki roughly five hours. The other six

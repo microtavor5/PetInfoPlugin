@@ -60,12 +60,15 @@ jobs:
         id: check
         env:
           PETWATCH_UA: 'PetInfoPlugin-petwatch/1.0 (https://github.com/${{ github.repository }})'
+          # expressions go through env rather than being pasted into the script
+          FULL: ${{ inputs.full && '--all' || '' }}
         run: |
           set +e
+          # shellcheck disable=SC2086  # FULL is a single optional flag or empty
           python tools/petwatch/petwatch.py \
             --report "$RUNNER_TEMP/report.md" \
             --json "$RUNNER_TEMP/findings.json" \
-            ${{ inputs.full && '--all' || '' }} \
+            $FULL \
             --verbose
           echo "status=$?" >> "$GITHUB_OUTPUT"
 
@@ -79,12 +82,13 @@ jobs:
         if: steps.check.outputs.status == '10'
         env:
           GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           {
             cat "$RUNNER_TEMP/report.md"
             echo
             echo "---"
-            echo "Found by \`tools/petwatch\` in [this run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+            echo "Found by \`tools/petwatch\` in [this run]($RUN_URL)."
             echo
             echo "Data from the [Old School RuneScape Wiki](https://oldschool.runescape.wiki), [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)."
           } > "$RUNNER_TEMP/issue.md"
@@ -98,24 +102,7 @@ jobs:
       - name: Ping webhook
         if: steps.check.outputs.status == '10' && env.PETWATCH_WEBHOOK != ''
         run: |
-          python - <<'PY'
-          import json, os, urllib.request
-          findings = json.load(open(os.environ["RUNNER_TEMP"] + "/findings.json"))
-          bits = []
-          if findings["missing"]:
-              bits.append(f"{len(findings['missing'])} pet variant(s) to add")
-          if findings["new_pages"]:
-              bits.append(f"{len(findings['new_pages'])} new pet page(s)")
-          if findings.get("fetch_failures"):
-              bits.append(f"{len(findings['fetch_failures'])} page(s) unreadable")
-          text = "PetInfoPlugin: " + ", ".join(bits) + ". See the new issue."
-          req = urllib.request.Request(
-              os.environ["PETWATCH_WEBHOOK"],
-              data=json.dumps({"text": text, "message": text}).encode(),
-              headers={"Content-Type": "application/json"},
-          )
-          urllib.request.urlopen(req, timeout=30).read()
-          PY
+          python tools/petwatch/notify.py --findings "$RUNNER_TEMP/findings.json"
 
       # Only acknowledged.json is committed, and it changes just when the
       # findings do - so quiet days produce no commit at all. The probe cache is

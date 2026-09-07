@@ -143,7 +143,17 @@ each thanks to the probe. The probe cache is carried between runs by
 
 A `PETWATCH_WEBHOOK` repository secret, set to a URL accepting a JSON `POST`
 (Twilio, CallMeBot, ntfy), adds a notification through an external service such
-as a text message. The step is skipped when the secret is unset.
+as a text message. The step is skipped when the secret is unset. It runs
+`notify.py`, which summarises the findings JSON into one line and posts it under
+several common keys so it suits more services:
+
+```sh
+python tools/petwatch/notify.py --findings findings.json --dry-run
+python tools/petwatch/notify.py --findings findings.json --url "$WEBHOOK"
+```
+
+Exit codes: `0` sent, `2` nothing worth sending, `1` failure. A failed webhook
+does not invalidate the run itself, which has already opened the issue.
 
 To run it locally on a schedule instead:
 

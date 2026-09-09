@@ -49,18 +49,18 @@ public class PetJsonCreator
 	/*
 	 * Pet Info Strings
 	 */
-	private static final String ABYSSAL_ORPHAN_INFO = "is obtained by placing an unsired on the Font of Consumption, at a rate of 5/128.";
+	private static final String ABYSSAL_ORPHAN_INFO = "is obtained by killing the Abyssal Sire at an effective rate of 1/2560. (It is a possible reward from using the Unsired drop on the Font of Consumption.)";
 	private static final String ABYSSAL_PROTECTOR_INFO = "is obtained from the Guardians of the Rift minigame.";
 	private static final String AGGY_INFO = "is obtained by defeating the Mad Angel, at a rate of 1/2000.";
 	private static final String BABY_CHINCHOMPA_INFO = "is obtained while catching chinchompas.";
 	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3000.";
 	private static final String BARON = "is obtained by killing Duke Sucellus, at a rate of 1/2500.";
 	private static final String BEAVER_INFO = "is obtained while training Woodcutting.";
-	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/1000, or Demonic Brutus at a rate of ~1/500";
+	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/1000, or Demonic Brutus at a rate of ~1/400";
 	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1000.";
 	private static final String BRAN_INFO = "is dropped by the Royal Titans, Branda the Fire Queen and Eldric the Ice King, at rates from 1/1500 to 1/3000.";
 	private static final String BUTCH = "is obtained by killing Vardorvis, at a rate of 1/3000";
-	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/2000.";
+	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/1500, or by Artio at a rate of 1/2800.";
 	private static final String RETRO_VARIANT = " This is the retro variant.";
 	private static final String CAT_INFO = "is obtained by letting a kitten grow for about 2 hours.";
 	private static final String CHAOS_ELEMENTAL_JR_INFO = "is dropped by the Chaos Elemental, at a rate of 1/300; or the Chaos Fanatic, at 1/1000.";
@@ -98,7 +98,7 @@ public class PetJsonCreator
 	private static final String LIL_VIATHAN = "is obtained by killing The Leviathan, at a rate of 1/2500.";
 	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/1400.";
-	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3600.";
+	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3500.";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3000.";
 	private static final String MOXI_INFO = "is dropped by Amoxliatl at a rate of 1/3000.";
@@ -134,8 +134,8 @@ public class PetJsonCreator
 	private static final String TOY_SOLDIER_INFO = "can be crafted in a POH with 13 Crafting and a Crafting table 3.";
 	private static final String TUMEKENS_GUARDIAN_INFO = "is obtained as a reward from completing the Tombs of Amascut.";
 	private static final String TZREKJAD_INFO = "is dropped by TzTok-Jad, at a rate of 1/200 (or 1/100 if on a slayer task).";
-	private static final String VENENATIS_SPIDERLING_INFO = "is dropped by Venenatis at a rate of 1/2000.";
-	private static final String VETION_JR_INFO = "is dropped by Vet'ion, at a rate of 1/2000.";
+	private static final String VENENATIS_SPIDERLING_INFO = "is dropped by Venenatis at a rate of 1/1500, or by Spindel at a rate of 1/2800.";
+	private static final String VETION_JR_INFO = "is dropped by Vet'ion, at a rate of 1/1500 or by Calvar'ion at a rate of 1/2800.";
 	private static final String VORKI_INFO = "is dropped by Vorkath, at a rate of 1/3000.";
 	private static final String WILY_CAT_INFO = "is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.";
 	private static final String WILY_HELLCAT_INFO = "is obtained by asking Felkrash to train an Overgrown Hellcat, after completing the Ratcatchers quest.";

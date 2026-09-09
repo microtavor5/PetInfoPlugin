@@ -9,6 +9,11 @@ It also allows you to highlight pets, and have their names displayed above their
 The plugin will attempt to fetch the most up-to-date pets from the GitHub's
 main branch, and save a local fallback copy.
 
+## Want to help Development?
+I don't maintain an active Runescape membership (I'm on one of those "long breaks" they talk about).
+I've used quite a few bonds (purchased with real money not in game) just to test changes and bugfixes to the plugin. 
+If you have a bond or two to spare that you'd be willing to part with, it would be a huge help! 
+
 ## What the plugin adds:
 ### Right Click "Info" Option
 When the player's mouse is over a pet that is not their own in the game, the plugin adds a menu option of the form 

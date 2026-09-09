@@ -99,7 +99,8 @@ public interface PetsConfig extends Config
 			position = 3,
 			keyName = "togglePetInfoColor",
 			name = "Pet name color",
-			description = "Choose between the RuneScape default yellow and the custom highlight colors for the pets name"
+			description = "Choose between the RuneScape default yellow and the custom highlight colors for the pets " +
+					"name"
 	)
 	default PetInfoColor petInfoColor() { return PetInfoColor.YELLOW; }
 
@@ -107,7 +108,7 @@ public interface PetsConfig extends Config
 			position = 4,
 			keyName = "togglePetOwnerColor",
 			name = "Pet's owner name color",
-			description = "Choose between the RuneScape default yellow, white, or the combat level differential"
+			description = "Choose between the RuneScape default white, yellow, or the combat level differential"
 	)
 	default PetOwnerColor petOwnerColor() { return PetOwnerColor.WHITE; }
 
@@ -115,7 +116,8 @@ public interface PetsConfig extends Config
 			position = 5,
 			keyName = "getRemoteData",
 			name = "Get up-to-date list of pets",
-			description = "Use the updated list of pets from the github. If off, and no local backup found, the plugin will not work. A local backup will be created on first download of an updated version."
+			description = "Use the updated list of pets from the github. If off, and no local backup found, the " +
+					"plugin will not work. A local backup will be created on first download of an updated version."
 	)
 	default boolean getRemoteData() { return true; }
 

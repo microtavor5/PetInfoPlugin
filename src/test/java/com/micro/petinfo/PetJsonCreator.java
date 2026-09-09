@@ -49,104 +49,110 @@ public class PetJsonCreator
 	/*
 	 * Pet Info Strings
 	 */
-	private static final String ABYSSAL_ORPHAN_INFO = "is obtained by placing an unsired on the Font of Consumption, at a rate of 5/128.";
+	private static final String ABYSSAL_ORPHAN_INFO = "is obtained by killing the Abyssal Sire at an effective rate of 1/2,560. (It is a possible reward from using the Unsired drop on the Font of Consumption.)";
 	private static final String ABYSSAL_PROTECTOR_INFO = "is obtained from the Guardians of the Rift minigame.";
-	private static final String AGGY_INFO = "is obtained by defeating the Mad Angel, at a rate of 1/2000.";
+	private static final String AGGY_INFO = "is obtained by defeating the Mad Angel, at a rate of 1/2,000.";
+	private static final String ARCHIBALD_INFO = "is a reward from the Easter event (2026 and later).";
 	private static final String BABY_CHINCHOMPA_INFO = "is obtained while catching chinchompas.";
-	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3000.";
-	private static final String BARON = "is obtained by killing Duke Sucellus, at a rate of 1/2500.";
+	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3,000.";
+	private static final String BARON = "is obtained by killing Duke Sucellus, at a rate of 1/2,500.";
 	private static final String BEAVER_INFO = "is obtained while training Woodcutting.";
-	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/1000, or Demonic Brutus at a rate of ~1/500";
-	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1000.";
-	private static final String BRAN_INFO = "is dropped by the Royal Titans, Branda the Fire Queen and Eldric the Ice King, at rates from 1/1500 to 1/3000.";
-	private static final String BUTCH = "is obtained by killing Vardorvis, at a rate of 1/3000";
-	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/2000.";
+	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/1,000, or Demonic Brutus at a rate of ~1/400";
+	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1,000.";
+	private static final String BRAN_INFO = "is dropped by the Royal Titans, Branda the Fire Queen and Eldric the Ice King, at rates from 1/1,500 to 1/3,000.";
+	private static final String BROAV_INFO = "is obtained during the While Guthix Sleeps quest. While not a true pet, it can be stored in the menagerie or dropped like a pet (but it won't follow).";
+	private static final String BUTCH = "is obtained by killing Vardorvis, at a rate of 1/3,000";
+	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/1,500, or by Artio at a rate of 1/2,800.";
 	private static final String RETRO_VARIANT = " This is the retro variant.";
 	private static final String CAT_INFO = "is obtained by letting a kitten grow for about 2 hours.";
-	private static final String CHAOS_ELEMENTAL_JR_INFO = "is dropped by the Chaos Elemental, at a rate of 1/300; or the Chaos Fanatic, at 1/1000.";
+	private static final String CHAOS_ELEMENTAL_JR_INFO = "is dropped by the Chaos Elemental, at a rate of 1/300; or the Chaos Fanatic, at 1/1,000.";
 	private static final String CHOMPY_CHICK_INFO = "is dropped by Chompy birds, at a rate of 1/500, after completing the elite Western Provinces Diary.";
 	private static final String CLOCKWORK_CAT_INFO = "can be crafted in a POH with 84 Crafting and a Crafting table 4.";
 	private static final String CORPOREAL_CRITTER_INFO = "is obtained by causing a pet Dark Core to metamorphosize.";
 	private static final String CORRUPTED_YOUNGLLEF_INFO = "is obtained by causing a Youngllef to metamorphosize, this can only be done after completing the Corrupted Gauntlet.";
-	private static final String DAGANNOTH_PRIME_JR_INFO = "is dropped by Dagannoth Prime, at a rate of 1/5000.";
-	private static final String DAGANNOTH_REX_JR_INFO = "is dropped by Dagannoth Rex, at a rate of 1/5000.";
-	private static final String DAGANNOTH_SUPREME_JR_INFO = "is dropped by Dagannoth Supreme, at a rate of 1/5000.";
-	private static final String DARK_CORE_INFO = "is dropped by the Corporeal Beast, at a rate of 1/5000.";
-	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only starting on level 6 of a delve, at varying rates from 1/1000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
-	private static final String EEK_INFO = "was obtained during the 2018 Halloween event.";
+	private static final String DAGANNOTH_PRIME_JR_INFO = "is dropped by Dagannoth Prime, at a rate of 1/5,000.";
+	private static final String DAGANNOTH_REX_JR_INFO = "is dropped by Dagannoth Rex, at a rate of 1/5,000.";
+	private static final String DAGANNOTH_SUPREME_JR_INFO = "is dropped by Dagannoth Supreme, at a rate of 1/5,000.";
+	private static final String DARK_CORE_INFO = "is dropped by the Corporeal Beast, at a rate of 1/5,000.";
+	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only starting on level 6 of a delve, at varying rates from 1/1,000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
 	private static final String FISHBOWL_INFO = "can be caught in Harry's Fishing Shop";
-	private static final String GENERAL_GRAARDOR_JR_INFO = "is dropped by General Graardor, at a rate of 1/5000";
+	private static final String GENERAL_GRAARDOR_JR_INFO = "is dropped by General Graardor, at a rate of 1/5,000";
 	private static final String GIANT_SQUIRREL_INFO = "is obtained by training Agility.";
-	private static final String GULL_INFO = "is obtained by defeating the Shellbane Gryphon at a rate of 1/3000.";
+	private static final String GULL_INFO = "is obtained by defeating the Shellbane Gryphon at a rate of 1/3,000.";
 	private static final String HELLCAT_INFO = "is obtained by having a pet Cat hunt Hell-Rats.";
 	private static final String HELLKITTEN_INFO = "is obtained by having a pet Kitten hunt Hell-Rats.";
-	private static final String HELLPUPPY_INFO = "is dropped by Cerberus, at a rate of 1/3000.";
-	private static final String HERBI_INFO = "is obtained by harvesting Herbiboars, at a rate of 1/6500.";
+	private static final String HELLPUPPY_INFO = "is dropped by Cerberus, at a rate of 1/3,000.";
+	private static final String HERBI_INFO = "is obtained by harvesting Herbiboars, at a rate of 1/6,500.";
 	private static final String HERON_INFO = "is obtained while training Fishing.";
 	private static final String HUBERTE_INFO = "is dropped by the Hueycoatl at a base rate of 1/400, scaled according to kill contribution.";
-	private static final String IKKLE_HYDRA_INFO = "is dropped by Alchemical Hydra, at a rate of 1/3000.";
+	private static final String HUMPHREY_DUMPHREY_INFO = "can be obtained by talking to him at Tal Toek after completing the 'Scrambled!' quest.";
+	private static final String IKKLE_HYDRA_INFO = "is dropped by Alchemical Hydra, at a rate of 1/3,000.";
 	private static final String JALNIBREK_INFO = "is obtained by completing the inferno, at a rate of 1/100 (or 1/75 while on a TzKal-Zuk task).";
 	private static final String JALREKJAD_INFO = "is obtained by causing a Tzrek-jad to metamorphosize, this can only be done after completing all six of TzHaar-Ket-Rak's Challenges (this requires having also completed the Inferno).";
-	private static final String KALPHITE_PRINCESS_INFO = "is dropped by Kalphite Queen, at a rate of 1/3000.";
+	private static final String KALPHITE_PRINCESS_INFO = "is dropped by Kalphite Queen, at a rate of 1/3,000.";
 	private static final String KITTEN_INFO = "can be bought from Gertrude for 100gp, after completing the Gertrude's Cat quest.";
-	private static final String KRAKEN_INFO ="is dropped by Kraken, at a rate of 1/3000.";
-	private static final String KREEARRA_JR_INFO = "is dropped by Kree'arra, at a rate of 1/5000.";
-	private static final String KRIL_TSUTSAROTH_JR_INFO = "is dropped by K'ril Tsutsaroth, at a rate of 1/5000.";
+	private static final String KRAKEN_INFO ="is dropped by Kraken, at a rate of 1/3,000.";
+	private static final String KREEARRA_JR_INFO = "is dropped by Kree'arra, at a rate of 1/5,000.";
+	private static final String KRIL_TSUTSAROTH_JR_INFO = "is dropped by K'ril Tsutsaroth, at a rate of 1/5,000.";
 	private static final String LAZY_CAT_INFO = "is obtained by letting a Wily Cat grow for about an hour.";
 	private static final String LAZY_HELLCAT_INFO = "is obtained by letting a Wily Hellcat at grow for about an hour.";
 	private static final String LIL_CREATOR_INFO = "is obtained by opening the Spoils of War, a reward from the Soul Wars minigame, at a rate of 1/400.";
-	private static final String LIL_VIATHAN = "is obtained by killing The Leviathan, at a rate of 1/2500.";
+	private static final String LIL_VIATHAN = "is obtained by killing The Leviathan, at a rate of 1/2,500.";
 	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
-	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/1400.";
-	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3600.";
+	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4,000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/1,400.";
+	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3,500.";
+	private static final String MAYOR_OF_CATHERBY_INFO = "is obtained from the 'Current' quest.";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
-	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3000.";
-	private static final String MOXI_INFO = "is dropped by Amoxliatl at a rate of 1/3000.";
+	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3,000.";
+	private static final String MOXI_INFO = "is dropped by Amoxliatl at a rate of 1/3,000.";
 	private static final String MR_MCGROOT_INFO = "is obtained by hunting goats on Wyrmscraig, at various rate based on Hunter level.";
-	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2500.";
+	private static final String MUPHIN_INFO = "is dropped by Phantom Muspah, at a rate of 1/2,500.";
 	private static final String NEXLING_INFO = "is dropped by Nex at a rate of 1/500.";
-	private static final String NID_INFO = "is dropped by Araxxor at a base rate of 1/3000 when harvesting Araxxor's corpse, or 1/1500 when destroying the corpse instead of harvesting.";
-	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3000.";
+	private static final String NID_INFO = "is dropped by Araxxor at a base rate of 1/3,000 when harvesting Araxxor's corpse, or 1/1,500 when destroying the corpse instead of harvesting.";
+	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3,000.";
 	private static final String OLMLET_INFO = "is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.";
 	private static final String OVERGROWN_CAT_INFO = "is obtained by letting a pet Cat grow for about 2-3 hours.";
 	private static final String OVERGROWN_HELLCAT_INFO = "is obtained by letting a pet Hellcat grow for about 2-3 hours.";
 	private static final String PET_ROCK_INFO = "can be received from Askeladden after The Fremennik Trials.";
-	private static final String PENANCE_PET_INFO = "is received from High-level gambles in Barbarian Assault, at a rate of 1/1000.";
-	private static final String PHOENIX_INFO = "is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5000.";
-	private static final String PRINCE_BLACK_DRAGON_INFO = "is dropped by the King Black Dragon, at a rate of 1/3000.";
-	private static final String QUETZIN_INFO = "is obtained by opening hunters' loot sacks obtained from completing Hunters' Rumours in the Hunter Guild, at a rate of 1/1000.";
+	private static final String PENANCE_PET_INFO = "is received from High-level gambles in Barbarian Assault, at a rate of 1/1,000.";
+	private static final String PHOENIX_INFO = "is obtained by opening Supply crates from the Wintertodt, at a rate of 1/5,000.";
+	private static final String PRINCE_BLACK_DRAGON_INFO = "is dropped by the King Black Dragon, at a rate of 1/3,000.";
+	private static final String QUETZIN_INFO = "is obtained by opening hunters' loot sacks obtained from completing Hunters' Rumours in the Hunter Guild, at a rate of 1/1,000.";
 	private static final String RIFT_GUARDIAN_INFO = "is obtained while training Runecraft.";
 	private static final String ROCK_GOLEM_INFO = "is obtained while training Mining.";
 	private static final String ROCKY_INFO = "is obtained while training Thieving.";
 	private static final String SCORPIAS_OFFSPRING_INFO = "is dropped by Scorpia, at a rate of 1/2,015.75";
 	private static final String SCURRY_INFO = "is dropped by Scurrius, for the MVP of the kill, at a rate of 1/3,000.";
 	private static final String SKOTOS_INFO = "is dropped by Skotizo, at a rate of 1/65.";
-	private static final String SMOKE_DEVIL_INFO = "is dropped by the Thermonuclear smoke devil, at a rate of 1/3000.";
+	private static final String SMOKE_DEVIL_INFO = "is dropped by the Thermonuclear smoke devil, at a rate of 1/3,000.";
 	private static final String SMOL_HEREDIT_INFO = "is dropped by Sol Heredit (in the  Fortis Colosseum) at a rate of 1/200, or by giving Diana's quivers to Minimus, also at a rate of 1/200.";
-	private static final String SMOLCANO_INFO = "is dropped by Zalcano, at a rate of 1/2250.";
-	private static final String SNAKELING_INFO = "is dropped by Zulrah, at a rate of 1/4000.";
-	private static final String SRARACHA_INFO = "is dropped by Sarachnis, at a rate of 1/3000.";
+	private static final String SMOLCANO_INFO = "is dropped by Zalcano, at a rate of 1/2,250.";
+	private static final String SNAKELING_INFO = "is dropped by Zulrah, at a rate of 1/4,000.";
+	private static final String SPOOKY_CHAIR_INFO = "is a reward from the Halloween event (2025 and later).";
+	private static final String SRARACHA_INFO = "is dropped by Sarachnis, at a rate of 1/3,000.";
 	private static final String SOUP_INFO = "is obtained while training Sailing";
 	private static final String TANGLEROOT_INFO = "is obtained while training Farming.";
-	private static final String TINY_TEMPOR_INFO = "is obtained from the Tempoross minigame, at a rate of 1/8000.";
+	private static final String TINY_TEMPOR_INFO = "is obtained from the Tempoross minigame, at a rate of 1/8,000.";
 	private static final String TOY_DOLL_INFO = "can be crafted in a POH with 18 Crafting and a Crafting table 3.";
 	private static final String TOY_MOUSE_INFO = "can be crafted in a POH with 33 Crafting and a Crafting table 4.";
 	private static final String TOY_SOLDIER_INFO = "can be crafted in a POH with 13 Crafting and a Crafting table 3.";
 	private static final String TUMEKENS_GUARDIAN_INFO = "is obtained as a reward from completing the Tombs of Amascut.";
 	private static final String TZREKJAD_INFO = "is dropped by TzTok-Jad, at a rate of 1/200 (or 1/100 if on a slayer task).";
-	private static final String VENENATIS_SPIDERLING_INFO = "is dropped by Venenatis at a rate of 1/2000.";
-	private static final String VETION_JR_INFO = "is dropped by Vet'ion, at a rate of 1/2000.";
-	private static final String VORKI_INFO = "is dropped by Vorkath, at a rate of 1/3000.";
+	private static final String VENENATIS_SPIDERLING_INFO = "is dropped by Venenatis at a rate of 1/1,500, or by Spindel at a rate of 1/2,800.";
+	private static final String VETION_JR_INFO = "is dropped by Vet'ion, at a rate of 1/1,500 or by Calvar'ion at a rate of 1/2,800.";
+	private static final String VORKI_INFO = "is dropped by Vorkath, at a rate of 1/3,000.";
 	private static final String WILY_CAT_INFO = "is obtained by asking Felkrash to train an Overgrown Cat, after completing the Ratcatchers quest.";
 	private static final String WILY_HELLCAT_INFO = "is obtained by asking Felkrash to train an Overgrown Hellcat, after completing the Ratcatchers quest.";
-	private static final String WISP = "is obtained by killing The Whisperer, at a rate of 1/2000";
-	private static final String YAMI_INFO = "is obtained by killing Yama, at a rate of 1/2500, or 1/100 when fought with a contract.";
-	private static final String YOUNGLLEF_INFO = "is obtained by completing The Gauntlet, at a rate of 1/2000 (or 1/800 for The Corrupted Gauntlet).";
-	private static final String ZILYANA_JR_INFO = "is dropped by Commander Zilyana, at a rate of 1/5000.";
+	private static final String WISP = "is obtained by killing The Whisperer, at a rate of 1/2,000";
+	private static final String YAMI_INFO = "is obtained by killing Yama, at a rate of 1/2,500, or 1/100 when fought with a contract.";
+	private static final String YOUNGLLEF_INFO = "is obtained by completing The Gauntlet, at a rate of 1/2,000 (or 1/800 for The Corrupted Gauntlet).";
+	private static final String ZILYANA_JR_INFO = "is dropped by Commander Zilyana, at a rate of 1/5,000.";
 	/*
 	 *	Variant text
 	 */
-	private static final String BABY_CHINCHOMPA_GOLD = " The gold variant is obtained by causing a Baby Chinchompa to metamorphosize, at a rate of 1/10000.";
+	private static final String ARCHIBALD_VARIANT = " This is a variant of Archibald.";
+
+	private static final String BABY_CHINCHOMPA_GOLD = " The gold variant is obtained by causing a Baby Chinchompa to metamorphosize, at a rate of 1/10,000.";
 
 	private static final String BABY_MOLE_RAT = " This is a variant of the Baby Mole, obtained by using a Mole Claw on the Baby Mole.";
 
@@ -196,6 +202,10 @@ public class PetJsonCreator
 	private static final String BEAVER_YEW = " This is the Yew variant.";
 	private static final String BEAVER_MAGIC = " This is the Magic variant.";
 	private static final String BEAVER_REDWOOD = " This is the Redwood variant.";
+	private static final String BEAVER_CAMPHOR = " This is the Camphor variant.";
+	private static final String BEAVER_IRONWOOD = " This is the Ironwood variant.";
+	private static final String BEAVER_JATOBA = " This is the Jatoba variant.";
+	private static final String BEAVER_ROSEWOOD = " This is the Rosewood variant.";
 
 	private static final String KEPHRITI = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Kephri.";
 	private static final String ZEBO = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Zebak.";
@@ -212,6 +222,31 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.OTHER, NpcID.POH_ABYSSAL_PET, ABYSSAL_PROTECTOR_INFO),
 			new Pet(PetGroup.OTHER, NpcID.ABYSSAL_PET, ABYSSAL_PROTECTOR_INFO),
+
+			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG, ARCHIBALD_INFO),
+			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG, ARCHIBALD_INFO),
+			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_02, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_02, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_03, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_03, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_04, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_04, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_05, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_05, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_06, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_06, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_07, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_07, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+
+			new Pet(PetGroup.OTHER, NpcID.WGS_BROAV, BROAV_INFO),
+			new Pet(PetGroup.OTHER, NpcID.POH_BROAV, BROAV_INFO),
+
+			new Pet(PetGroup.OTHER, NpcID.SCRAMBLED_EGG_VISIBLE, HUMPHREY_DUMPHREY_INFO),
+
+			new Pet(PetGroup.OTHER, NpcID.POH_FISHBOWL_MAYOR_OF_CATHERBY, MAYOR_OF_CATHERBY_INFO),
+
+			new Pet(PetGroup.OTHER, NpcID.POH_HW_CHAIR, SPOOKY_CHAIR_INFO),
+
 			new Pet(PetGroup.BOSS, NpcID.POH_WARDEN_PET_AKKHA, TUMEKENS_GUARDIAN_INFO + AKKHITO),
 			new Pet(PetGroup.BOSS, NpcID.WARDEN_PET_AKKHA, TUMEKENS_GUARDIAN_INFO + AKKHITO),
 			new Pet(PetGroup.BOSS, NpcID.POH_WARDEN_PET_BABA, TUMEKENS_GUARDIAN_INFO + BABI),
@@ -272,6 +307,14 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_MAGIC, BEAVER_INFO + BEAVER_MAGIC),
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_REDWOOD, BEAVER_INFO + BEAVER_REDWOOD),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_REDWOOD, BEAVER_INFO + BEAVER_REDWOOD),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_CAMPHOR, BEAVER_INFO + BEAVER_CAMPHOR),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_CAMPHOR, BEAVER_INFO + BEAVER_CAMPHOR),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_IRONWOOD, BEAVER_INFO + BEAVER_IRONWOOD),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_IRONWOOD, BEAVER_INFO + BEAVER_IRONWOOD),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_JATOBA, BEAVER_INFO + BEAVER_JATOBA),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_JATOBA, BEAVER_INFO + BEAVER_JATOBA),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_ROSEWOOD, BEAVER_INFO + BEAVER_ROSEWOOD),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_ROSEWOOD, BEAVER_INFO + BEAVER_ROSEWOOD),
 
 			new Pet(PetGroup.OTHER, NpcID.COWBOSS_PET, BEEF_INFO),
 			new Pet(PetGroup.OTHER, NpcID.POH_COWBOSS_PET, BEEF_INFO),
@@ -555,69 +598,75 @@ public class PetJsonCreator
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_THIEVING_PANDA, ROCKY_INFO + " " + ROCKY_RED_PANDA),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_THIEVING_PANDA, ROCKY_INFO + " " + ROCKY_RED_PANDA),
 
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_FIRE, RIFT_GUARDIAN_INFO + " This is the Fire variant."),	// Fire
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_AIR, RIFT_GUARDIAN_INFO + " This is the Air variant."),	// Air
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_MIND, RIFT_GUARDIAN_INFO + " This is the Mind variant."),	// Mind
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_WATER, RIFT_GUARDIAN_INFO + " This is the Water variant."),	// Water
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_EARTH, RIFT_GUARDIAN_INFO + " This is the Earth variant."),	// Earth
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_BODY, RIFT_GUARDIAN_INFO + " This is the Body variant."),	// Body
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_COSMIC, RIFT_GUARDIAN_INFO + " This is the Cosmic variant."),	// Cosmic
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_CHAOS, RIFT_GUARDIAN_INFO + " This is the Chaos variant."),	// Chaos
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_NATURE, RIFT_GUARDIAN_INFO + " This is the Nature variant."),	// Nature
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_LAW, RIFT_GUARDIAN_INFO + " This is the Law variant."),	// Law
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_DEATH, RIFT_GUARDIAN_INFO + " This is the Death variant."),	// Death
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_SOUL, RIFT_GUARDIAN_INFO + " This is the Soul variant."),	// Soul
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_ASTRAL, RIFT_GUARDIAN_INFO + " This is the Astral variant."),	// Astral
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_BLOOD, RIFT_GUARDIAN_INFO + " This is the Blood variant."),	// Blood
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_FIRE, RIFT_GUARDIAN_INFO + " This is the Fire variant."),	// fire
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_AIR, RIFT_GUARDIAN_INFO + " This is the Air variant."),	// Air
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_MIND, RIFT_GUARDIAN_INFO + " This is the Mind variant."),	// Mind
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_WATER, RIFT_GUARDIAN_INFO + " This is the Water variant."),	// Water
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_EARTH, RIFT_GUARDIAN_INFO + " This is the Earth variant."),	// Earth
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_BODY, RIFT_GUARDIAN_INFO + " This is the Body variant."),	// Body
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_COSMIC, RIFT_GUARDIAN_INFO + " This is the Cosmic variant."),	// Cosmic
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_CHAOS, RIFT_GUARDIAN_INFO + " This is the Chaos variant."),	// Chaos
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_NATURE, RIFT_GUARDIAN_INFO + " This is the Nature variant."),	// Nature
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_LAW, RIFT_GUARDIAN_INFO + " This is the Law variant."),	// Law
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_DEATH, RIFT_GUARDIAN_INFO + " This is the Death variant."),	// Death
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_SOUL, RIFT_GUARDIAN_INFO + " This is the Soul variant."),	// Soul
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_ASTRAL, RIFT_GUARDIAN_INFO + " This is the Astral variant."),	// Astral
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_BLOOD, RIFT_GUARDIAN_INFO + " This is the Blood variant."),	// Blood
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_WRATH, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_WRATH, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),	// Wrath
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_FIRE, RIFT_GUARDIAN_INFO + " This is the Fire variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_AIR, RIFT_GUARDIAN_INFO + " This is the Air variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_MIND, RIFT_GUARDIAN_INFO + " This is the Mind variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_WATER, RIFT_GUARDIAN_INFO + " This is the Water variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_EARTH, RIFT_GUARDIAN_INFO + " This is the Earth variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_BODY, RIFT_GUARDIAN_INFO + " This is the Body variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_COSMIC, RIFT_GUARDIAN_INFO + " This is the Cosmic variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_CHAOS, RIFT_GUARDIAN_INFO + " This is the Chaos variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_NATURE, RIFT_GUARDIAN_INFO + " This is the Nature variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_LAW, RIFT_GUARDIAN_INFO + " This is the Law variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_DEATH, RIFT_GUARDIAN_INFO + " This is the Death variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_SOUL, RIFT_GUARDIAN_INFO + " This is the Soul variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_ASTRAL, RIFT_GUARDIAN_INFO + " This is the Astral variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_BLOOD, RIFT_GUARDIAN_INFO + " This is the Blood variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_FIRE, RIFT_GUARDIAN_INFO + " This is the Fire variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_AIR, RIFT_GUARDIAN_INFO + " This is the Air variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_MIND, RIFT_GUARDIAN_INFO + " This is the Mind variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_WATER, RIFT_GUARDIAN_INFO + " This is the Water variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_EARTH, RIFT_GUARDIAN_INFO + " This is the Earth variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_BODY, RIFT_GUARDIAN_INFO + " This is the Body variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_COSMIC, RIFT_GUARDIAN_INFO + " This is the Cosmic variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_CHAOS, RIFT_GUARDIAN_INFO + " This is the Chaos variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_NATURE, RIFT_GUARDIAN_INFO + " This is the Nature variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_LAW, RIFT_GUARDIAN_INFO + " This is the Law variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_DEATH, RIFT_GUARDIAN_INFO + " This is the Death variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_SOUL, RIFT_GUARDIAN_INFO + " This is the Soul variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_ASTRAL, RIFT_GUARDIAN_INFO + " This is the Astral variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_BLOOD, RIFT_GUARDIAN_INFO + " This is the Blood variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_RUNECRAFTING_WRATH, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_RUNECRAFTING_WRATH, RIFT_GUARDIAN_INFO + " This is the Wrath variant."),
 
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_AMETHYST, ROCK_GOLEM_INFO + " This is the Amethyst variant."),	// Amethyst
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_DEFAULT, ROCK_GOLEM_INFO + " This is the Rock variant."),	// Rock
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_TIN, ROCK_GOLEM_INFO + " This is the Tin variant."),	// Tin
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_COPPER, ROCK_GOLEM_INFO + " This is the Copper variant."),	// Copper
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_IRON, ROCK_GOLEM_INFO + " This is the Iron variant."),	// Iron
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_BLURITE, ROCK_GOLEM_INFO + " This is the Blurite variant."),	// Blurite
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_SILVER, ROCK_GOLEM_INFO + " This is the Silver variant."),	// Silver
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_COAL, ROCK_GOLEM_INFO + " This is the Coal variant."),	// Coal
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_GOLD, ROCK_GOLEM_INFO + " This is the Gold variant."),	// Gold
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_MITHRIL, ROCK_GOLEM_INFO + " This is the Mithril variant."),	// Mithril
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_GRANITE, ROCK_GOLEM_INFO + " This is the Granite variant."),	// Granite
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_ADAMANTITE, ROCK_GOLEM_INFO + " This is the Adamantite variant."),	// Adamantite
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_RUNITE, ROCK_GOLEM_INFO + " This is the Runite variant."),	// Runite
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_DEFAULT, ROCK_GOLEM_INFO + " This is the Rock variant."),	// Rock
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_TIN, ROCK_GOLEM_INFO + " This is the Tin variant."),	// Tin
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_COPPER, ROCK_GOLEM_INFO + " This is the Copper variant."),	// Copper
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_IRON, ROCK_GOLEM_INFO + " This is the Iron variant."),	// Iron
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_BLURITE, ROCK_GOLEM_INFO + " This is the Blurite variant."),	// Blurite
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_SILVER, ROCK_GOLEM_INFO + " This is the Silver variant."),	// Silver
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_COAL, ROCK_GOLEM_INFO + " This is the Coal variant."),	// Coal
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_GOLD, ROCK_GOLEM_INFO + " This is the Gold variant."),	// Gold
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_MITHRIL, ROCK_GOLEM_INFO + " This is the Mithril variant."),	// Mithril
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_GRANITE, ROCK_GOLEM_INFO + " This is the Granite variant."),	// Granite
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_ADAMANTITE, ROCK_GOLEM_INFO + " This is Adamantite fire variant."),	// Adamantite
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_RUNITE, ROCK_GOLEM_INFO + " This is the Runite variant."),	// Runite
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_AMETHYST, ROCK_GOLEM_INFO + " This is the Amethyst variant."),	// Amethyst
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_LOVAKITE, ROCK_GOLEM_INFO + " This is the Lovakite variant."),	// Lovakite
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_ELEMENTAL, ROCK_GOLEM_INFO + " This is the Elemental variant."),	// Elemental
-			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_DAEYALT, ROCK_GOLEM_INFO + " This is the Daeyalt variant."),	// Daeyalt
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_LOVAKITE, ROCK_GOLEM_INFO + " This is the Lovakite variant."),	// Lovakite variant, otherplayer
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_ELEMENTAL, ROCK_GOLEM_INFO + " This is the Elemental variant."),	// Elemental variant, other player
-			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_DAEYALT, ROCK_GOLEM_INFO + " This is the Daeyalt variant."),	// Daeyalt
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_AMETHYST, ROCK_GOLEM_INFO + " This is the Amethyst variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_DEFAULT, ROCK_GOLEM_INFO + " This is the Rock variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_TIN, ROCK_GOLEM_INFO + " This is the Tin variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_COPPER, ROCK_GOLEM_INFO + " This is the Copper variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_IRON, ROCK_GOLEM_INFO + " This is the Iron variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_BLURITE, ROCK_GOLEM_INFO + " This is the Blurite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_SILVER, ROCK_GOLEM_INFO + " This is the Silver variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_COAL, ROCK_GOLEM_INFO + " This is the Coal variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_GOLD, ROCK_GOLEM_INFO + " This is the Gold variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_MITHRIL, ROCK_GOLEM_INFO + " This is the Mithril variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_GRANITE, ROCK_GOLEM_INFO + " This is the Granite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_ADAMANTITE, ROCK_GOLEM_INFO + " This is the Adamantite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_RUNITE, ROCK_GOLEM_INFO + " This is the Runite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_LEAD, ROCK_GOLEM_INFO + " This is the Lead variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_RUBIUM, ROCK_GOLEM_INFO + " This is the Rubium variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_NICKEL, ROCK_GOLEM_INFO + " This is the Nickel variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_DEFAULT, ROCK_GOLEM_INFO + " This is the Rock variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_TIN, ROCK_GOLEM_INFO + " This is the Tin variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_COPPER, ROCK_GOLEM_INFO + " This is the Copper variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_IRON, ROCK_GOLEM_INFO + " This is the Iron variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_BLURITE, ROCK_GOLEM_INFO + " This is the Blurite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_SILVER, ROCK_GOLEM_INFO + " This is the Silver variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_COAL, ROCK_GOLEM_INFO + " This is the Coal variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_GOLD, ROCK_GOLEM_INFO + " This is the Gold variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_MITHRIL, ROCK_GOLEM_INFO + " This is the Mithril variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_GRANITE, ROCK_GOLEM_INFO + " This is the Granite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_ADAMANTITE, ROCK_GOLEM_INFO + " This is Adamantite fire variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_RUNITE, ROCK_GOLEM_INFO + " This is the Runite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_AMETHYST, ROCK_GOLEM_INFO + " This is the Amethyst variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_LOVAKITE, ROCK_GOLEM_INFO + " This is the Lovakite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_ELEMENTAL, ROCK_GOLEM_INFO + " This is the Elemental variant."),
+			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_MINING_DAEYALT, ROCK_GOLEM_INFO + " This is the Daeyalt variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_LOVAKITE, ROCK_GOLEM_INFO + " This is the Lovakite variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_ELEMENTAL, ROCK_GOLEM_INFO + " This is the Elemental variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_DAEYALT, ROCK_GOLEM_INFO + " This is the Daeyalt variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_LEAD, ROCK_GOLEM_INFO + " This is the Lead variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_RUBIUM, ROCK_GOLEM_INFO + " This is the Rubium variant."),
+			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_MINING_NICKEL, ROCK_GOLEM_INFO + " This is the Nickel variant."),
 
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_THIEVING, ROCKY_INFO),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_THIEVING, ROCKY_INFO),

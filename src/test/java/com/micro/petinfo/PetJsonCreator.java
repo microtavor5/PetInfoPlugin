@@ -55,13 +55,13 @@ public class PetJsonCreator
 	private static final String ARCHIBALD_INFO = "is a reward from the Easter event (2026 and later).";
 	private static final String BABY_CHINCHOMPA_INFO = "is obtained while catching chinchompas.";
 	private static final String BABY_MOLE_INFO = "is obtained by killing the Giant Mole, at a rate of 1/3,000.";
-	private static final String BARON = "is obtained by killing Duke Sucellus, at a rate of 1/2,500.";
+	private static final String BARON_INFO = "is obtained by killing Duke Sucellus, at a rate of 1/2,500.";
 	private static final String BEAVER_INFO = "is obtained while training Woodcutting.";
 	private static final String BEEF_INFO = "is obtained from defeating Brutus, at a rate of 1/1,000, or Demonic Brutus at a rate of ~1/400";
 	private static final String BLOODHOUND_INFO = "is obtained by completing Master Clue Scrolls, at a rate of 1/1,000.";
 	private static final String BRAN_INFO = "is dropped by the Royal Titans, Branda the Fire Queen and Eldric the Ice King, at rates from 1/1,500 to 1/3,000.";
 	private static final String BROAV_INFO = "is obtained during the While Guthix Sleeps quest. While not a true pet, it can be stored in the menagerie or dropped like a pet (but it won't follow).";
-	private static final String BUTCH = "is obtained by killing Vardorvis, at a rate of 1/3,000";
+	private static final String BUTCH_INFO = "is obtained by killing Vardorvis, at a rate of 1/3,000";
 	private static final String CALLISTO_CUB_INFO = "is dropped by Callisto, at a rate of 1/1,500, or by Artio at a rate of 1/2,800.";
 	private static final String RETRO_VARIANT = " This is the retro variant.";
 	private static final String CAT_INFO = "is obtained by letting a kitten grow for about 2 hours.";
@@ -74,6 +74,8 @@ public class PetJsonCreator
 	private static final String DAGANNOTH_REX_JR_INFO = "is dropped by Dagannoth Rex, at a rate of 1/5,000.";
 	private static final String DAGANNOTH_SUPREME_JR_INFO = "is dropped by Dagannoth Supreme, at a rate of 1/5,000.";
 	private static final String DARK_CORE_INFO = "is dropped by the Corporeal Beast, at a rate of 1/5,000.";
+	private static final String PUPPY_INFO = "can be purchased from Chase at the Dog Shelter after completing the 'A Ruff Situation' quest.";
+	private static final String DOG_INFO = "is a type of dog that can obtained by raising and feeding a puppy of the same type. A puppy " + PUPPY_INFO;
 	private static final String DOM_INFO = "is dropped by the Doom of Mokhaiotl, but only starting on level 6 of a delve, at varying rates from 1/1,000 (lvl 6) to 1/250 (lvl 9) depending on the level.";
 	private static final String FISHBOWL_INFO = "can be caught in Harry's Fishing Shop";
 	private static final String GENERAL_GRAARDOR_JR_INFO = "is dropped by General Graardor, at a rate of 1/5,000";
@@ -210,6 +212,29 @@ public class PetJsonCreator
 	private static final String KEPHRITI = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Kephri.";
 	private static final String ZEBO = " This is a variant of the Tumeken's guardian unlocked with the Remnant of Zebak.";
 
+	private static final String BLACK = "(Black) ";
+	private static final String BLACK_AND_WHITE = "(Black & White) ";
+	private static final String BROWN = "(Brown) ";
+	private static final String CHOCOLATE = "(Chocolate) ";
+	private static final String CREAM = "(Cream) ";
+	private static final String FAWN = "(Fawn) ";
+	private static final String GOLDEN = "(Golden) ";
+	private static final String GREY = "(Grey) ";
+	private static final String RED = "(Red) ";
+	private static final String TAN = "(Tan) ";
+	private static final String TOASTED = "(Toasted) ";
+	private static final String MERLE = "(Merle) ";
+	private static final String WHITE = "(White) ";
+
+	private static final String BERNESE_MOUNTAIN_DOG = " In order to unlock this variant, you must first track down and rescue the Bernese Mountain Dog who is wandering around east of Rellekka.";
+	private static final String BORDER_COLLIE = " In order to unlock this variant, you must first track down and rescue the Border Collie who is wandering around in Asgarnia.";
+	private static final String CHIHUAHUA = " In order to unlock this variant, you must first track down and rescue the Chihuahua who is wandering around in the Kharidian Desert.";
+	private static final String Corgi = " In order to unlock this variant, you must first track down and rescue the Corgi who is wandering around in East Ardougne.";
+	private static final String Greyhound = " In order to unlock this variant, you must first track down and rescue the Greyhound who is wandering around the Kourend Woodland.";
+	private static final String HUSKY = " In order to unlock this variant, you must first track down and rescue the Husky who is wandering around the Fishing Hamlet.";
+	private static final String SAMOYED = " In order to unlock this variant, you must first track down and rescue the Samoyed who is wandering around Tai Bwo Wannai.";
+	private static final String SHIBA = " In order to unlock this variant, you must first track down and rescue the Shiba who is wandering around the Avium Savannah.";
+	private static final String YORKIE = " In order to unlock this variant, you must first track down and rescue the Yorkie who is wandering around the Summer Shore.";
 
 	private static final String OLMLET_CM_VARIANTS = " This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.";
 
@@ -237,6 +262,126 @@ public class PetJsonCreator
 			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_06, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
 			new Pet(PetGroup.OTHER, NpcID.DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_07, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
 			new Pet(PetGroup.OTHER, NpcID.POH_EASTER26_EGG_07, ARCHIBALD_INFO + ARCHIBALD_VARIANT),
+
+			new Pet(PetGroup.OTHER, 16385, CHOCOLATE + DOG_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16386, MERLE + DOG_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16387, TOASTED + DOG_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16564, CHOCOLATE + DOG_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16565, MERLE + DOG_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16566, TOASTED + DOG_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16457, CHOCOLATE + PUPPY_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16458, MERLE + PUPPY_INFO + BERNESE_MOUNTAIN_DOG),
+			new Pet(PetGroup.OTHER, 16459, TOASTED + PUPPY_INFO + BERNESE_MOUNTAIN_DOG),
+
+			new Pet(PetGroup.OTHER, 16367, CHOCOLATE + DOG_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16368, MERLE + DOG_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16369, BLACK_AND_WHITE + DOG_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16546, CHOCOLATE + DOG_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16547, MERLE + DOG_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16548, BLACK_AND_WHITE + DOG_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16442, CHOCOLATE + PUPPY_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16443, MERLE + PUPPY_INFO + BORDER_COLLIE),
+			new Pet(PetGroup.OTHER, 16444, BLACK_AND_WHITE + PUPPY_INFO + BORDER_COLLIE),
+
+			new Pet(PetGroup.OTHER, 16364, TAN + DOG_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16365, WHITE + DOG_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16366, TOASTED + DOG_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16543, TAN + DOG_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16544, WHITE + DOG_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16545, TOASTED + DOG_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16439, TAN + PUPPY_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16440, WHITE + PUPPY_INFO + CHIHUAHUA),
+			new Pet(PetGroup.OTHER, 16441, TOASTED + PUPPY_INFO + CHIHUAHUA),
+
+			new Pet(PetGroup.OTHER, 16370, TAN + DOG_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16371, FAWN + DOG_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16372, TOASTED + DOG_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16549, TAN + DOG_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16550, FAWN + DOG_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16551, TOASTED + DOG_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16445, TAN + PUPPY_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16446, FAWN + PUPPY_INFO + Corgi),
+			new Pet(PetGroup.OTHER, 16447, TOASTED + PUPPY_INFO + Corgi),
+
+			new Pet(PetGroup.OTHER, 16373, TAN + DOG_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16374, GREY + DOG_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16375, CREAM + DOG_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16552, TAN + DOG_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16553, GREY + DOG_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16554, CREAM + DOG_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16448, TAN + PUPPY_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16449, GREY + PUPPY_INFO + Greyhound),
+			new Pet(PetGroup.OTHER, 16450, CREAM + PUPPY_INFO + Greyhound),
+
+			new Pet(PetGroup.OTHER, 16376, BLACK_AND_WHITE + DOG_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16377, GREY + DOG_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16378, CHOCOLATE + DOG_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16555, BLACK_AND_WHITE + DOG_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16556, GREY + DOG_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16557, CHOCOLATE + DOG_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16436, BLACK_AND_WHITE + PUPPY_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16437, GREY + PUPPY_INFO + HUSKY),
+			new Pet(PetGroup.OTHER, 16438, CHOCOLATE + PUPPY_INFO + HUSKY),
+
+			new Pet(PetGroup.OTHER, 16361, GOLDEN + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16362, CHOCOLATE + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16363, BLACK + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16540, GOLDEN + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16541, CHOCOLATE + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16542, BLACK + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16433, GOLDEN + PUPPY_INFO),
+			new Pet(PetGroup.OTHER, 16434, CHOCOLATE + PUPPY_INFO),
+			new Pet(PetGroup.OTHER, 16435, BLACK + PUPPY_INFO),
+
+			new Pet(PetGroup.OTHER, 16379, FAWN + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16380, BROWN + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16381, BLACK + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16558, FAWN + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16559, BROWN + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16560, BLACK + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16451, FAWN + PUPPY_INFO),
+			new Pet(PetGroup.OTHER, 16452, BROWN + PUPPY_INFO),
+			new Pet(PetGroup.OTHER, 16453, BLACK + PUPPY_INFO),
+
+			new Pet(PetGroup.OTHER, 16382, WHITE + DOG_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16383, GOLDEN + DOG_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16384, BLACK + DOG_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16561, WHITE + DOG_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16562, GOLDEN + DOG_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16563, BLACK + DOG_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16454, WHITE + PUPPY_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16455, GOLDEN + PUPPY_INFO + SAMOYED),
+			new Pet(PetGroup.OTHER, 16456, BLACK + PUPPY_INFO + SAMOYED),
+
+			new Pet(PetGroup.OTHER, 16388, TAN + DOG_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16389, WHITE + DOG_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16390, TOASTED + DOG_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16567, TAN + DOG_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16568, WHITE + DOG_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16569, TOASTED + DOG_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16460, TAN + PUPPY_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16461, WHITE + PUPPY_INFO + SHIBA),
+			new Pet(PetGroup.OTHER, 16462, TOASTED + PUPPY_INFO + SHIBA),
+
+			new Pet(PetGroup.OTHER, 16391, RED + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16392, WHITE + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16393, BLACK + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16570, RED + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16571, WHITE + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16572, BLACK + DOG_INFO),
+			new Pet(PetGroup.OTHER, 16463, RED + PUPPY_INFO),
+			new Pet(PetGroup.OTHER, 16464, WHITE + PUPPY_INFO),
+			new Pet(PetGroup.OTHER, 16465, BLACK + PUPPY_INFO),
+
+			new Pet(PetGroup.OTHER, 16394, BROWN + DOG_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16395, WHITE + DOG_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16396, GOLDEN + DOG_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16573, BROWN + DOG_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16574, WHITE + DOG_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16575, GOLDEN + DOG_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16466, BROWN + PUPPY_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16467, WHITE + PUPPY_INFO + YORKIE),
+			new Pet(PetGroup.OTHER, 16468, GOLDEN + PUPPY_INFO + YORKIE),
 
 			new Pet(PetGroup.OTHER, NpcID.WGS_BROAV, BROAV_INFO),
 			new Pet(PetGroup.OTHER, NpcID.POH_BROAV, BROAV_INFO),
@@ -284,8 +429,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.BOSS, NpcID.POH_RTELDRIC_PET, BRAN_INFO + RIC_VARIANT),
 			new Pet(PetGroup.BOSS, NpcID.RTELDRIC_PET, BRAN_INFO + RIC_VARIANT),
 
-			new Pet(PetGroup.BOSS, NpcID.POH_DUKE_SUCELLUS_PET, BARON),
-			new Pet(PetGroup.BOSS, NpcID.DUKE_SUCELLUS_PET, BARON),
+			new Pet(PetGroup.BOSS, NpcID.POH_DUKE_SUCELLUS_PET, BARON_INFO),
+			new Pet(PetGroup.BOSS, NpcID.DUKE_SUCELLUS_PET, BARON_INFO),
 
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPETWC, BEAVER_INFO + BEAVER_LOGS),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPETWC, BEAVER_INFO + BEAVER_LOGS),
@@ -322,8 +467,8 @@ public class PetJsonCreator
 			new Pet(PetGroup.OTHER, NpcID.POH_BLOODHOUNDPET, BLOODHOUND_INFO),
 			new Pet(PetGroup.OTHER, NpcID.BLOODHOUNDPET, BLOODHOUND_INFO),
 
-			new Pet(PetGroup.BOSS, NpcID.POH_VARDORVIS_PET, BUTCH),
-			new Pet(PetGroup.BOSS, NpcID.VARDORVIS_PET, BUTCH),
+			new Pet(PetGroup.BOSS, NpcID.POH_VARDORVIS_PET, BUTCH_INFO),
+			new Pet(PetGroup.BOSS, NpcID.VARDORVIS_PET, BUTCH_INFO),
 
 			new Pet(PetGroup.BOSS, NpcID.POH_CALLISTO_PET, CALLISTO_CUB_INFO),
 			new Pet(PetGroup.BOSS, NpcID.CALLISTOPET, CALLISTO_CUB_INFO),

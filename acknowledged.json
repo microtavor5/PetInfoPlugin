@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-09T19:45:55Z",
+  "checked_at": "2026-09-10T19:41:39Z",
   "runelite_release": "1.12.38",
   "pages": [
     "Abyssal orphan",
@@ -128,17 +128,6 @@
     "Youngllef"
   ],
   "missing_keys": [
-    "Archibald::Archibald::ready",
-    "Archibald::Bunny::ready",
-    "Archibald::Chick::ready",
-    "Archibald::Diamonds::ready",
-    "Archibald::Dragon::ready",
-    "Archibald::Grid::ready",
-    "Archibald::Melted::ready",
-    "Beaver::Camphor::ready",
-    "Beaver::Ironwood::ready",
-    "Beaver::Jatoba::ready",
-    "Beaver::Rosewood::ready",
     "Bernese Mountain Dog puppy::Chocolate::no-constant",
     "Bernese Mountain Dog puppy::Merle::no-constant",
     "Bernese Mountain Dog puppy::Toasted::no-constant",
@@ -157,7 +146,6 @@
     "Border Collie::Chocolate::no-constant",
     "Border Collie::Merle::no-constant",
     "Border Collie::Merle::no-constant",
-    "Broav::Broav::ready",
     "Chihuahua puppy::Tan::no-constant",
     "Chihuahua puppy::Toasted::no-constant",
     "Chihuahua puppy::White::no-constant",
@@ -185,7 +173,6 @@
     "Greyhound::Grey::no-constant",
     "Greyhound::Tan::no-constant",
     "Greyhound::Tan::no-constant",
-    "Humphrey Dumphrey::Humphrey Dumphrey::ready",
     "Husky puppy::Black & white::no-constant",
     "Husky puppy::Chocolate::no-constant",
     "Husky puppy::Grey::no-constant",
@@ -204,7 +191,6 @@
     "Labrador::Chocolate::no-constant",
     "Labrador::Golden::no-constant",
     "Labrador::Golden::no-constant",
-    "Mayor of Catherby::Mayor of Catherby::ready",
     "Pug puppy::Black::no-constant",
     "Pug puppy::Brown::no-constant",
     "Pug puppy::Fawn::no-constant",
@@ -214,9 +200,6 @@
     "Pug::Brown::no-constant",
     "Pug::Fawn::no-constant",
     "Pug::Fawn::no-constant",
-    "Rock golem::Lead::ready",
-    "Rock golem::Nickel::ready",
-    "Rock golem::Rubium::ready",
     "Samoyed puppy::Black::no-constant",
     "Samoyed puppy::Golden::no-constant",
     "Samoyed puppy::White::no-constant",
@@ -244,7 +227,6 @@
     "Spaniel::Red::no-constant",
     "Spaniel::White::no-constant",
     "Spaniel::White::no-constant",
-    "Spooky chair::Spooky chair::ready",
     "Yorkie puppy::Brown::no-constant",
     "Yorkie puppy::Golden::no-constant",
     "Yorkie puppy::White::no-constant",
@@ -256,11 +238,6 @@
     "Yorkie::White::no-constant"
   ],
   "rate_keys": [
-    "Abyssal orphan::1/2560::5/128",
-    "Beef::1/1000::1/1000,1/500",
-    "Callisto cub::1/1500,1/2800::1/2000",
-    "Maggot marquess::1/3500::1/3600",
-    "Venenatis spiderling::1/1500,1/2800::1/2000",
-    "Vet'ion Jr.::1/1500,1/2800::1/2000"
+    "Beef::1/1000::1/1000,1/400"
   ]
 }

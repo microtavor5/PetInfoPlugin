@@ -16,17 +16,18 @@ How it works
    from its {{Infobox NPC}} (`|id =` / `|id1 =` ...).
 5. Reports any wiki variant whose ids are entirely absent from the plugin, split
    by whether it can be acted on yet (see STATUS_HEADINGS).
-6. Reads the drop rate column of the Pet article's tables, reports rates that
+6. Reads the drop rate column of the Pet article's tables and, for the same pets,
+   the Item sources table (from the wiki's Bucket API), reports rates that
    changed, and compares them against the rates quoted in pets.json. Only pets
    given a concrete rate are considered, so skilling and generic pets drop out.
 
 Cheap repeat checks
 -------------------
 Steps 3-6 are preceded by a probe that only asks for revision ids, the category
-listing and the RuneLite release number - about 15KB against ~1.8MB for the full
-check. The run stops there unless a pet page was edited, the Pet article or the
-category changed, the RuneLite release moved, or PetJsonCreator.java or
-pets.json changed. That makes running daily about as cheap as running weekly, so
+listing and the RuneLite release number - about 26KB against ~1.8MB for the full
+check. The run stops there unless a pet page or a drop source page was edited,
+the Pet article or the category changed, the RuneLite release moved, or
+PetJsonCreator.java or pets.json changed. That makes running daily about as cheap as running weekly, so
 a wiki edit that lands late is picked up the next day instead of the next week.
 
 State, with different jobs:
@@ -592,6 +593,81 @@ def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
     return out
 
 
+def rates_agree(info: dict, source_rates: list, plugin_rates: list) -> bool:
+    """Whether the rates the plugin quotes are ones the wiki gives.
+
+    Every rate in the Pet article's column must be quoted. Beyond those the
+    plugin may quote any rate the wiki states elsewhere - a footnote's framing,
+    or a source's own rate from the Item sources table - since that is often a
+    different route to the same pet (Demonic Brutus for Beef).
+    """
+    supporting = set(info["supporting"]) | set(source_rates)
+    return set(plugin_rates) <= supporting and set(info["stated"]) <= set(plugin_rates)
+
+
+# --------------------------------------------------------------------------
+# drop sources
+# --------------------------------------------------------------------------
+# A pet page's "Item sources" table is not in its wikitext: it is assembled from
+# the {{DropsLine}} entries on each monster and chest page, which the wiki keeps
+# in Bucket and publishes through api.php?action=bucket for external tools. One
+# query covers every pet.
+BUCKET_LIMIT = 500
+
+
+def bucket_query(items: list) -> str:
+    conds = ",".join("{'item_name',\"" + item + "\"}" for item in items)
+    return (
+        "bucket('dropsline').select('page_name','item_name','drop_json')"
+        ".where(bucket.Or(" + conds + ")).limit(" + str(BUCKET_LIMIT) + ").run()"
+    )
+
+
+def parse_drop_rows(rows: list) -> dict:
+    """item -> [{source, rate, approx}], one entry per rate a source states."""
+    out = {}
+    for row in rows:
+        try:
+            drop = json.loads(row.get("drop_json") or "{}")
+        except (TypeError, ValueError):
+            continue
+        item, source = row.get("item_name"), row.get("page_name")
+        if not isinstance(item, str) or not isinstance(source, str):
+            continue
+        entries = out.setdefault(item, [])
+        # "Alt Rarity" is the second rate a source gives, such as on a slayer task
+        for field in ("Rarity", "Alt Rarity"):
+            for rate in extract_rates(str(drop.get(field) or "")):
+                entry = {"source": source, "rate": rate, "approx": drop.get("Approx") is True}
+                if entry not in entries:
+                    entries.append(entry)
+    for entries in out.values():
+        entries.sort(key=lambda e: (e["source"], e["rate"]))
+    return out
+
+
+def drop_sources(items: list) -> dict:
+    """item -> its drop sources, for every item asked about (empty if none)."""
+    # names are interpolated into a Lua string literal, so refuse anything that
+    # could end it early rather than trying to escape it
+    askable = sorted(i for i in set(items) if '"' not in i and "\\" not in i)
+    out = {i: [] for i in askable}
+    for i in range(0, len(askable), 50):
+        rows = api(action="bucket", query=bucket_query(askable[i : i + 50])).get("bucket")
+        if not isinstance(rows, list):
+            raise RuntimeError("Bucket answered without a result list")
+        if len(rows) >= BUCKET_LIMIT:
+            raise RuntimeError("Bucket returned " + str(len(rows)) + " drop lines, the query limit; results would be cut off")
+        for item, entries in parse_drop_rows(rows).items():
+            if item in out:
+                out[item] = entries
+    return out
+
+
+def source_label(entry: dict) -> str:
+    return ("~" if entry["approx"] else "") + entry["rate"] + " (" + entry["source"] + ")"
+
+
 def infobox_tabs(text: str) -> dict:
     """Infobox NPC body -> the {{Multi Infobox}} tab it sits under ("Follower", "POH")."""
     tabs = {}
@@ -721,13 +797,18 @@ def build_report(findings: dict) -> str:
     if rate_changes:
         lines.append("### " + str(len(rate_changes)) + " drop rate(s) changed on the wiki")
         lines.append("")
-        for c in sorted(rate_changes, key=lambda x: x["page"]):
+        for c in sorted(rate_changes, key=lambda x: (x["page"], x.get("where", ""))):
             note = " - " + md(c["section"]) if c.get("section") else ""
+            head = "- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note
+            if c.get("where") == "drop sources":
+                # source names are wiki text, so they are escaped rather than quoted
+                lines.append(
+                    head + ", Item sources: " + md(", ".join(c["was"]) or "none", 300)
+                    + " -> " + md(", ".join(c["now"]) or "none", 300)
+                )
+                continue
             now = ", ".join(c["now"]) if c["now"] else "no fixed rate"
-            lines.append(
-                "- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note
-                + ": `" + ", ".join(c["was"]) + "` -> `" + now + "`"
-            )
+            lines.append(head + ": `" + ", ".join(c["was"]) + "` -> `" + now + "`")
         lines.append("")
         lines.append("Update the matching info string in `PetJsonCreator.java` if it quotes a rate.")
         lines.append("")
@@ -739,6 +820,8 @@ def build_report(findings: dict) -> str:
             note = " - " + md(c["section"]) if c.get("section") else ""
             lines.append("- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note)
             lines.append("  - wiki: `" + ", ".join(c["wiki"]) + "`")
+            if c.get("sources"):
+                lines.append("  - wiki Item sources: " + md(", ".join(c["sources"]), 300))
             lines.append("  - plugin: `" + ", ".join(c["plugin"]) + "` - " + md(c["info"], 200))
         lines.append("")
         lines.append("Some of these are wording rather than errors: the plugin may describe a")
@@ -834,7 +917,9 @@ def main() -> int:
     # A cache from another version, or one missing anything we rely on, is
     # discarded whole. Half-reading it silently drops pets from the check.
     if cache.get("schema") != CACHE_SCHEMA or not all(
-        k in cache for k in ("titles", "page_revids", "page_variants", "pet_rows", "page_rates")
+        k in cache
+        for k in ("titles", "page_revids", "page_variants", "pet_rows", "page_rates",
+                  "page_sources", "source_scope", "source_revids")
     ):
         cache = {}
     force = args.force or args.all
@@ -872,7 +957,11 @@ def main() -> int:
         # and continuing would quietly check only part of the list
         raise RuntimeError("Category:Pets came back empty; treating that as a failed query")
     known = cache.get("titles", [])
-    meta = page_meta(sorted(set(cat) | set(known) | {"Pet"}))
+    # the monster and chest pages the drop sources were read from: an edit to
+    # one of them may have moved a rate without touching any pet page
+    known_sources = cache.get("source_revids", {})
+    meta = page_meta(sorted(set(cat) | set(known) | {"Pet"} | set(known_sources)))
+    sources_changed = sorted(s for s, rev in known_sources.items() if meta.get(s, {}).get("revid") != rev)
 
     pet_revid = meta.get("Pet", {}).get("revid")
     pet_article_changed = pet_revid != cache.get("pet_article_revid")
@@ -932,6 +1021,7 @@ def main() -> int:
         # drop rates live in the Pet article, so an edit there matters even when
         # no individual pet page moved
         and not pet_article_changed
+        and not sources_changed
         and cache.get("runelite_release") == release
         and cache.get("plugin_digest") == plugin_digest
         and cache.get("page_variants") is not None
@@ -939,7 +1029,8 @@ def main() -> int:
         # acknowledged.json is how you ask to be told everything again
         and ack.get("missing_keys") is not None
     )
-    log("probe: " + str(len(changed)) + " page(s) edited, " + str(len(dropped)) + " removed")
+    log("probe: " + str(len(changed)) + " page(s) edited, " + str(len(dropped)) + " removed, "
+        + str(len(sources_changed)) + " drop source page(s) edited")
 
     if settled and not force:
         print(
@@ -1033,9 +1124,25 @@ def main() -> int:
     plugin_rates = plugin_rates_by_page(args.repo / "pets.json", page_variants)
     prev_rates = cache.get("page_rates", {})
     page_rates, rate_changes, rate_conflicts = {}, [], []
+    rate_info = {page: wiki_rate_info(pet_rows.get(page, {}).get("rate", "")) for page in sorted(page_variants)}
+
+    # Drop sources are read for the same pets, and only re-read when the article,
+    # the set of pets or one of the source pages has changed.
+    scope = sorted(page for page, info in rate_info.items() if info["stated"])
+    prev_sources = cache.get("page_sources")
+    if prev_sources is None or pet_article_changed or sources_changed or cache.get("source_scope") != scope:
+        log("reading drop sources for " + str(len(scope)) + " pet(s)")
+        page_sources = drop_sources(scope)
+    else:
+        page_sources = prev_sources
+    source_pages = sorted({e["source"] for entries in page_sources.values() for e in entries})
+    unknown_sources = [s for s in source_pages if s not in meta]
+    if unknown_sources:
+        meta.update(page_meta(unknown_sources))
+    source_revids = {s: meta[s]["revid"] for s in source_pages if s in meta}
 
     for page in sorted(page_variants):
-        info = wiki_rate_info(pet_rows.get(page, {}).get("rate", ""))
+        info = rate_info[page]
         was = prev_rates.get(page)
 
         if not info["stated"]:
@@ -1052,19 +1159,27 @@ def main() -> int:
             rate_changes.append({"page": page, "was": was, "now": info["stated"],
                                  "section": sections.get(page, "")})
 
+        sources = page_sources.get(page, [])
+        was_sources = (prev_sources or {}).get(page)
+        if was_sources is not None and was_sources != sources:
+            rate_changes.append({"page": page, "where": "drop sources",
+                                 "was": [source_label(e) for e in was_sources],
+                                 "now": [source_label(e) for e in sources],
+                                 "section": sections.get(page, "")})
+
         if info["ambiguous"]:
             continue
         plugin = plugin_rates.get(page)
         if not plugin or not plugin["rates"]:
             continue
-        # the plugin may quote a footnote's framing instead of the headline rate
-        if set(plugin["rates"]) <= set(info["supporting"]) and set(info["stated"]) <= set(plugin["rates"]):
-            continue
-        if set(plugin["rates"]) == set(info["stated"]):
+        source_rates = sorted({e["rate"] for e in sources})
+        if rates_agree(info, source_rates, plugin["rates"]):
             continue
         rate_conflicts.append({
             "page": page,
             "wiki": info["stated"],
+            "sources": [source_label(e) for e in sources],
+            "source_rates": source_rates,
             "plugin": plugin["rates"],
             "info": plugin["info"],
             "section": sections.get(page, ""),
@@ -1075,8 +1190,11 @@ def main() -> int:
     def key_of(m):
         return m["page"] + "::" + m["variant"] + "::" + m["status"]
 
+    # Both sides are in the key, so a disagreement left alone is raised again as
+    # soon as either the wiki or the plugin moves.
     def rate_key(c):
-        return c["page"] + "::" + ",".join(c["wiki"]) + "::" + ",".join(c["plugin"])
+        wiki = ",".join(c["wiki"]) + (";" + ",".join(c["source_rates"]) if c.get("source_rates") else "")
+        return c["page"] + "::" + wiki + "::" + ",".join(c["plugin"])
 
     prev_pages = set(ack.get("pages", []))
     prev_missing = set(ack.get("missing_keys", []))
@@ -1144,6 +1262,9 @@ def main() -> int:
                     "pet_article_revid": pet_revid,
                     "pet_rows": pet_rows,
                     "page_rates": page_rates,
+                    "page_sources": page_sources,
+                    "source_scope": scope,
+                    "source_revids": source_revids,
                     "titles": sorted(titles),
                     "page_revids": {t: revids[t] for t in titles if t in revids},
                     "page_variants": page_variants,

@@ -13,7 +13,7 @@ on:
     # takes about half an hour, so 17:17 leaves the wiki roughly five hours to
     # be updated. The other six days are the safety net for when it is not, and
     # they are nearly free - petwatch probes revision ids first and stops after
-    # ~15KB unless something actually changed. See tools/petwatch/README.md.
+    # ~26KB unless something actually changed. See tools/petwatch/README.md.
     - cron: '17 17 * * *'
   workflow_dispatch:
     inputs:
@@ -52,7 +52,7 @@ jobs:
           python-version: '3.12'
 
       # Carries revision ids, parsed variants and the NpcID.java download
-      # between runs so a daily check costs ~15KB instead of ~1.8MB. Losing the
+      # between runs so a daily check costs ~26KB instead of ~1.8MB. Losing the
       # cache is harmless: the next run just does the full check once.
       - name: Restore probe cache
         uses: actions/cache@v6

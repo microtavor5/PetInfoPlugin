@@ -282,5 +282,55 @@ class TestPluginRateLookup(unittest.TestCase):
         self.assertEqual(pw.plugin_rates_by_page(bad, {}), {})
 
 
+class TestRateAgreement(unittest.TestCase):
+    def test_a_rate_only_in_the_item_sources_table_is_accepted(self):
+        # Beef: the Pet article gives Brutus only; Demonic Brutus is in Item sources
+        info = pw.wiki_rate_info("1/1,000")
+        self.assertFalse(pw.rates_agree(info, [], ["1/1000", "1/400"]))
+        self.assertTrue(pw.rates_agree(info, ["1/1000", "1/400"], ["1/1000", "1/400"]))
+
+    def test_the_article_rate_must_still_be_quoted(self):
+        info = pw.wiki_rate_info("1/1,000")
+        self.assertFalse(pw.rates_agree(info, ["1/1000", "1/400"], ["1/400"]))
+
+    def test_a_rate_nowhere_on_the_wiki_disagrees(self):
+        info = pw.wiki_rate_info("1/1,000")
+        self.assertFalse(pw.rates_agree(info, ["1/1000", "1/400"], ["1/1000", "1/500"]))
+
+    def test_footnote_framing_is_accepted(self):
+        info = pw.wiki_rate_info("1/2,560{{efn|5/128 per unsired.}}")
+        self.assertTrue(pw.rates_agree(info, [], ["1/2560", "5/128"]))
+
+
+class TestDropSources(unittest.TestCase):
+    ROWS = [
+        {"item_name": "Beef", "page_name": "Brutus",
+         "drop_json": json.dumps({"Rarity": "1/1,000", "Approx": False, "Alt Rarity": ""})},
+        {"item_name": "Beef", "page_name": "Demonic Brutus",
+         "drop_json": json.dumps({"Rarity": "1/400", "Approx": True, "Alt Rarity": ""})},
+        {"item_name": "Nid", "page_name": "Araxxor",
+         "drop_json": json.dumps({"Rarity": "1/3,000", "Approx": False, "Alt Rarity": "1/1,500"})},
+        {"item_name": "Nid", "page_name": "Broken", "drop_json": "{not json"},
+    ]
+
+    def test_rows_become_rates_per_source(self):
+        got = pw.parse_drop_rows(self.ROWS)
+        self.assertEqual([pw.source_label(e) for e in got["Beef"]],
+                         ["1/1000 (Brutus)", "~1/400 (Demonic Brutus)"])
+
+    def test_alt_rarity_is_a_second_rate(self):
+        got = pw.parse_drop_rows(self.ROWS)
+        self.assertEqual(sorted(e["rate"] for e in got["Nid"]), ["1/1500", "1/3000"])
+
+    def test_query_names_every_item(self):
+        q = pw.bucket_query(["Beef", "Lil' Zik"])
+        self.assertIn("{'item_name',\"Lil' Zik\"}", q)
+        self.assertTrue(q.endswith(".run()"))
+
+    def test_names_that_would_end_the_string_are_not_sent(self):
+        # nothing askable is left, so no request is made
+        self.assertEqual(pw.drop_sources(['Evil"}).run() --', "back\\slash"]), {})
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

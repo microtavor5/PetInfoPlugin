@@ -23,22 +23,25 @@ since the last run.
 ## Cheap repeat checks
 
 The full check costs about 1.8MB, most of it `NpcID.java` from GitHub plus the
-wikitext of ~98 pet pages. Running that daily to catch the occasional late wiki
+wikitext of every pet page. Running that daily to catch the occasional late wiki
 edit would be wasteful, so each run starts with a probe that asks only for
-revision ids, the category listing and the RuneLite release number.
+revision ids (of the pet pages and of the pages their drop sources come from),
+the category listing and the RuneLite release number.
 
-If no pet page has been edited, the Pet article and the category are unchanged,
-the RuneLite release is unchanged and the plugin is unchanged, the run stops
-there:
+If none of those pages has been edited, the Pet article and the category are
+unchanged, the RuneLite release is unchanged and the plugin is unchanged, the run
+stops there. Measured in September 2026, with 124 pet pages:
 
 | | requests | downloaded |
 | --- | --- | --- |
-| probe only, nothing changed | 5 | ~15KB |
-| full check | ~10 | ~1800KB |
+| probe only, nothing changed | 6 | ~26KB |
+| full check | - | ~1.8MB |
 
 When something has changed, only the pages whose revision id moved are
-re-fetched; the rest are reused from the cache. The RuneLite metadata is
-requested with `If-None-Match`, so an unchanged release answers `304`.
+re-fetched; the rest are reused from the cache. Drop sources are re-read (about
+30KB) only when the Pet article, the set of rate-tracked pets or one of the
+source pages changed. The RuneLite metadata is requested with `If-None-Match`, so
+an unchanged release answers `304`.
 
 That makes a daily schedule cost about the same per week as a single weekly full
 check, which is why the workflow runs daily.
@@ -94,13 +97,23 @@ the noisy ones without having to name them: skilling pets link to a formula
 (`1/800 to 1/4,000`) or described as varying are skipped. In practice that
 tracks the boss and collection-log pets and nothing else.
 
+For those pets it also reads the **Item sources** table on the pet's page. That
+table is not in the page's wikitext: it is assembled from the drop tables of
+each monster and chest, which the wiki publishes through its
+[Bucket API](https://oldschool.runescape.wiki/w/RuneScape:Bucket). One query
+covers every pet. This is where a second route to a pet shows up when the Pet
+article gives only the main one, such as Beef's `~1/400` from Demonic Brutus.
+
 Two kinds of finding:
 
-- **changed on the wiki** - the rate moved since the last check. Always reported.
-- **plugin disagrees** - `pets.json` quotes a different rate. Reported once, then
-  recorded, because some are wording rather than errors: the plugin may describe
-  a different route to the pet than the rate column does, as with Abyssal orphan
-  being quoted per unsired and the table per Sire kill.
+- **changed on the wiki** - a rate in the Pet article or the Item sources table
+  moved since the last check. Always reported.
+- **plugin disagrees** - `pets.json` quotes a rate the wiki does not give, or
+  leaves out one in the Pet article's column. A rate from a footnote or the Item
+  sources table counts as given, because the plugin may describe a different
+  route to the pet: Abyssal orphan is quoted per unsired and the table per Sire
+  kill. Reported once, then recorded. Both sides are part of what is recorded, so
+  a disagreement that was left alone is raised again if either side changes.
 
 Rates are read from `pets.json` rather than `PetJsonCreator.java` because that is
 what actually ships; regenerating it re-runs the check.
@@ -145,7 +158,7 @@ branch resets what has been reported; nothing else depends on it.
 
 Wednesday is the run that matters - the game update lands around 11:30 and takes
 about half an hour, so 17:17 leaves the wiki roughly five hours. The other six
-days are the safety net for when the wiki is slower than that, and cost ~15KB
+days are the safety net for when the wiki is slower than that, and cost ~26KB
 each thanks to the probe. The probe cache is carried between runs by
 `actions/cache`; quiet days produce no commit.
 
@@ -180,11 +193,14 @@ is that a custom User-Agent is preferred and that request volume should "be
 reasonable". petwatch:
 
 - goes through `api.php` only - it never scrapes article HTML, `Special:` pages
-  or `?action=raw`, and it does not touch the disallowed `Bucket:` namespace;
+  or `?action=raw`, and it does not touch the disallowed `Bucket:` namespace.
+  Drop sources come from `action=bucket`, which the wiki
+  [invites external users](https://oldschool.runescape.wiki/w/RuneScape:Bucket)
+  to query instead of scraping pages;
 - sends an identifying User-Agent naming the tool and this repository, so the
   operators can see what the traffic is and make contact. The `PETWATCH_UA`
   environment variable overrides it;
-- makes requests serially - about 5 on a quiet day, ~10 when something changed,
+- makes requests serially - 6 on a quiet day, more only when something changed,
   once per day;
 - sends `maxlag=5`, so the servers turn it away while they are lagging rather
   than being asked to absorb load, and honours `Retry-After` when they do.

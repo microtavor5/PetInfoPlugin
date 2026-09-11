@@ -27,8 +27,9 @@ Steps 3-6 are preceded by a probe that only asks for revision ids, the category
 listing and the RuneLite release number - about 26KB against ~1.8MB for the full
 check. The run stops there unless a pet page or a drop source page was edited,
 the Pet article or the category changed, the RuneLite release moved, or
-PetJsonCreator.java or pets.json changed. That makes running daily about as cheap as running weekly, so
-a wiki edit that lands late is picked up the next day instead of the next week.
+PetJsonCreator.java or pets.json changed. That makes running daily about as cheap
+as running weekly, so a wiki edit that lands late is picked up the next day
+instead of the next week.
 
 State, with different jobs:
   acknowledged.json - what has already been reported. Durable, small, meant to
@@ -254,6 +255,22 @@ def plugin_constant_names(java: Path):
             )
         )
     return registered, mentioned
+
+
+# `new Pet(PetGroup.OTHER, 16385, INFO)`: an id written out because RuneLite has
+# no constant for it yet.
+PET_RAW_ID = re.compile(r"new\s+Pet\s*\(\s*[\w.]+\s*,\s*(\d+)\s*[,)]")
+
+
+def plugin_raw_ids(java: Path) -> set:
+    """NPC ids the plugin hard-codes instead of naming an NpcID constant.
+
+    These deliberately do not count as covered: the variant stays on the list so
+    that the RuneLite release adding its constant is still reported. They are
+    marked as hard-coded in the report, and the commit check reads them to tell
+    hard-coding from registering a constant.
+    """
+    return {int(n) for n in PET_RAW_ID.findall(java.read_text(encoding="utf-8", errors="replace"))}
 
 
 def resolve_plugin_ids(names: list, npcids: dict):
@@ -563,19 +580,22 @@ def wiki_rate_info(cell: str) -> dict:
     }
 
 
-def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
-    """page -> (rates the shipped plugin text states, one sample of that text)."""
+def load_pets_json(pets_json: Path) -> dict:
+    """npc id (as a string) -> entry. Empty when the file is absent or unreadable."""
     if not pets_json.exists():
         return {}
     try:
         entries = json.loads(pets_json.read_text(encoding="utf-8"))
     except ValueError:
         return {}
-    by_id = {}
-    for key, entry in entries.items():
-        info = (entry or {}).get("info")
-        if info:
-            by_id[str(key)] = info
+    if not isinstance(entries, dict):
+        return {}
+    return {str(k): e for k, e in entries.items() if isinstance(e, dict)}
+
+
+def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
+    """page -> (rates the shipped plugin text states, one sample of that text)."""
+    by_id = {k: e["info"] for k, e in load_pets_json(pets_json).items() if e.get("info")}
     out = {}
     for page, variants in page_variants.items():
         infos, rates = [], []
@@ -616,6 +636,11 @@ BUCKET_LIMIT = 500
 
 
 def bucket_query(items: list) -> str:
+    """A Bucket query for the drop lines of every one of `items`.
+
+    Bucket queries are Lua, so each name is a quoted string and the conditions
+    are OR-ed together to cover all the pets in one request.
+    """
     conds = ",".join("{'item_name',\"" + item + "\"}" for item in items)
     return (
         "bucket('dropsline').select('page_name','item_name','drop_json')"
@@ -665,23 +690,53 @@ def drop_sources(items: list) -> dict:
 
 
 def source_label(entry: dict) -> str:
+    """One drop source as it is shown in a report: "~1/400 (Demonic Brutus)"."""
     return ("~" if entry["approx"] else "") + entry["rate"] + " (" + entry["source"] + ")"
 
 
 def infobox_tabs(text: str) -> dict:
-    """Infobox NPC body -> the {{Multi Infobox}} tab it sits under ("Follower", "POH")."""
+    """Infobox NPC body -> the {{Multi Infobox}} tab it sits under.
+
+    A page such as Bernese Mountain Dog lists each colour twice, once in a
+    Follower infobox and once in a POH one, under `|text1 = Follower` and
+    `|text2 = POH`. Those labels are the only thing distinguishing the two sets
+    of ids, since the colour names are identical.
+    """
     tabs = {}
     for multi in extract_template(text, "Multi Infobox"):
-        p = infobox_params(multi)
-        for key, value in p.items():
-            m = re.fullmatch(r"item(\d+)", key)
-            if not m:
+        params = infobox_params(multi)
+        for key, value in params.items():
+            numbered = re.fullmatch(r"item(\d+)", key)
+            if not numbered:
                 continue
-            tab = re.sub(r"\s+", " ", p.get("text" + m.group(1), "")).strip()
+            tab = re.sub(r"\s+", " ", params.get("text" + numbered.group(1), "")).strip()
+            if not tab:
+                continue
             for body in extract_template(value, "Infobox NPC"):
-                if tab:
-                    tabs[body] = tab
+                tabs[body] = tab
     return tabs
+
+
+def qualify_duplicate_labels(variants: list) -> list:
+    """Make each variant's label unique within its page.
+
+    The label is part of the key recorded in acknowledged.json, so two variants
+    sharing one would be acknowledged as though they were the same pet, and the
+    report could not tell them apart either. A repeated label is qualified by its
+    Multi Infobox tab ("Chocolate (POH)"), or by its ids where there is no tab.
+    """
+    counts = {}
+    for v in variants:
+        counts[v["variant"]] = counts.get(v["variant"], 0) + 1
+    taken = set()
+    for v in variants:
+        tab = v.pop("tab", "")
+        if counts[v["variant"]] > 1 and tab:
+            v["variant"] += " (" + tab + ")"
+        if v["variant"] in taken:
+            v["variant"] += " (" + ", ".join(str(i) for i in v["ids"]) + ")"
+        taken.add(v["variant"])
+    return variants
 
 
 def parse_variants(title: str, text: str) -> list:
@@ -690,6 +745,8 @@ def parse_variants(title: str, text: str) -> list:
     variants = []
     for body in extract_template(text, "Infobox NPC"):
         p = infobox_params(body)
+        # infobox_params strips comments out of the bodies it hands back, so a
+        # tab may be recorded under either form of the same infobox
         tab = tabs.get(COMMENT.sub("", body).strip()) or tabs.get(body, "")
         indices = sorted(
             {int(m.group(1)) for k in p for m in [re.fullmatch(r"id(\d+)", k)] if m}
@@ -708,21 +765,7 @@ def parse_variants(title: str, text: str) -> list:
         if v["ids"] and key not in seen:
             seen.add(key)
             unique.append(v)
-    # A label must identify one variant: it is part of the key that records what
-    # has been reported. The dog pages repeat every colour in a Follower and a
-    # POH infobox, so qualify colliding labels by tab, or by id if that fails.
-    counts = {}
-    for v in unique:
-        counts[v["variant"]] = counts.get(v["variant"], 0) + 1
-    labels = set()
-    for v in unique:
-        tab = v.pop("tab")
-        if counts[v["variant"]] > 1:
-            v["variant"] += " (" + tab + ")" if tab else ""
-        if v["variant"] in labels:
-            v["variant"] += " (" + ", ".join(str(i) for i in v["ids"]) + ")"
-        labels.add(v["variant"])
-    return unique
+    return qualify_duplicate_labels(unique)
 
 
 # --------------------------------------------------------------------------
@@ -845,7 +888,8 @@ def build_report(findings: dict) -> str:
                 names = ", ".join("`NpcID." + c + "`" for c in e["constants"]) or "no matching NpcID constant"
                 ids = ", ".join(str(i) for i in e["ids"])
                 label = "" if e["variant"] == page else "*" + md(e["variant"]) + "* - "
-                lines.append("  - " + label + "ids `" + ids + "` -> " + names)
+                hardcoded = " (hard-coded in the plugin)" if e.get("hardcoded") else ""
+                lines.append("  - " + label + "ids `" + ids + "` -> " + names + hardcoded)
         lines.append("")
         lines.append(STATUS_NOTES[status])
         lines.append("")
@@ -1065,7 +1109,8 @@ def main() -> int:
         return npc_cache["by_number"]
 
     plugin_ids, unresolved_names = resolve_plugin_ids(names, released)
-    log("plugin registers " + str(len(plugin_ids)) + " npc ids")
+    raw_ids = plugin_raw_ids(java)
+    log("plugin registers " + str(len(plugin_ids)) + " npc ids, plus " + str(len(raw_ids)) + " hard-coded")
 
     unresolved = {}
     for name in unresolved_names:
@@ -1113,6 +1158,7 @@ def main() -> int:
                     "ids": v["ids"],
                     "constants": constants,
                     "status": status,
+                    "hardcoded": any(i in raw_ids for i in v["ids"]),
                     "section": sections.get(title, ""),
                 }
             )
@@ -1185,6 +1231,31 @@ def main() -> int:
             "section": sections.get(page, ""),
         })
 
+    # ---- what the plugin says per pet, for the commit check -------------
+    pets_entries = load_pets_json(pets_json)
+    infos_by_id = {k: e["info"] for k, e in pets_entries.items() if e.get("info")}
+    wiki_ids, plugin_pages = set(), {}
+    for page, variants in page_variants.items():
+        ids = {i for v in variants for i in v["ids"]}
+        wiki_ids |= ids
+        texts = sorted({infos_by_id[str(i)] for i in ids if str(i) in infos_by_id})
+        view = {
+            "ids": sorted(ids & plugin_ids),
+            "raw_ids": sorted(ids & raw_ids),
+            "info": texts,
+            "rates": sorted({r for t in texts for r in extract_rates(t)}),
+        }
+        if view["ids"] or view["raw_ids"] or texts:
+            plugin_pages[page] = view
+    # pets.json is generated from PetJsonCreator.java; the two drifting apart
+    # means it was not regenerated
+    creator_ids = plugin_ids | raw_ids
+    json_ids = {int(k) for k in pets_entries if k.isdigit()}
+    pets_json_mismatch = {
+        "not_in_pets_json": sorted(creator_ids - json_ids),
+        "only_in_pets_json": sorted(json_ids - creator_ids),
+    } if pets_entries else {}
+
     # status is part of the key, so a variant that becomes buildable when the next
     # RuneLite release lands is reported again rather than staying silent.
     def key_of(m):
@@ -1221,6 +1292,20 @@ def main() -> int:
         "rate_conflicts": shown_conflicts,
         "rates_tracked": len(page_rates),
         "unresolved_constants": unresolved,
+        # The rest is for the commit check (review.py), which diffs the findings
+        # of two runs and so needs the unfiltered lists: the ones above are cut
+        # down to what has not been reported before. The report ignores these.
+        "all_missing": missing,
+        "all_rate_conflicts": rate_conflicts,
+        "plugin_pages": plugin_pages,
+        "wiki_rates": {
+            page: {"stated": rate_info[page]["stated"],
+                   "ambiguous": rate_info[page]["ambiguous"],
+                   "sources": [source_label(e) for e in page_sources.get(page, [])]}
+            for page in scope
+        },
+        "unmatched_ids": sorted(creator_ids - wiki_ids),
+        "pets_json_mismatch": pets_json_mismatch,
         "runelite": {
             "release": release,
             "release_tag": release_tag,

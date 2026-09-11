@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import notify  # noqa: E402
 import petwatch as pw  # noqa: E402
+import review  # noqa: E402
 
 
 class TestTemplateExtraction(unittest.TestCase):
@@ -330,6 +331,151 @@ class TestDropSources(unittest.TestCase):
     def test_names_that_would_end_the_string_are_not_sent(self):
         # nothing askable is left, so no request is made
         self.assertEqual(pw.drop_sources(['Evil"}).run() --', "back\\slash"]), {})
+
+
+class TestPluginRawIds(unittest.TestCase):
+    def test_hard_coded_ids_are_found_and_constants_are_not(self):
+        d = Path(tempfile.mkdtemp())
+        java = d / "PetJsonCreator.java"
+        java.write_text(
+            "new Pet(PetGroup.OTHER, 16385, CHOCOLATE + DOG_INFO),\n"
+            "new Pet(PetGroup.BOSS, NpcID.COWBOSS_PET, BEEF_INFO),\n"
+            "new Pet(PetGroup.OTHER, 16386)\n",
+            encoding="utf-8",
+        )
+        self.assertEqual(pw.plugin_raw_ids(java), {16385, 16386})
+
+
+def findings(missing=(), conflicts=(), pages=None, wiki_rates=None, **extra):
+    """A minimal petwatch --json result, as the commit check reads it."""
+    out = {
+        "all_missing": list(missing),
+        "all_rate_conflicts": list(conflicts),
+        "plugin_pages": pages or {},
+        "wiki_rates": wiki_rates or {},
+        "unresolved_constants": {},
+        "unmatched_ids": [],
+        "pets_json_mismatch": {},
+        "runelite": {"release": "1.12.38"},
+    }
+    out.update(extra)
+    return out
+
+
+def missing(page, variant, ids, status="no-constant", hardcoded=False, constants=()):
+    return {"page": page, "variant": variant, "ids": list(ids), "status": status,
+            "hardcoded": hardcoded, "constants": list(constants)}
+
+
+def view(ids=(), raw=(), info=(), rates=()):
+    return {"ids": list(ids), "raw_ids": list(raw), "info": list(info), "rates": list(rates)}
+
+
+BOTH = [review.CREATOR, review.PETS_JSON]
+
+
+class TestCommitCheck(unittest.TestCase):
+    def test_fixing_a_rate_matches(self):
+        conflict = {"page": "Beef", "wiki": ["1/1000"], "plugin": ["1/1000", "1/500"], "sources": []}
+        base = findings(conflicts=[conflict], pages={"Beef": view([1], info=["a"], rates=["1/1000", "1/500"])})
+        head = findings(pages={"Beef": view([1], info=["b"], rates=["1/1000", "1/400"])},
+                        wiki_rates={"Beef": {"stated": ["1/1000"], "ambiguous": False, "sources": []}})
+        result = review.compare(base, head, BOTH)
+        self.assertEqual(result["verdict"][0], "ok")
+        self.assertIn("now matches", "\n".join(result["pages"][0][1].bullets()))
+
+    def test_a_wrong_rate_does_not_match(self):
+        conflict = {"page": "Beef", "wiki": ["1/1000"], "plugin": ["1/1000", "1/500"],
+                    "sources": ["~1/400 (Demonic Brutus)"]}
+        base = findings(pages={"Beef": view([1], info=["a"], rates=["1/1000", "1/400"])})
+        head = findings(conflicts=[conflict], pages={"Beef": view([1], info=["b"], rates=["1/1000", "1/500"])})
+        result = review.compare(base, head, BOTH)
+        self.assertEqual(result["verdict"][0], "bad")
+        self.assertIn("Demonic Brutus", "\n".join(result["pages"][0][1].bullets()))
+
+    def test_a_disagreement_the_change_did_not_touch_is_context_only(self):
+        conflict = {"page": "Beef", "wiki": ["1/1000"], "plugin": ["1/500"], "sources": []}
+        base = findings(conflicts=[conflict], pages={"Beef": view([1], info=["a"], rates=["1/500"])})
+        head = findings(conflicts=[conflict], pages={"Beef": view([1, 2], info=["a"], rates=["1/500"])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "info")
+
+    def test_adding_a_missing_variant_matches(self):
+        base = findings(missing=[missing("Beaver", "Camphor", [16000], "ready")],
+                        pages={"Beaver": view([1])})
+        head = findings(pages={"Beaver": view([1, 16000])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "ok")
+
+    def test_adding_one_variant_of_several_is_partial(self):
+        base = findings(missing=[missing("Dog", "Chocolate (Follower)", [1], "ready"),
+                                 missing("Dog", "Chocolate (POH)", [2], "ready")])
+        head = findings(missing=[missing("Dog", "Chocolate (POH)", [2], "ready")],
+                        pages={"Dog": view([1])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "warn")
+
+    def test_hard_coding_without_a_constant_matches(self):
+        base = findings(missing=[missing("Dog", "Merle", [16386])])
+        head = findings(missing=[missing("Dog", "Merle", [16386], hardcoded=True)],
+                        pages={"Dog": view(raw=[16386])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "ok")
+
+    def test_hard_coding_when_a_constant_is_released_does_not_match(self):
+        base = findings(missing=[missing("Dog", "Merle", [16386], "ready", constants=["DOG_MERLE"])])
+        head = findings(missing=[missing("Dog", "Merle", [16386], "ready", True, ["DOG_MERLE"])],
+                        pages={"Dog": view(raw=[16386])})
+        result = review.compare(base, head, BOTH)
+        self.assertEqual(result["verdict"][0], "bad")
+        self.assertIn("NpcID.DOG_MERLE", "\n".join(result["pages"][0][1].bullets()))
+
+    def test_removing_a_variant_does_not_match(self):
+        base = findings(pages={"Vorki": view([8025])})
+        head = findings(missing=[missing("Vorki", "Vorki", [8025], "ready")])
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "bad")
+
+    def test_pets_untouched_by_the_change_are_left_out(self):
+        base = findings(missing=[missing("Other", "Other", [9])], pages={"Vorki": view([8025])})
+        head = findings(missing=[missing("Other", "Other", [9])], pages={"Vorki": view([8025])})
+        self.assertEqual(review.compare(base, head, BOTH)["pages"], [])
+
+    def test_stale_pets_json_does_not_match(self):
+        head = findings(pets_json_mismatch={"not_in_pets_json": [5], "only_in_pets_json": []})
+        self.assertEqual(review.compare(findings(), head, BOTH)["verdict"][0], "bad")
+
+    def test_creator_changed_alone_is_a_warning(self):
+        result = review.compare(findings(), findings(), [review.CREATOR])
+        self.assertEqual(result["verdict"][0], "warn")
+
+    def test_a_range_on_the_wiki_is_not_called_a_match(self):
+        base = findings(pages={"Olmlet": view([1], info=["a"], rates=["1/53"])})
+        head = findings(pages={"Olmlet": view([1], info=["b"], rates=["1/60"])},
+                        wiki_rates={"Olmlet": {"stated": ["1/53"], "ambiguous": True, "sources": []}})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "info")
+
+    def test_a_pull_request_is_commented_on_as_a_conversation(self):
+        listing, create, patch = review.comment_urls("https://api.github.com", "o/r", "a" * 40, "12")
+        self.assertTrue(listing.startswith("https://api.github.com/repos/o/r/issues/12/comments"))
+        self.assertEqual(create, "https://api.github.com/repos/o/r/issues/12/comments")
+        # editing an issue comment is not the same endpoint as creating one
+        self.assertEqual(patch, "https://api.github.com/repos/o/r/issues/comments/")
+
+    def test_without_a_pull_request_the_commit_is_commented_on(self):
+        listing, create, patch = review.comment_urls("https://api.github.com", "o/r", "a" * 40, "")
+        self.assertIn("/commits/" + "a" * 40 + "/comments", create)
+        self.assertEqual(patch, "https://api.github.com/repos/o/r/comments/")
+        self.assertIn("/commits/", listing)
+
+    def test_comment_is_marked_and_escapes_wiki_text(self):
+        base = findings(missing=[missing("Pet", "[x](http://evil)", [1], "ready")])
+        head = findings(pages={"Pet": view([1])})
+        body = review.render_comment(review.compare(base, head, BOTH), "a" * 40, "b" * 40, "1.12.38")
+        self.assertTrue(body.startswith(review.MARKER))
+        self.assertNotIn("](http://evil)", body)
+
+    def test_long_lists_are_capped(self):
+        many = [missing("Dog", "V" + str(i), [i]) for i in range(40)]
+        head = findings(missing=[dict(m, hardcoded=True) for m in many], pages={"Dog": view(raw=range(40))})
+        lines = review.compare(findings(missing=many), head, BOTH)["pages"][0][1].bullets()
+        self.assertEqual(len(lines), 1)
+        self.assertIn("and 28 more", lines[0])
 
 
 if __name__ == "__main__":

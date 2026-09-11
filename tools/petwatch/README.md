@@ -176,6 +176,38 @@ python tools/petwatch/notify.py --findings findings.json --url "$WEBHOOK"
 Exit codes: `0` sent, `2` nothing worth sending, `1` failure. A failed webhook
 does not invalidate the run itself, which has already opened the issue.
 
+### Commit check
+
+`.github/workflows/pet-review.yml` runs on pushes and pull requests to `master`
+that change `PetJsonCreator.java` or `pets.json`. It runs petwatch against the
+plugin as it was before and after the change, with the same wiki data for both,
+and comments on each pet the change touched - in the pull request's
+conversation, or on the commit when a push has no pull request:
+
+| | |
+| --- | --- |
+| ✅ | adds variants petwatch listed as missing, brings a drop rate into line with the wiki, or hard-codes ids RuneLite has no released constant for |
+| ⚠️ | leaves some of the pet's variants missing, or changes `PetJsonCreator.java` without regenerating `pets.json` |
+| ❌ | quotes a rate the wiki does not give, drops a variant the wiki lists, hard-codes ids a released constant exists for, uses a constant the released API lacks, or leaves the ids in `pets.json` out of step with `PetJsonCreator.java` |
+| ℹ️ | context, such as a disagreement the change left as it was, or ids on no wiki pet page (expected for pet-like NPCs) |
+
+A pull request is judged as a whole, from where it branched off `master`. Re-runs
+replace the earlier comment instead of adding another. It opens no issue and
+records nothing, so it does not affect the scheduled check.
+
+The same report is written to the run's job summary, so it is also on the
+**Pet commit check** entry in the pull request's checks panel, behind *Details*.
+Pull requests from forks run with a read-only token, which cannot post a comment;
+there the summary is the only copy.
+
+```sh
+python tools/petwatch/review.py --base HEAD~1 --head HEAD    # print, do not post
+```
+
+Hard-coded ids (`new Pet(PetGroup.OTHER, 16385, ...)`) are recognised but do not
+count as covered, so a variant added that way stays in the scheduled report,
+marked as hard-coded, and is reported again when RuneLite releases its constant.
+
 To run it locally on a schedule instead:
 
 ```powershell

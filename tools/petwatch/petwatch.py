@@ -84,7 +84,7 @@ MAX_RESPONSE = 32 * 1024 * 1024  # nothing we fetch is remotely this big
 
 # Bumped whenever cache.json's shape changes. A cache from another version is
 # discarded rather than half-read, which would silently drop pets.
-CACHE_SCHEMA = 3
+CACHE_SCHEMA = 4
 
 # The article has listed on the order of 100 pets for years. Far below that means
 # something went wrong upstream, and reporting "all clear" would be a lie.
@@ -592,21 +592,39 @@ def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
     return out
 
 
+def infobox_tabs(text: str) -> dict:
+    """Infobox NPC body -> the {{Multi Infobox}} tab it sits under ("Follower", "POH")."""
+    tabs = {}
+    for multi in extract_template(text, "Multi Infobox"):
+        p = infobox_params(multi)
+        for key, value in p.items():
+            m = re.fullmatch(r"item(\d+)", key)
+            if not m:
+                continue
+            tab = re.sub(r"\s+", " ", p.get("text" + m.group(1), "")).strip()
+            for body in extract_template(value, "Infobox NPC"):
+                if tab:
+                    tabs[body] = tab
+    return tabs
+
+
 def parse_variants(title: str, text: str) -> list:
     """Each visual variant of a pet with its NPC ids."""
+    tabs = infobox_tabs(text)
     variants = []
     for body in extract_template(text, "Infobox NPC"):
         p = infobox_params(body)
+        tab = tabs.get(COMMENT.sub("", body).strip()) or tabs.get(body, "")
         indices = sorted(
             {int(m.group(1)) for k in p for m in [re.fullmatch(r"id(\d+)", k)] if m}
         )
         if indices:
             for n in indices:
                 label = p.get("version" + str(n)) or p.get("name" + str(n)) or (title + " #" + str(n))
-                variants.append({"variant": label.strip(), "ids": parse_ids(p.get("id" + str(n), ""))})
+                variants.append({"variant": label.strip(), "ids": parse_ids(p.get("id" + str(n), "")), "tab": tab})
         elif "id" in p:
             label = p.get("name") or title
-            variants.append({"variant": label.strip(), "ids": parse_ids(p["id"])})
+            variants.append({"variant": label.strip(), "ids": parse_ids(p["id"]), "tab": tab})
     # de-duplicate variants that repeat across multiple infoboxes on one page
     seen, unique = set(), []
     for v in variants:
@@ -614,6 +632,20 @@ def parse_variants(title: str, text: str) -> list:
         if v["ids"] and key not in seen:
             seen.add(key)
             unique.append(v)
+    # A label must identify one variant: it is part of the key that records what
+    # has been reported. The dog pages repeat every colour in a Follower and a
+    # POH infobox, so qualify colliding labels by tab, or by id if that fails.
+    counts = {}
+    for v in unique:
+        counts[v["variant"]] = counts.get(v["variant"], 0) + 1
+    labels = set()
+    for v in unique:
+        tab = v.pop("tab")
+        if counts[v["variant"]] > 1:
+            v["variant"] += " (" + tab + ")" if tab else ""
+        if v["variant"] in labels:
+            v["variant"] += " (" + ", ".join(str(i) for i in v["ids"]) + ")"
+        labels.add(v["variant"])
     return unique
 
 

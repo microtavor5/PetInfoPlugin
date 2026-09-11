@@ -87,6 +87,32 @@ class TestParseVariants(unittest.TestCase):
         # the "... (item)" pages: an item infobox must not be read for NPC ids
         self.assertEqual(pw.parse_variants("Gary (item)", "{{Infobox Item|id = 1234}}"), [])
 
+    # the dog pages: every colour appears once as a follower and once in the POH
+    DOG = (
+        "{{Multi Infobox\n|text1 = Follower\n|item1 =\n"
+        "{{Infobox NPC\n|version1 = Chocolate\n|version2 = Merle\n|id1 = 16385\n|id2 = 16386\n}}\n"
+        "|text2 = POH\n|item2 =\n"
+        "{{Infobox NPC\n|version1 = Chocolate\n|version2 = Merle\n|id1 = 16564\n|id2 = 16565\n}}\n"
+        "|text3 = Item\n|item3 =\n{{Infobox Item\n|version1 = Chocolate\n|id1 = 34479\n}}\n}}"
+    )
+
+    def test_repeated_labels_are_qualified_by_multi_infobox_tab(self):
+        got = {v["variant"]: v["ids"] for v in pw.parse_variants("Bernese Mountain Dog", self.DOG)}
+        self.assertEqual(got, {
+            "Chocolate (Follower)": [16385], "Merle (Follower)": [16386],
+            "Chocolate (POH)": [16564], "Merle (POH)": [16565],
+        })
+
+    def test_labels_that_do_not_collide_are_left_alone(self):
+        # Beef has a Multi Infobox too, but only one NPC infobox in it
+        text = "{{Multi Infobox\n|text1 = Follower\n|item1 =\n{{Infobox NPC\n|name = Beef\n|id = 15631\n}}\n}}"
+        self.assertEqual([v["variant"] for v in pw.parse_variants("Beef", text)], ["Beef"])
+
+    def test_repeated_labels_without_tabs_fall_back_to_ids(self):
+        text = "{{Infobox NPC|name = X|id = 5}}\n{{Infobox NPC|name = X|id = 6}}"
+        labels = [v["variant"] for v in pw.parse_variants("X", text)]
+        self.assertEqual(len(set(labels)), 2)
+
 
 class TestDropRates(unittest.TestCase):
     def test_plain_rate(self):

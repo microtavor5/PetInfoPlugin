@@ -236,10 +236,31 @@ def index_by_number(mapping: dict) -> dict:
 PET_ENTRY = re.compile(r"new\s+Pet\s*\([^()]*?NpcID\.([A-Z0-9_]+)", re.S)
 ANY_NPCID = re.compile(r"NpcID\.([A-Z0-9_]+)")
 
+# Java comments, plus the string and char literals that may contain comment
+# markers without starting one ("https://..."). Literals come first in the
+# alternation so they are consumed whole and never mistaken for a comment.
+JAVA_COMMENT_OR_LITERAL = re.compile(
+    r'"(?:\\.|[^"\\\n])*"'
+    r"|'(?:\\.|[^'\\\n])+'"
+    r"|//[^\n]*"
+    r"|/\*.*?\*/",
+    re.S,
+)
+
+
+def java_code(java: Path) -> str:
+    """A Java file's source with its comments blanked out.
+
+    Commenting a pet out is how it is disabled, so a `new Pet(...)` inside a
+    comment must not count as registered.
+    """
+    text = java.read_text(encoding="utf-8", errors="replace")
+    return JAVA_COMMENT_OR_LITERAL.sub(lambda m: m.group(0) if m.group(0)[0] in "\"'" else " ", text)
+
 
 def plugin_constant_names(java: Path):
     """Constants registered as pets, and any others merely mentioned in the file."""
-    text = java.read_text(encoding="utf-8", errors="replace")
+    text = java_code(java)
     registered = sorted(set(PET_ENTRY.findall(text)))
     mentioned = sorted(set(ANY_NPCID.findall(text)) - set(registered))
     if not registered:
@@ -270,7 +291,7 @@ def plugin_raw_ids(java: Path) -> set:
     marked as hard-coded in the report, and the commit check reads them to tell
     hard-coding from registering a constant.
     """
-    return {int(n) for n in PET_RAW_ID.findall(java.read_text(encoding="utf-8", errors="replace"))}
+    return {int(n) for n in PET_RAW_ID.findall(java_code(java))}
 
 
 def resolve_plugin_ids(names: list, npcids: dict):
@@ -304,6 +325,15 @@ def category_members(category: str) -> list:
         cont = data["continue"]
 
 
+def _follow(title: str, forward: dict) -> str:
+    """Where MediaWiki's normalisation and redirect hops lead from `title`."""
+    seen = set()
+    while title in forward and title not in seen:
+        seen.add(title)
+        title = forward[title]
+    return title
+
+
 def _query_pages(titles: list, **extra) -> list:
     """Return (asked-for title, page) for many pages, 50 at a time.
 
@@ -323,17 +353,10 @@ def _query_pages(titles: list, **extra) -> list:
             for entry in query.get(step, []):
                 forward[entry["from"]] = entry["to"]
 
-        def canonical(title):
-            seen = set()
-            while title in forward and title not in seen:
-                seen.add(title)
-                title = forward[title]
-            return title
-
         # several asked-for titles can collapse onto one page; keep them all
         by_canonical = {}
         for asked in chunk:
-            by_canonical.setdefault(canonical(asked), []).append(asked)
+            by_canonical.setdefault(_follow(asked, forward), []).append(asked)
 
         for page in query.get("pages", []):
             if page.get("missing"):
@@ -548,8 +571,9 @@ def parse_ids(raw: str) -> list:
 # drop rates
 # --------------------------------------------------------------------------
 RATE_RE = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s*/\s*(\d[\d,]*(?:\.\d+)?)")
-# "1/800 to 1/4,000", "1/250-1/1000": a span rather than a fixed rate
-RANGE_RE = re.compile(r"\d\s*(?:to|-|–|—)\s*~?\s*\d+\s*/")
+# "1/800 to 1/4,000", "1/250-1/1000": a span rather than a fixed rate, joined by
+# "to", a hyphen, an en dash or an em dash
+RANGE_RE = re.compile(r"\d\s*(?:to|-|\u2013|\u2014)\s*~?\s*\d+\s*/")
 
 
 def extract_rates(text: str) -> list:
@@ -611,6 +635,44 @@ def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
         if infos:
             out[page] = {"rates": rates, "info": infos[0]}
     return out
+
+
+def plugin_view(page_variants: dict, pets_entries: dict, plugin_ids: set, raw_ids: set):
+    """What the plugin says about each pet, in the form the commit check diffs.
+
+    Returns (pages, unmatched, mismatch):
+      pages     - page -> the ids the plugin registers for that pet, by constant
+                  and hard-coded, its info texts in pets.json and the rates they
+                  quote. Pets the plugin says nothing about are left out.
+      unmatched - ids the plugin registers that are on no wiki pet page.
+      mismatch  - ids only in PetJsonCreator.java or only in pets.json, meaning
+                  pets.json was not regenerated. Empty when there is no pets.json.
+    """
+    infos_by_id = {k: e["info"] for k, e in pets_entries.items() if e.get("info")}
+    wiki_ids, pages = set(), {}
+    for page, variants in page_variants.items():
+        ids = {i for v in variants for i in v["ids"]}
+        wiki_ids |= ids
+        texts = sorted({infos_by_id[str(i)] for i in ids if str(i) in infos_by_id})
+        view = {
+            "ids": sorted(ids & plugin_ids),
+            "raw_ids": sorted(ids & raw_ids),
+            "info": texts,
+            "rates": sorted({r for t in texts for r in extract_rates(t)}),
+        }
+        if view["ids"] or view["raw_ids"] or texts:
+            pages[page] = view
+
+    creator_ids = plugin_ids | raw_ids
+    mismatch = {}
+    if pets_entries:
+        # str.isdigit() also accepts digits like "²", which int() rejects
+        json_ids = {int(k) for k in pets_entries if re.fullmatch(r"[0-9]+", k)}
+        mismatch = {
+            "not_in_pets_json": sorted(creator_ids - json_ids),
+            "only_in_pets_json": sorted(json_ids - creator_ids),
+        }
+    return pages, sorted(creator_ids - wiki_ids), mismatch
 
 
 def rates_agree(info: dict, source_rates: list, plugin_rates: list) -> bool:
@@ -682,7 +744,9 @@ def drop_sources(items: list) -> dict:
         if not isinstance(rows, list):
             raise RuntimeError("Bucket answered without a result list")
         if len(rows) >= BUCKET_LIMIT:
-            raise RuntimeError("Bucket returned " + str(len(rows)) + " drop lines, the query limit; results would be cut off")
+            raise RuntimeError(
+                "Bucket returned " + str(len(rows)) + " drop lines, the query limit; results would be cut off"
+            )
         for item, entries in parse_drop_rows(rows).items():
             if item in out:
                 out[item] = entries
@@ -791,7 +855,9 @@ def md(text, limit: int = 120) -> str:
     flat = re.sub(r"\s+", " ", str(text)).strip()
     if len(flat) > limit:
         flat = flat[: limit - 1] + "…"
-    return MD_SPECIAL.sub(r"\\\1", flat)
+    # "@name" in a posted issue or comment would notify that GitHub user; a
+    # zero-width space after the @ keeps the text readable and drops the mention
+    return MD_SPECIAL.sub(r"\\\1", flat).replace("@", "@\u200b")
 
 
 STATUS_HEADINGS = {
@@ -937,7 +1003,8 @@ def main() -> int:
     ap.add_argument("--json", type=Path, help="also write raw findings as JSON here")
     ap.add_argument("--report", type=Path, help="also write the markdown report here")
     ap.add_argument("--no-save", action="store_true", help="do not update the stored state")
-    ap.add_argument("--all", action="store_true", help="report every missing variant, not just ones new since the last run")
+    ap.add_argument("--all", action="store_true",
+                    help="report every missing variant, not just ones new since the last run")
     ap.add_argument("--force", action="store_true", help="do the full check even if the probe finds nothing changed")
     ap.add_argument(
         "--runelite-release",
@@ -974,7 +1041,10 @@ def main() -> int:
 
     # ---- probe: cheap signals only -------------------------------------
     names, mentioned = plugin_constant_names(java)
+    raw_ids = plugin_raw_ids(java)
     digest = hashlib.sha256("\n".join(names).encode())
+    # hard-coded ids are registrations too, and change the report's markings
+    digest.update(",".join(str(i) for i in sorted(raw_ids)).encode())
     # pets.json carries the shipped rate text, so regenerating it must re-check
     pets_json = args.repo / "pets.json"
     if pets_json.exists():
@@ -1109,7 +1179,6 @@ def main() -> int:
         return npc_cache["by_number"]
 
     plugin_ids, unresolved_names = resolve_plugin_ids(names, released)
-    raw_ids = plugin_raw_ids(java)
     log("plugin registers " + str(len(plugin_ids)) + " npc ids, plus " + str(len(raw_ids)) + " hard-coded")
 
     unresolved = {}
@@ -1231,30 +1300,9 @@ def main() -> int:
             "section": sections.get(page, ""),
         })
 
-    # ---- what the plugin says per pet, for the commit check -------------
-    pets_entries = load_pets_json(pets_json)
-    infos_by_id = {k: e["info"] for k, e in pets_entries.items() if e.get("info")}
-    wiki_ids, plugin_pages = set(), {}
-    for page, variants in page_variants.items():
-        ids = {i for v in variants for i in v["ids"]}
-        wiki_ids |= ids
-        texts = sorted({infos_by_id[str(i)] for i in ids if str(i) in infos_by_id})
-        view = {
-            "ids": sorted(ids & plugin_ids),
-            "raw_ids": sorted(ids & raw_ids),
-            "info": texts,
-            "rates": sorted({r for t in texts for r in extract_rates(t)}),
-        }
-        if view["ids"] or view["raw_ids"] or texts:
-            plugin_pages[page] = view
-    # pets.json is generated from PetJsonCreator.java; the two drifting apart
-    # means it was not regenerated
-    creator_ids = plugin_ids | raw_ids
-    json_ids = {int(k) for k in pets_entries if k.isdigit()}
-    pets_json_mismatch = {
-        "not_in_pets_json": sorted(creator_ids - json_ids),
-        "only_in_pets_json": sorted(json_ids - creator_ids),
-    } if pets_entries else {}
+    plugin_pages, unmatched_ids, pets_json_mismatch = plugin_view(
+        page_variants, load_pets_json(pets_json), plugin_ids, raw_ids
+    )
 
     # status is part of the key, so a variant that becomes buildable when the next
     # RuneLite release lands is reported again rather than staying silent.
@@ -1304,7 +1352,7 @@ def main() -> int:
                    "sources": [source_label(e) for e in page_sources.get(page, [])]}
             for page in scope
         },
-        "unmatched_ids": sorted(creator_ids - wiki_ids),
+        "unmatched_ids": unmatched_ids,
         "pets_json_mismatch": pets_json_mismatch,
         "runelite": {
             "release": release,

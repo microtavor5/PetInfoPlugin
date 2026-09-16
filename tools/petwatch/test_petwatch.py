@@ -15,12 +15,20 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import notify  # noqa: E402
 import petwatch as pw  # noqa: E402
 import review  # noqa: E402
+
+
+def temp_dir(test: unittest.TestCase) -> Path:
+    """A directory that is removed again when the test finishes."""
+    handle = tempfile.TemporaryDirectory()
+    test.addCleanup(handle.cleanup)
+    return Path(handle.name)
 
 
 class TestTemplateExtraction(unittest.TestCase):
@@ -134,6 +142,8 @@ class TestDropRates(unittest.TestCase):
     def test_span_is_ambiguous(self):
         self.assertTrue(pw.wiki_rate_info("1/800 to 1/4,000 (team size)")["ambiguous"])
         self.assertTrue(pw.wiki_rate_info("1/250-1/1000")["ambiguous"])
+        self.assertTrue(pw.wiki_rate_info("1/800 – 1/4,000")["ambiguous"])
+        self.assertTrue(pw.wiki_rate_info("1/800—1/4,000")["ambiguous"])
 
     def test_varies_is_ambiguous_and_stateless(self):
         info = pw.wiki_rate_info("Varies{{efn|depends on points}}")
@@ -187,7 +197,7 @@ class TestPetArticleTable(unittest.TestCase):
 
 class TestPluginConstants(unittest.TestCase):
     def _java(self, body):
-        d = Path(tempfile.mkdtemp())
+        d = temp_dir(self)
         f = d / "PetJsonCreator.java"
         f.write_text(body, encoding="utf-8")
         return f
@@ -200,7 +210,18 @@ class TestPluginConstants(unittest.TestCase):
         )
         registered, mentioned = pw.plugin_constant_names(java)
         self.assertEqual(registered, ["REAL"])
-        self.assertEqual(mentioned, ["HELPER", "IN_A_COMMENT"])
+        self.assertEqual(mentioned, ["HELPER"])
+
+    def test_commented_out_pets_are_not_registered(self):
+        java = self._java(
+            "// new Pet(PetGroup.BOSS, NpcID.DISABLED, INFO),\n"
+            "/* new Pet(PetGroup.OTHER, 99, INFO),\n"
+            "   new Pet(PetGroup.BOSS, NpcID.ALSO_DISABLED, INFO), */\n"
+            'String URL = "https://example.com/*not-a-comment"; new Pet(PetGroup.BOSS, NpcID.REAL, URL),\n'
+            "new Pet(PetGroup.OTHER, 16385, INFO), // a trailing note\n"
+        )
+        self.assertEqual(pw.plugin_constant_names(java)[0], ["REAL"])
+        self.assertEqual(pw.plugin_raw_ids(java), {16385})
 
     def test_empty_file_raises_rather_than_reporting_every_pet(self):
         with self.assertRaises(RuntimeError):
@@ -240,6 +261,11 @@ class TestMarkdownEscaping(unittest.TestCase):
     def test_ordinary_text_survives_readably(self):
         self.assertEqual(pw.md("Tumeken's Guardian"), "Tumeken's Guardian")
 
+    def test_mentions_do_not_notify_anyone(self):
+        out = pw.md("ping @someone")
+        self.assertNotIn("@someone", out)
+        self.assertIn("someone", out)
+
 
 class TestNotifySummary(unittest.TestCase):
     def test_counts_every_kind_of_finding(self):
@@ -256,6 +282,10 @@ class TestNotifySummary(unittest.TestCase):
         self.assertIn("1 page(s) unreadable", text)
         self.assertNotIn("new pet page", text)
 
+    def test_webhook_must_be_http(self):
+        with self.assertRaises(ValueError):
+            notify.post("file:///etc/passwd", "x")
+
     def test_nothing_to_report_is_empty(self):
         self.assertEqual(notify.summarise({"missing": [], "new_pages": []}), "")
 
@@ -265,7 +295,7 @@ class TestNotifySummary(unittest.TestCase):
 
 class TestPluginRateLookup(unittest.TestCase):
     def test_rates_are_joined_to_pages_through_npc_ids(self):
-        d = Path(tempfile.mkdtemp())
+        d = temp_dir(self)
         pets = d / "pets.json"
         pets.write_text(json.dumps({
             "8025": {"info": "is dropped by Vorkath, at a rate of 1/3000."},
@@ -277,7 +307,7 @@ class TestPluginRateLookup(unittest.TestCase):
         self.assertEqual(pw.plugin_rates_by_page(Path("nope.json"), {}), {})
 
     def test_malformed_pets_json_is_not_an_error(self):
-        d = Path(tempfile.mkdtemp())
+        d = temp_dir(self)
         bad = d / "pets.json"
         bad.write_text("{not json", encoding="utf-8")
         self.assertEqual(pw.plugin_rates_by_page(bad, {}), {})
@@ -303,8 +333,30 @@ class TestRateAgreement(unittest.TestCase):
         self.assertTrue(pw.rates_agree(info, [], ["1/2560", "5/128"]))
 
 
+BEEF_VARIANTS = {"Beef": [{"variant": "Beef", "ids": [15631, 15633]}]}
+
+
+class TestPluginView(unittest.TestCase):
+    def test_view_per_pet_and_ids_on_no_pet_page(self):
+        entries = {"15631": {"info": "at a rate of 1/1,000"}, "9": {"info": "not a pet"}}
+        pages, unmatched, _ = pw.plugin_view(BEEF_VARIANTS, entries, {15631, 9}, set())
+        self.assertEqual(pages["Beef"], {"ids": [15631], "raw_ids": [], "info": ["at a rate of 1/1,000"],
+                                         "rates": ["1/1000"]})
+        self.assertEqual(unmatched, [9])
+
+    def test_stale_pets_json_is_detected(self):
+        entries = {"15631": {"info": "x"}, "777": {"info": "removed pet"}}
+        _, _, mismatch = pw.plugin_view(BEEF_VARIANTS, entries, {15631, 15633}, set())
+        self.assertEqual(mismatch, {"not_in_pets_json": [15633], "only_in_pets_json": [777]})
+
+    def test_keys_that_are_not_plain_digits_are_ignored(self):
+        # "²".isdigit() is true, but int("²") raises
+        _, _, mismatch = pw.plugin_view(BEEF_VARIANTS, {"²": {"info": "x"}, "abc": {}}, set(), set())
+        self.assertEqual(mismatch["only_in_pets_json"], [])
+
+
 class TestDropSources(unittest.TestCase):
-    ROWS = [
+    ROWS = (
         {"item_name": "Beef", "page_name": "Brutus",
          "drop_json": json.dumps({"Rarity": "1/1,000", "Approx": False, "Alt Rarity": ""})},
         {"item_name": "Beef", "page_name": "Demonic Brutus",
@@ -312,7 +364,7 @@ class TestDropSources(unittest.TestCase):
         {"item_name": "Nid", "page_name": "Araxxor",
          "drop_json": json.dumps({"Rarity": "1/3,000", "Approx": False, "Alt Rarity": "1/1,500"})},
         {"item_name": "Nid", "page_name": "Broken", "drop_json": "{not json"},
-    ]
+    )
 
     def test_rows_become_rates_per_source(self):
         got = pw.parse_drop_rows(self.ROWS)
@@ -335,7 +387,7 @@ class TestDropSources(unittest.TestCase):
 
 class TestPluginRawIds(unittest.TestCase):
     def test_hard_coded_ids_are_found_and_constants_are_not(self):
-        d = Path(tempfile.mkdtemp())
+        d = temp_dir(self)
         java = d / "PetJsonCreator.java"
         java.write_text(
             "new Pet(PetGroup.OTHER, 16385, CHOCOLATE + DOG_INFO),\n"
@@ -372,6 +424,7 @@ def view(ids=(), raw=(), info=(), rates=()):
 
 
 BOTH = [review.CREATOR, review.PETS_JSON]
+GITHUB_ENV = {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "owner/repo", "GITHUB_API_URL": "https://api.github.com"}
 
 
 class TestCommitCheck(unittest.TestCase):
@@ -469,6 +522,42 @@ class TestCommitCheck(unittest.TestCase):
         body = review.render_comment(review.compare(base, head, BOTH), "a" * 40, "b" * 40, "1.12.38")
         self.assertTrue(body.startswith(review.MARKER))
         self.assertNotIn("](http://evil)", body)
+
+    def test_option_like_revisions_never_reach_git(self):
+        self.assertIsNone(review.commit_of(Path("."), "--output=/tmp/x"))
+
+    def test_own_comment_on_a_later_page_is_edited_not_duplicated(self):
+        others = [{"id": i, "body": "hi", "user": {"login": "someone"}} for i in range(100)]
+        mine = {"id": 555, "body": review.MARKER + " old", "user": {"login": review.BOT_LOGIN}}
+        calls = []
+
+        def fake_github(method, url, _token, _payload=None):
+            calls.append((method, url))
+            if method == "GET":
+                return others if url.endswith("page=1") else [mine]
+            return {}
+
+        with mock.patch.dict("os.environ", GITHUB_ENV), mock.patch.object(review, "github", fake_github):
+            review.post_comment("a" * 40, "body", pr="7")
+        self.assertIn(("PATCH", "https://api.github.com/repos/owner/repo/issues/comments/555"), calls)
+        self.assertNotIn("POST", [method for method, _ in calls])
+
+    def test_a_spoofed_marker_from_someone_else_is_not_edited(self):
+        spoof = {"id": 1, "body": review.MARKER, "user": {"login": "attacker"}}
+        calls = []
+
+        def fake_github(method, _url, _token, _payload=None):
+            calls.append(method)
+            return [spoof] if method == "GET" else {}
+
+        with mock.patch.dict("os.environ", GITHUB_ENV), mock.patch.object(review, "github", fake_github):
+            review.post_comment("a" * 40, "body")
+        self.assertEqual(calls, ["GET", "POST"])
+
+    def test_token_is_never_sent_over_plain_http(self):
+        env = dict(GITHUB_ENV, GITHUB_API_URL="http://api.github.com")
+        with mock.patch.dict("os.environ", env), self.assertRaises(RuntimeError):
+            review.post_comment("a" * 40, "body")
 
     def test_long_lists_are_capped(self):
         many = [missing("Dog", "V" + str(i), [i]) for i in range(40)]

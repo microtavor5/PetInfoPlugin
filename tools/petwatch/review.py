@@ -63,22 +63,33 @@ VERDICT = {
 # --------------------------------------------------------------------------
 # reading the two sides out of git
 # --------------------------------------------------------------------------
+def git_executable() -> str:
+    """git's full path, so which program runs is not left to the working directory."""
+    path = shutil.which("git")
+    if not path:
+        raise RuntimeError("git is not on PATH")
+    return path
+
+
 def git(repo: Path, *args: str) -> str:
     """Run git in `repo` and return its output, raising if it fails."""
     return subprocess.run(
-        ["git", "-C", str(repo), *args], check=True, capture_output=True, text=True
+        [git_executable(), "-C", str(repo), *args], check=True, capture_output=True, text=True
     ).stdout.strip()
 
 
-def commit_of(repo: Path, rev: str):
+def commit_of(repo: Path, rev: str) -> str | None:
     """The commit `rev` names, or None if there is no such commit."""
+    # a revision beginning with "-" would be read by git as an option
+    if not rev or rev.startswith("-"):
+        return None
     try:
         return git(repo, "rev-parse", "--verify", "--quiet", rev + "^{commit}")
     except subprocess.CalledProcessError:
         return None
 
 
-def resolve_range(repo: Path, base: str, head: str):
+def resolve_range(repo: Path, base: str, head: str) -> tuple[str, str]:
     """The (base, head) commits to compare, where base is where head's own work starts.
 
     A pull request passes the tip of the branch it targets, which has usually
@@ -92,7 +103,12 @@ def resolve_range(repo: Path, base: str, head: str):
     # a push that creates a branch reports all-zeros as the previous tip
     base_commit = commit_of(repo, base) if base and set(base) != {"0"} else None
     if base_commit:
-        return git(repo, "merge-base", base_commit, head_commit), head_commit
+        try:
+            return git(repo, "merge-base", base_commit, head_commit), head_commit
+        except subprocess.CalledProcessError:
+            raise RuntimeError(
+                base_commit[:7] + " and " + head_commit[:7] + " share no history to compare"
+            ) from None
     # a new branch, or a force push whose old tip is gone: judge the last commit
     parent = commit_of(repo, head_commit + "^")
     if not parent:
@@ -106,7 +122,9 @@ def checkout_pet_files(repo: Path, rev: str, dest: Path) -> None:
     petwatch only reads these two files, so this stands in for a whole checkout.
     """
     for path in (CREATOR, PETS_JSON):
-        proc = subprocess.run(["git", "-C", str(repo), "show", rev + ":" + path], capture_output=True)
+        proc = subprocess.run(
+            [git_executable(), "-C", str(repo), "show", rev + ":" + path], capture_output=True, check=False
+        )
         if proc.returncode != 0:
             if path == PETS_JSON:
                 continue  # petwatch reads a missing pets.json as "no rates quoted"
@@ -123,7 +141,7 @@ def run_petwatch(tree: Path, state: Path, out: Path, verbose: bool) -> dict:
     if verbose:
         cmd.append("--verbose")
     # stdout is the issue report, which is not wanted here; errors go to stderr
-    proc = subprocess.run(cmd, stdout=subprocess.DEVNULL)
+    proc = subprocess.run(cmd, stdout=subprocess.DEVNULL, check=False)
     # 10 means petwatch has findings, which is the normal case here
     if proc.returncode not in (0, 10):
         raise RuntimeError("petwatch failed on " + tree.name + " (exit " + str(proc.returncode) + ")")
@@ -324,7 +342,7 @@ def compare(base: dict, head: dict, changed_files: list) -> dict:
 
     general = plugin_wide_notes(base, head, changed_files)
     levels = set().union(general.levels(), *(notes.levels() for _, notes in pages))
-    worst = next(level for level in SEVERITY if level in levels or level == SEVERITY[-1])
+    worst = min(levels, key=SEVERITY.index) if levels else "info"
     return {"pages": pages, "general": general, "verdict": (worst, VERDICT[worst])}
 
 
@@ -368,6 +386,9 @@ REPO_RE = re.compile(r"^[\w.-]+/[\w.-]+$")
 PR_RE = re.compile(r"^[0-9]{1,10}$")
 # the identity GITHUB_TOKEN comments as, and so the author of the comment to edit
 BOT_LOGIN = "github-actions[bot]"
+PER_PAGE = 100
+# a runaway listing stops here rather than looping; no conversation is this long
+MAX_PAGES = 50
 
 
 def github(method: str, url: str, token: str, payload=None):
@@ -397,12 +418,27 @@ def comment_urls(api: str, repo: str, sha: str, pr: str) -> tuple:
     """
     base = api.rstrip("/") + "/repos/" + repo
     if pr:
-        return (base + "/issues/" + pr + "/comments?per_page=100",
+        return (base + "/issues/" + pr + "/comments",
                 base + "/issues/" + pr + "/comments",
                 base + "/issues/comments/")
-    return (base + "/commits/" + sha + "/comments?per_page=100",
+    return (base + "/commits/" + sha + "/comments",
             base + "/commits/" + sha + "/comments",
             base + "/comments/")
+
+
+def all_comments(listing: str, token: str) -> list:
+    """Every comment at `listing`, across pages.
+
+    The API returns at most 100 a page. Reading only the first would miss this
+    tool's own comment on a busy pull request and post a duplicate.
+    """
+    comments = []
+    for page in range(1, MAX_PAGES + 1):
+        batch = github("GET", listing + "?per_page=" + str(PER_PAGE) + "&page=" + str(page), token) or []
+        comments.extend(batch)
+        if len(batch) < PER_PAGE:
+            break
+    return comments
 
 
 def post_comment(sha: str, body: str, pr: str = "") -> str:
@@ -411,6 +447,10 @@ def post_comment(sha: str, body: str, pr: str = "") -> str:
     api = os.environ.get("GITHUB_API_URL", "https://api.github.com")
     if not token or not REPO_RE.match(repo):
         raise RuntimeError("--post needs GITHUB_TOKEN and GITHUB_REPOSITORY (owner/name)")
+    # the token is sent to this address, so it must not be plain http, or a
+    # scheme urlopen would treat as a local file
+    if not api.startswith("https://"):
+        raise RuntimeError("refusing to send the token to non-https API URL " + repr(api))
     # both go into a URL, so neither is taken on trust
     if not SHA_RE.match(sha):
         raise RuntimeError("refusing to comment on implausible commit " + repr(sha))
@@ -419,8 +459,7 @@ def post_comment(sha: str, body: str, pr: str = "") -> str:
 
     where = "pull request #" + pr if pr else "commit " + sha[:7]
     listing, create, edit = comment_urls(api, repo, sha, pr)
-    existing = github("GET", listing, token) or []
-    mine = [c for c in existing
+    mine = [c for c in all_comments(listing, token)
             if MARKER in (c.get("body") or "") and (c.get("user") or {}).get("login") == BOT_LOGIN]
     if mine:
         github("PATCH", edit + str(mine[-1]["id"]), token, {"body": body})
@@ -432,7 +471,7 @@ def post_comment(sha: str, body: str, pr: str = "") -> str:
 # --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
-def report(message: str, path) -> int:
+def nothing_to_comment(message: str, path: Path | None) -> int:
     """Say there was nothing to comment on, and record that for the run summary."""
     print(message)
     if path:
@@ -456,7 +495,8 @@ def main() -> int:
     base, head = resolve_range(args.repo, args.base, args.head)
     changed = git(args.repo, "diff", "--name-only", base, head, "--", CREATOR, PETS_JSON).split()
     if not changed:
-        return report("No pet data changed between " + base[:7] + " and " + head[:7] + ".", args.report)
+        return nothing_to_comment("No pet data changed between " + base[:7] + " and " + head[:7] + ".",
+                                  args.report)
 
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp)
@@ -475,8 +515,8 @@ def main() -> int:
 
     result = compare(findings["base"], findings["head"], changed)
     if not result["pages"] and not result["general"]:
-        return report("The change between " + base[:7] + " and " + head[:7]
-                      + " touches no pet petwatch reads.", args.report)
+        return nothing_to_comment("The change between " + base[:7] + " and " + head[:7]
+                                  + " touches no pet petwatch reads.", args.report)
 
     body = render_comment(result, base, head, findings["head"]["runelite"]["release"])
     print(body)

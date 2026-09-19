@@ -16,18 +16,20 @@ How it works
    from its {{Infobox NPC}} (`|id =` / `|id1 =` ...).
 5. Reports any wiki variant whose ids are entirely absent from the plugin, split
    by whether it can be acted on yet (see STATUS_HEADINGS).
-6. Reads the drop rate column of the Pet article's tables, reports rates that
+6. Reads the drop rate column of the Pet article's tables and, for the same pets,
+   the Item sources table (from the wiki's Bucket API), reports rates that
    changed, and compares them against the rates quoted in pets.json. Only pets
    given a concrete rate are considered, so skilling and generic pets drop out.
 
 Cheap repeat checks
 -------------------
 Steps 3-6 are preceded by a probe that only asks for revision ids, the category
-listing and the RuneLite release number - about 15KB against ~1.8MB for the full
-check. The run stops there unless a pet page was edited, the Pet article or the
-category changed, the RuneLite release moved, or PetJsonCreator.java or
-pets.json changed. That makes running daily about as cheap as running weekly, so
-a wiki edit that lands late is picked up the next day instead of the next week.
+listing and the RuneLite release number - about 26KB against ~1.8MB for the full
+check. The run stops there unless a pet page or a drop source page was edited,
+the Pet article or the category changed, the RuneLite release moved, or
+PetJsonCreator.java or pets.json changed. That makes running daily about as cheap
+as running weekly, so a wiki edit that lands late is picked up the next day
+instead of the next week.
 
 State, with different jobs:
   acknowledged.json - what has already been reported. Durable, small, meant to
@@ -84,7 +86,7 @@ MAX_RESPONSE = 32 * 1024 * 1024  # nothing we fetch is remotely this big
 
 # Bumped whenever cache.json's shape changes. A cache from another version is
 # discarded rather than half-read, which would silently drop pets.
-CACHE_SCHEMA = 3
+CACHE_SCHEMA = 4
 
 # The article has listed on the order of 100 pets for years. Far below that means
 # something went wrong upstream, and reporting "all clear" would be a lie.
@@ -234,10 +236,31 @@ def index_by_number(mapping: dict) -> dict:
 PET_ENTRY = re.compile(r"new\s+Pet\s*\([^()]*?NpcID\.([A-Z0-9_]+)", re.S)
 ANY_NPCID = re.compile(r"NpcID\.([A-Z0-9_]+)")
 
+# Java comments, plus the string and char literals that may contain comment
+# markers without starting one ("https://..."). Literals come first in the
+# alternation so they are consumed whole and never mistaken for a comment.
+JAVA_COMMENT_OR_LITERAL = re.compile(
+    r'"(?:\\.|[^"\\\n])*"'
+    r"|'(?:\\.|[^'\\\n])+'"
+    r"|//[^\n]*"
+    r"|/\*.*?\*/",
+    re.S,
+)
+
+
+def java_code(java: Path) -> str:
+    """A Java file's source with its comments blanked out.
+
+    Commenting a pet out is how it is disabled, so a `new Pet(...)` inside a
+    comment must not count as registered.
+    """
+    text = java.read_text(encoding="utf-8", errors="replace")
+    return JAVA_COMMENT_OR_LITERAL.sub(lambda m: m.group(0) if m.group(0)[0] in "\"'" else " ", text)
+
 
 def plugin_constant_names(java: Path):
     """Constants registered as pets, and any others merely mentioned in the file."""
-    text = java.read_text(encoding="utf-8", errors="replace")
+    text = java_code(java)
     registered = sorted(set(PET_ENTRY.findall(text)))
     mentioned = sorted(set(ANY_NPCID.findall(text)) - set(registered))
     if not registered:
@@ -253,6 +276,22 @@ def plugin_constant_names(java: Path):
             )
         )
     return registered, mentioned
+
+
+# `new Pet(PetGroup.OTHER, 16385, INFO)`: an id written out because RuneLite has
+# no constant for it yet.
+PET_RAW_ID = re.compile(r"new\s+Pet\s*\(\s*[\w.]+\s*,\s*(\d+)\s*[,)]")
+
+
+def plugin_raw_ids(java: Path) -> set:
+    """NPC ids the plugin hard-codes instead of naming an NpcID constant.
+
+    These deliberately do not count as covered: the variant stays on the list so
+    that the RuneLite release adding its constant is still reported. They are
+    marked as hard-coded in the report, and the commit check reads them to tell
+    hard-coding from registering a constant.
+    """
+    return {int(n) for n in PET_RAW_ID.findall(java_code(java))}
 
 
 def resolve_plugin_ids(names: list, npcids: dict):
@@ -286,6 +325,15 @@ def category_members(category: str) -> list:
         cont = data["continue"]
 
 
+def _follow(title: str, forward: dict) -> str:
+    """Where MediaWiki's normalisation and redirect hops lead from `title`."""
+    seen = set()
+    while title in forward and title not in seen:
+        seen.add(title)
+        title = forward[title]
+    return title
+
+
 def _query_pages(titles: list, **extra) -> list:
     """Return (asked-for title, page) for many pages, 50 at a time.
 
@@ -305,17 +353,10 @@ def _query_pages(titles: list, **extra) -> list:
             for entry in query.get(step, []):
                 forward[entry["from"]] = entry["to"]
 
-        def canonical(title):
-            seen = set()
-            while title in forward and title not in seen:
-                seen.add(title)
-                title = forward[title]
-            return title
-
         # several asked-for titles can collapse onto one page; keep them all
         by_canonical = {}
         for asked in chunk:
-            by_canonical.setdefault(canonical(asked), []).append(asked)
+            by_canonical.setdefault(_follow(asked, forward), []).append(asked)
 
         for page in query.get("pages", []):
             if page.get("missing"):
@@ -530,8 +571,9 @@ def parse_ids(raw: str) -> list:
 # drop rates
 # --------------------------------------------------------------------------
 RATE_RE = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s*/\s*(\d[\d,]*(?:\.\d+)?)")
-# "1/800 to 1/4,000", "1/250-1/1000": a span rather than a fixed rate
-RANGE_RE = re.compile(r"\d\s*(?:to|-|–|—)\s*~?\s*\d+\s*/")
+# "1/800 to 1/4,000", "1/250-1/1000": a span rather than a fixed rate, joined by
+# "to", a hyphen, an en dash or an em dash
+RANGE_RE = re.compile(r"\d\s*(?:to|-|\u2013|\u2014)\s*~?\s*\d+\s*/")
 
 
 def extract_rates(text: str) -> list:
@@ -562,19 +604,22 @@ def wiki_rate_info(cell: str) -> dict:
     }
 
 
-def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
-    """page -> (rates the shipped plugin text states, one sample of that text)."""
+def load_pets_json(pets_json: Path) -> dict:
+    """npc id (as a string) -> entry. Empty when the file is absent or unreadable."""
     if not pets_json.exists():
         return {}
     try:
         entries = json.loads(pets_json.read_text(encoding="utf-8"))
     except ValueError:
         return {}
-    by_id = {}
-    for key, entry in entries.items():
-        info = (entry or {}).get("info")
-        if info:
-            by_id[str(key)] = info
+    if not isinstance(entries, dict):
+        return {}
+    return {str(k): e for k, e in entries.items() if isinstance(e, dict)}
+
+
+def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
+    """page -> (rates the shipped plugin text states, one sample of that text)."""
+    by_id = {k: e["info"] for k, e in load_pets_json(pets_json).items() if e.get("info")}
     out = {}
     for page, variants in page_variants.items():
         infos, rates = [], []
@@ -592,21 +637,191 @@ def plugin_rates_by_page(pets_json: Path, page_variants: dict) -> dict:
     return out
 
 
+def plugin_view(page_variants: dict, pets_entries: dict, plugin_ids: set, raw_ids: set):
+    """What the plugin says about each pet, in the form the commit check diffs.
+
+    Returns (pages, unmatched, mismatch):
+      pages     - page -> the ids the plugin registers for that pet, by constant
+                  and hard-coded, its info texts in pets.json and the rates they
+                  quote. Pets the plugin says nothing about are left out.
+      unmatched - ids the plugin registers that are on no wiki pet page.
+      mismatch  - ids only in PetJsonCreator.java or only in pets.json, meaning
+                  pets.json was not regenerated. Empty when there is no pets.json.
+    """
+    infos_by_id = {k: e["info"] for k, e in pets_entries.items() if e.get("info")}
+    wiki_ids, pages = set(), {}
+    for page, variants in page_variants.items():
+        ids = {i for v in variants for i in v["ids"]}
+        wiki_ids |= ids
+        texts = sorted({infos_by_id[str(i)] for i in ids if str(i) in infos_by_id})
+        view = {
+            "ids": sorted(ids & plugin_ids),
+            "raw_ids": sorted(ids & raw_ids),
+            "info": texts,
+            "rates": sorted({r for t in texts for r in extract_rates(t)}),
+        }
+        if view["ids"] or view["raw_ids"] or texts:
+            pages[page] = view
+
+    creator_ids = plugin_ids | raw_ids
+    mismatch = {}
+    if pets_entries:
+        # str.isdigit() also accepts digits like "²", which int() rejects
+        json_ids = {int(k) for k in pets_entries if re.fullmatch(r"[0-9]+", k)}
+        mismatch = {
+            "not_in_pets_json": sorted(creator_ids - json_ids),
+            "only_in_pets_json": sorted(json_ids - creator_ids),
+        }
+    return pages, sorted(creator_ids - wiki_ids), mismatch
+
+
+def rates_agree(info: dict, source_rates: list, plugin_rates: list) -> bool:
+    """Whether the rates the plugin quotes are ones the wiki gives.
+
+    Every rate in the Pet article's column must be quoted. Beyond those the
+    plugin may quote any rate the wiki states elsewhere - a footnote's framing,
+    or a source's own rate from the Item sources table - since that is often a
+    different route to the same pet (Demonic Brutus for Beef).
+    """
+    supporting = set(info["supporting"]) | set(source_rates)
+    return set(plugin_rates) <= supporting and set(info["stated"]) <= set(plugin_rates)
+
+
+# --------------------------------------------------------------------------
+# drop sources
+# --------------------------------------------------------------------------
+# A pet page's "Item sources" table is not in its wikitext: it is assembled from
+# the {{DropsLine}} entries on each monster and chest page, which the wiki keeps
+# in Bucket and publishes through api.php?action=bucket for external tools. One
+# query covers every pet.
+BUCKET_LIMIT = 500
+
+
+def bucket_query(items: list) -> str:
+    """A Bucket query for the drop lines of every one of `items`.
+
+    Bucket queries are Lua, so each name is a quoted string and the conditions
+    are OR-ed together to cover all the pets in one request.
+    """
+    conds = ",".join("{'item_name',\"" + item + "\"}" for item in items)
+    return (
+        "bucket('dropsline').select('page_name','item_name','drop_json')"
+        ".where(bucket.Or(" + conds + ")).limit(" + str(BUCKET_LIMIT) + ").run()"
+    )
+
+
+def parse_drop_rows(rows: list) -> dict:
+    """item -> [{source, rate, approx}], one entry per rate a source states."""
+    out = {}
+    for row in rows:
+        try:
+            drop = json.loads(row.get("drop_json") or "{}")
+        except (TypeError, ValueError):
+            continue
+        item, source = row.get("item_name"), row.get("page_name")
+        if not isinstance(item, str) or not isinstance(source, str):
+            continue
+        entries = out.setdefault(item, [])
+        # "Alt Rarity" is the second rate a source gives, such as on a slayer task
+        for field in ("Rarity", "Alt Rarity"):
+            for rate in extract_rates(str(drop.get(field) or "")):
+                entry = {"source": source, "rate": rate, "approx": drop.get("Approx") is True}
+                if entry not in entries:
+                    entries.append(entry)
+    for entries in out.values():
+        entries.sort(key=lambda e: (e["source"], e["rate"]))
+    return out
+
+
+def drop_sources(items: list) -> dict:
+    """item -> its drop sources, for every item asked about (empty if none)."""
+    # names are interpolated into a Lua string literal, so refuse anything that
+    # could end it early rather than trying to escape it
+    askable = sorted(i for i in set(items) if '"' not in i and "\\" not in i)
+    out = {i: [] for i in askable}
+    for i in range(0, len(askable), 50):
+        rows = api(action="bucket", query=bucket_query(askable[i : i + 50])).get("bucket")
+        if not isinstance(rows, list):
+            raise RuntimeError("Bucket answered without a result list")
+        if len(rows) >= BUCKET_LIMIT:
+            raise RuntimeError(
+                "Bucket returned " + str(len(rows)) + " drop lines, the query limit; results would be cut off"
+            )
+        for item, entries in parse_drop_rows(rows).items():
+            if item in out:
+                out[item] = entries
+    return out
+
+
+def source_label(entry: dict) -> str:
+    """One drop source as it is shown in a report: "~1/400 (Demonic Brutus)"."""
+    return ("~" if entry["approx"] else "") + entry["rate"] + " (" + entry["source"] + ")"
+
+
+def infobox_tabs(text: str) -> dict:
+    """Infobox NPC body -> the {{Multi Infobox}} tab it sits under.
+
+    A page such as Bernese Mountain Dog lists each colour twice, once in a
+    Follower infobox and once in a POH one, under `|text1 = Follower` and
+    `|text2 = POH`. Those labels are the only thing distinguishing the two sets
+    of ids, since the colour names are identical.
+    """
+    tabs = {}
+    for multi in extract_template(text, "Multi Infobox"):
+        params = infobox_params(multi)
+        for key, value in params.items():
+            numbered = re.fullmatch(r"item(\d+)", key)
+            if not numbered:
+                continue
+            tab = re.sub(r"\s+", " ", params.get("text" + numbered.group(1), "")).strip()
+            if not tab:
+                continue
+            for body in extract_template(value, "Infobox NPC"):
+                tabs[body] = tab
+    return tabs
+
+
+def qualify_duplicate_labels(variants: list) -> list:
+    """Make each variant's label unique within its page.
+
+    The label is part of the key recorded in acknowledged.json, so two variants
+    sharing one would be acknowledged as though they were the same pet, and the
+    report could not tell them apart either. A repeated label is qualified by its
+    Multi Infobox tab ("Chocolate (POH)"), or by its ids where there is no tab.
+    """
+    counts = {}
+    for v in variants:
+        counts[v["variant"]] = counts.get(v["variant"], 0) + 1
+    taken = set()
+    for v in variants:
+        tab = v.pop("tab", "")
+        if counts[v["variant"]] > 1 and tab:
+            v["variant"] += " (" + tab + ")"
+        if v["variant"] in taken:
+            v["variant"] += " (" + ", ".join(str(i) for i in v["ids"]) + ")"
+        taken.add(v["variant"])
+    return variants
+
+
 def parse_variants(title: str, text: str) -> list:
     """Each visual variant of a pet with its NPC ids."""
+    tabs = infobox_tabs(text)
     variants = []
     for body in extract_template(text, "Infobox NPC"):
         p = infobox_params(body)
+        # infobox_params strips comments out of the bodies it hands back, so a
+        # tab may be recorded under either form of the same infobox
+        tab = tabs.get(COMMENT.sub("", body).strip()) or tabs.get(body, "")
         indices = sorted(
             {int(m.group(1)) for k in p for m in [re.fullmatch(r"id(\d+)", k)] if m}
         )
         if indices:
             for n in indices:
                 label = p.get("version" + str(n)) or p.get("name" + str(n)) or (title + " #" + str(n))
-                variants.append({"variant": label.strip(), "ids": parse_ids(p.get("id" + str(n), ""))})
+                variants.append({"variant": label.strip(), "ids": parse_ids(p.get("id" + str(n), "")), "tab": tab})
         elif "id" in p:
             label = p.get("name") or title
-            variants.append({"variant": label.strip(), "ids": parse_ids(p["id"])})
+            variants.append({"variant": label.strip(), "ids": parse_ids(p["id"]), "tab": tab})
     # de-duplicate variants that repeat across multiple infoboxes on one page
     seen, unique = set(), []
     for v in variants:
@@ -614,7 +829,7 @@ def parse_variants(title: str, text: str) -> list:
         if v["ids"] and key not in seen:
             seen.add(key)
             unique.append(v)
-    return unique
+    return qualify_duplicate_labels(unique)
 
 
 # --------------------------------------------------------------------------
@@ -640,7 +855,9 @@ def md(text, limit: int = 120) -> str:
     flat = re.sub(r"\s+", " ", str(text)).strip()
     if len(flat) > limit:
         flat = flat[: limit - 1] + "…"
-    return MD_SPECIAL.sub(r"\\\1", flat)
+    # "@name" in a posted issue or comment would notify that GitHub user; a
+    # zero-width space after the @ keeps the text readable and drops the mention
+    return MD_SPECIAL.sub(r"\\\1", flat).replace("@", "@\u200b")
 
 
 STATUS_HEADINGS = {
@@ -689,13 +906,18 @@ def build_report(findings: dict) -> str:
     if rate_changes:
         lines.append("### " + str(len(rate_changes)) + " drop rate(s) changed on the wiki")
         lines.append("")
-        for c in sorted(rate_changes, key=lambda x: x["page"]):
+        for c in sorted(rate_changes, key=lambda x: (x["page"], x.get("where", ""))):
             note = " - " + md(c["section"]) if c.get("section") else ""
+            head = "- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note
+            if c.get("where") == "drop sources":
+                # source names are wiki text, so they are escaped rather than quoted
+                lines.append(
+                    head + ", Item sources: " + md(", ".join(c["was"]) or "none", 300)
+                    + " -> " + md(", ".join(c["now"]) or "none", 300)
+                )
+                continue
             now = ", ".join(c["now"]) if c["now"] else "no fixed rate"
-            lines.append(
-                "- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note
-                + ": `" + ", ".join(c["was"]) + "` -> `" + now + "`"
-            )
+            lines.append(head + ": `" + ", ".join(c["was"]) + "` -> `" + now + "`")
         lines.append("")
         lines.append("Update the matching info string in `PetJsonCreator.java` if it quotes a rate.")
         lines.append("")
@@ -707,6 +929,8 @@ def build_report(findings: dict) -> str:
             note = " - " + md(c["section"]) if c.get("section") else ""
             lines.append("- **[" + md(c["page"]) + "](" + wiki_url(c["page"]) + ")**" + note)
             lines.append("  - wiki: `" + ", ".join(c["wiki"]) + "`")
+            if c.get("sources"):
+                lines.append("  - wiki Item sources: " + md(", ".join(c["sources"]), 300))
             lines.append("  - plugin: `" + ", ".join(c["plugin"]) + "` - " + md(c["info"], 200))
         lines.append("")
         lines.append("Some of these are wording rather than errors: the plugin may describe a")
@@ -730,7 +954,8 @@ def build_report(findings: dict) -> str:
                 names = ", ".join("`NpcID." + c + "`" for c in e["constants"]) or "no matching NpcID constant"
                 ids = ", ".join(str(i) for i in e["ids"])
                 label = "" if e["variant"] == page else "*" + md(e["variant"]) + "* - "
-                lines.append("  - " + label + "ids `" + ids + "` -> " + names)
+                hardcoded = " (hard-coded in the plugin)" if e.get("hardcoded") else ""
+                lines.append("  - " + label + "ids `" + ids + "` -> " + names + hardcoded)
         lines.append("")
         lines.append(STATUS_NOTES[status])
         lines.append("")
@@ -778,7 +1003,8 @@ def main() -> int:
     ap.add_argument("--json", type=Path, help="also write raw findings as JSON here")
     ap.add_argument("--report", type=Path, help="also write the markdown report here")
     ap.add_argument("--no-save", action="store_true", help="do not update the stored state")
-    ap.add_argument("--all", action="store_true", help="report every missing variant, not just ones new since the last run")
+    ap.add_argument("--all", action="store_true",
+                    help="report every missing variant, not just ones new since the last run")
     ap.add_argument("--force", action="store_true", help="do the full check even if the probe finds nothing changed")
     ap.add_argument(
         "--runelite-release",
@@ -802,7 +1028,9 @@ def main() -> int:
     # A cache from another version, or one missing anything we rely on, is
     # discarded whole. Half-reading it silently drops pets from the check.
     if cache.get("schema") != CACHE_SCHEMA or not all(
-        k in cache for k in ("titles", "page_revids", "page_variants", "pet_rows", "page_rates")
+        k in cache
+        for k in ("titles", "page_revids", "page_variants", "pet_rows", "page_rates",
+                  "page_sources", "source_scope", "source_revids")
     ):
         cache = {}
     force = args.force or args.all
@@ -813,7 +1041,10 @@ def main() -> int:
 
     # ---- probe: cheap signals only -------------------------------------
     names, mentioned = plugin_constant_names(java)
+    raw_ids = plugin_raw_ids(java)
     digest = hashlib.sha256("\n".join(names).encode())
+    # hard-coded ids are registrations too, and change the report's markings
+    digest.update(",".join(str(i) for i in sorted(raw_ids)).encode())
     # pets.json carries the shipped rate text, so regenerating it must re-check
     pets_json = args.repo / "pets.json"
     if pets_json.exists():
@@ -840,7 +1071,11 @@ def main() -> int:
         # and continuing would quietly check only part of the list
         raise RuntimeError("Category:Pets came back empty; treating that as a failed query")
     known = cache.get("titles", [])
-    meta = page_meta(sorted(set(cat) | set(known) | {"Pet"}))
+    # the monster and chest pages the drop sources were read from: an edit to
+    # one of them may have moved a rate without touching any pet page
+    known_sources = cache.get("source_revids", {})
+    meta = page_meta(sorted(set(cat) | set(known) | {"Pet"} | set(known_sources)))
+    sources_changed = sorted(s for s, rev in known_sources.items() if meta.get(s, {}).get("revid") != rev)
 
     pet_revid = meta.get("Pet", {}).get("revid")
     pet_article_changed = pet_revid != cache.get("pet_article_revid")
@@ -900,6 +1135,7 @@ def main() -> int:
         # drop rates live in the Pet article, so an edit there matters even when
         # no individual pet page moved
         and not pet_article_changed
+        and not sources_changed
         and cache.get("runelite_release") == release
         and cache.get("plugin_digest") == plugin_digest
         and cache.get("page_variants") is not None
@@ -907,7 +1143,8 @@ def main() -> int:
         # acknowledged.json is how you ask to be told everything again
         and ack.get("missing_keys") is not None
     )
-    log("probe: " + str(len(changed)) + " page(s) edited, " + str(len(dropped)) + " removed")
+    log("probe: " + str(len(changed)) + " page(s) edited, " + str(len(dropped)) + " removed, "
+        + str(len(sources_changed)) + " drop source page(s) edited")
 
     if settled and not force:
         print(
@@ -942,7 +1179,7 @@ def main() -> int:
         return npc_cache["by_number"]
 
     plugin_ids, unresolved_names = resolve_plugin_ids(names, released)
-    log("plugin registers " + str(len(plugin_ids)) + " npc ids")
+    log("plugin registers " + str(len(plugin_ids)) + " npc ids, plus " + str(len(raw_ids)) + " hard-coded")
 
     unresolved = {}
     for name in unresolved_names:
@@ -990,6 +1227,7 @@ def main() -> int:
                     "ids": v["ids"],
                     "constants": constants,
                     "status": status,
+                    "hardcoded": any(i in raw_ids for i in v["ids"]),
                     "section": sections.get(title, ""),
                 }
             )
@@ -1001,9 +1239,25 @@ def main() -> int:
     plugin_rates = plugin_rates_by_page(args.repo / "pets.json", page_variants)
     prev_rates = cache.get("page_rates", {})
     page_rates, rate_changes, rate_conflicts = {}, [], []
+    rate_info = {page: wiki_rate_info(pet_rows.get(page, {}).get("rate", "")) for page in sorted(page_variants)}
+
+    # Drop sources are read for the same pets, and only re-read when the article,
+    # the set of pets or one of the source pages has changed.
+    scope = sorted(page for page, info in rate_info.items() if info["stated"])
+    prev_sources = cache.get("page_sources")
+    if prev_sources is None or pet_article_changed or sources_changed or cache.get("source_scope") != scope:
+        log("reading drop sources for " + str(len(scope)) + " pet(s)")
+        page_sources = drop_sources(scope)
+    else:
+        page_sources = prev_sources
+    source_pages = sorted({e["source"] for entries in page_sources.values() for e in entries})
+    unknown_sources = [s for s in source_pages if s not in meta]
+    if unknown_sources:
+        meta.update(page_meta(unknown_sources))
+    source_revids = {s: meta[s]["revid"] for s in source_pages if s in meta}
 
     for page in sorted(page_variants):
-        info = wiki_rate_info(pet_rows.get(page, {}).get("rate", ""))
+        info = rate_info[page]
         was = prev_rates.get(page)
 
         if not info["stated"]:
@@ -1020,31 +1274,46 @@ def main() -> int:
             rate_changes.append({"page": page, "was": was, "now": info["stated"],
                                  "section": sections.get(page, "")})
 
+        sources = page_sources.get(page, [])
+        was_sources = (prev_sources or {}).get(page)
+        if was_sources is not None and was_sources != sources:
+            rate_changes.append({"page": page, "where": "drop sources",
+                                 "was": [source_label(e) for e in was_sources],
+                                 "now": [source_label(e) for e in sources],
+                                 "section": sections.get(page, "")})
+
         if info["ambiguous"]:
             continue
         plugin = plugin_rates.get(page)
         if not plugin or not plugin["rates"]:
             continue
-        # the plugin may quote a footnote's framing instead of the headline rate
-        if set(plugin["rates"]) <= set(info["supporting"]) and set(info["stated"]) <= set(plugin["rates"]):
-            continue
-        if set(plugin["rates"]) == set(info["stated"]):
+        source_rates = sorted({e["rate"] for e in sources})
+        if rates_agree(info, source_rates, plugin["rates"]):
             continue
         rate_conflicts.append({
             "page": page,
             "wiki": info["stated"],
+            "sources": [source_label(e) for e in sources],
+            "source_rates": source_rates,
             "plugin": plugin["rates"],
             "info": plugin["info"],
             "section": sections.get(page, ""),
         })
+
+    plugin_pages, unmatched_ids, pets_json_mismatch = plugin_view(
+        page_variants, load_pets_json(pets_json), plugin_ids, raw_ids
+    )
 
     # status is part of the key, so a variant that becomes buildable when the next
     # RuneLite release lands is reported again rather than staying silent.
     def key_of(m):
         return m["page"] + "::" + m["variant"] + "::" + m["status"]
 
+    # Both sides are in the key, so a disagreement left alone is raised again as
+    # soon as either the wiki or the plugin moves.
     def rate_key(c):
-        return c["page"] + "::" + ",".join(c["wiki"]) + "::" + ",".join(c["plugin"])
+        wiki = ",".join(c["wiki"]) + (";" + ",".join(c["source_rates"]) if c.get("source_rates") else "")
+        return c["page"] + "::" + wiki + "::" + ",".join(c["plugin"])
 
     prev_pages = set(ack.get("pages", []))
     prev_missing = set(ack.get("missing_keys", []))
@@ -1071,6 +1340,20 @@ def main() -> int:
         "rate_conflicts": shown_conflicts,
         "rates_tracked": len(page_rates),
         "unresolved_constants": unresolved,
+        # The rest is for the commit check (review.py), which diffs the findings
+        # of two runs and so needs the unfiltered lists: the ones above are cut
+        # down to what has not been reported before. The report ignores these.
+        "all_missing": missing,
+        "all_rate_conflicts": rate_conflicts,
+        "plugin_pages": plugin_pages,
+        "wiki_rates": {
+            page: {"stated": rate_info[page]["stated"],
+                   "ambiguous": rate_info[page]["ambiguous"],
+                   "sources": [source_label(e) for e in page_sources.get(page, [])]}
+            for page in scope
+        },
+        "unmatched_ids": unmatched_ids,
+        "pets_json_mismatch": pets_json_mismatch,
         "runelite": {
             "release": release,
             "release_tag": release_tag,
@@ -1112,6 +1395,9 @@ def main() -> int:
                     "pet_article_revid": pet_revid,
                     "pet_rows": pet_rows,
                     "page_rates": page_rates,
+                    "page_sources": page_sources,
+                    "source_scope": scope,
+                    "source_revids": source_revids,
                     "titles": sorted(titles),
                     "page_revids": {t: revids[t] for t in titles if t in revids},
                     "page_variants": page_variants,

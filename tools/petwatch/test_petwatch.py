@@ -15,11 +15,20 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import notify  # noqa: E402
 import petwatch as pw  # noqa: E402
+import review  # noqa: E402
+
+
+def temp_dir(test: unittest.TestCase) -> Path:
+    """A directory that is removed again when the test finishes."""
+    handle = tempfile.TemporaryDirectory()
+    test.addCleanup(handle.cleanup)
+    return Path(handle.name)
 
 
 class TestTemplateExtraction(unittest.TestCase):
@@ -87,6 +96,32 @@ class TestParseVariants(unittest.TestCase):
         # the "... (item)" pages: an item infobox must not be read for NPC ids
         self.assertEqual(pw.parse_variants("Gary (item)", "{{Infobox Item|id = 1234}}"), [])
 
+    # the dog pages: every colour appears once as a follower and once in the POH
+    DOG = (
+        "{{Multi Infobox\n|text1 = Follower\n|item1 =\n"
+        "{{Infobox NPC\n|version1 = Chocolate\n|version2 = Merle\n|id1 = 16385\n|id2 = 16386\n}}\n"
+        "|text2 = POH\n|item2 =\n"
+        "{{Infobox NPC\n|version1 = Chocolate\n|version2 = Merle\n|id1 = 16564\n|id2 = 16565\n}}\n"
+        "|text3 = Item\n|item3 =\n{{Infobox Item\n|version1 = Chocolate\n|id1 = 34479\n}}\n}}"
+    )
+
+    def test_repeated_labels_are_qualified_by_multi_infobox_tab(self):
+        got = {v["variant"]: v["ids"] for v in pw.parse_variants("Bernese Mountain Dog", self.DOG)}
+        self.assertEqual(got, {
+            "Chocolate (Follower)": [16385], "Merle (Follower)": [16386],
+            "Chocolate (POH)": [16564], "Merle (POH)": [16565],
+        })
+
+    def test_labels_that_do_not_collide_are_left_alone(self):
+        # Beef has a Multi Infobox too, but only one NPC infobox in it
+        text = "{{Multi Infobox\n|text1 = Follower\n|item1 =\n{{Infobox NPC\n|name = Beef\n|id = 15631\n}}\n}}"
+        self.assertEqual([v["variant"] for v in pw.parse_variants("Beef", text)], ["Beef"])
+
+    def test_repeated_labels_without_tabs_fall_back_to_ids(self):
+        text = "{{Infobox NPC|name = X|id = 5}}\n{{Infobox NPC|name = X|id = 6}}"
+        labels = [v["variant"] for v in pw.parse_variants("X", text)]
+        self.assertEqual(len(set(labels)), 2)
+
 
 class TestDropRates(unittest.TestCase):
     def test_plain_rate(self):
@@ -107,6 +142,8 @@ class TestDropRates(unittest.TestCase):
     def test_span_is_ambiguous(self):
         self.assertTrue(pw.wiki_rate_info("1/800 to 1/4,000 (team size)")["ambiguous"])
         self.assertTrue(pw.wiki_rate_info("1/250-1/1000")["ambiguous"])
+        self.assertTrue(pw.wiki_rate_info("1/800 – 1/4,000")["ambiguous"])
+        self.assertTrue(pw.wiki_rate_info("1/800—1/4,000")["ambiguous"])
 
     def test_varies_is_ambiguous_and_stateless(self):
         info = pw.wiki_rate_info("Varies{{efn|depends on points}}")
@@ -160,7 +197,7 @@ class TestPetArticleTable(unittest.TestCase):
 
 class TestPluginConstants(unittest.TestCase):
     def _java(self, body):
-        d = Path(tempfile.mkdtemp())
+        d = temp_dir(self)
         f = d / "PetJsonCreator.java"
         f.write_text(body, encoding="utf-8")
         return f
@@ -173,7 +210,18 @@ class TestPluginConstants(unittest.TestCase):
         )
         registered, mentioned = pw.plugin_constant_names(java)
         self.assertEqual(registered, ["REAL"])
-        self.assertEqual(mentioned, ["HELPER", "IN_A_COMMENT"])
+        self.assertEqual(mentioned, ["HELPER"])
+
+    def test_commented_out_pets_are_not_registered(self):
+        java = self._java(
+            "// new Pet(PetGroup.BOSS, NpcID.DISABLED, INFO),\n"
+            "/* new Pet(PetGroup.OTHER, 99, INFO),\n"
+            "   new Pet(PetGroup.BOSS, NpcID.ALSO_DISABLED, INFO), */\n"
+            'String URL = "https://example.com/*not-a-comment"; new Pet(PetGroup.BOSS, NpcID.REAL, URL),\n'
+            "new Pet(PetGroup.OTHER, 16385, INFO), // a trailing note\n"
+        )
+        self.assertEqual(pw.plugin_constant_names(java)[0], ["REAL"])
+        self.assertEqual(pw.plugin_raw_ids(java), {16385})
 
     def test_empty_file_raises_rather_than_reporting_every_pet(self):
         with self.assertRaises(RuntimeError):
@@ -213,6 +261,11 @@ class TestMarkdownEscaping(unittest.TestCase):
     def test_ordinary_text_survives_readably(self):
         self.assertEqual(pw.md("Tumeken's Guardian"), "Tumeken's Guardian")
 
+    def test_mentions_do_not_notify_anyone(self):
+        out = pw.md("ping @someone")
+        self.assertNotIn("@someone", out)
+        self.assertIn("someone", out)
+
 
 class TestNotifySummary(unittest.TestCase):
     def test_counts_every_kind_of_finding(self):
@@ -229,6 +282,10 @@ class TestNotifySummary(unittest.TestCase):
         self.assertIn("1 page(s) unreadable", text)
         self.assertNotIn("new pet page", text)
 
+    def test_webhook_must_be_http(self):
+        with self.assertRaises(ValueError):
+            notify.post("file:///etc/passwd", "x")
+
     def test_nothing_to_report_is_empty(self):
         self.assertEqual(notify.summarise({"missing": [], "new_pages": []}), "")
 
@@ -238,7 +295,7 @@ class TestNotifySummary(unittest.TestCase):
 
 class TestPluginRateLookup(unittest.TestCase):
     def test_rates_are_joined_to_pages_through_npc_ids(self):
-        d = Path(tempfile.mkdtemp())
+        d = temp_dir(self)
         pets = d / "pets.json"
         pets.write_text(json.dumps({
             "8025": {"info": "is dropped by Vorkath, at a rate of 1/3000."},
@@ -250,10 +307,264 @@ class TestPluginRateLookup(unittest.TestCase):
         self.assertEqual(pw.plugin_rates_by_page(Path("nope.json"), {}), {})
 
     def test_malformed_pets_json_is_not_an_error(self):
-        d = Path(tempfile.mkdtemp())
+        d = temp_dir(self)
         bad = d / "pets.json"
         bad.write_text("{not json", encoding="utf-8")
         self.assertEqual(pw.plugin_rates_by_page(bad, {}), {})
+
+
+class TestRateAgreement(unittest.TestCase):
+    def test_a_rate_only_in_the_item_sources_table_is_accepted(self):
+        # Beef: the Pet article gives Brutus only; Demonic Brutus is in Item sources
+        info = pw.wiki_rate_info("1/1,000")
+        self.assertFalse(pw.rates_agree(info, [], ["1/1000", "1/400"]))
+        self.assertTrue(pw.rates_agree(info, ["1/1000", "1/400"], ["1/1000", "1/400"]))
+
+    def test_the_article_rate_must_still_be_quoted(self):
+        info = pw.wiki_rate_info("1/1,000")
+        self.assertFalse(pw.rates_agree(info, ["1/1000", "1/400"], ["1/400"]))
+
+    def test_a_rate_nowhere_on_the_wiki_disagrees(self):
+        info = pw.wiki_rate_info("1/1,000")
+        self.assertFalse(pw.rates_agree(info, ["1/1000", "1/400"], ["1/1000", "1/500"]))
+
+    def test_footnote_framing_is_accepted(self):
+        info = pw.wiki_rate_info("1/2,560{{efn|5/128 per unsired.}}")
+        self.assertTrue(pw.rates_agree(info, [], ["1/2560", "5/128"]))
+
+
+BEEF_VARIANTS = {"Beef": [{"variant": "Beef", "ids": [15631, 15633]}]}
+
+
+class TestPluginView(unittest.TestCase):
+    def test_view_per_pet_and_ids_on_no_pet_page(self):
+        entries = {"15631": {"info": "at a rate of 1/1,000"}, "9": {"info": "not a pet"}}
+        pages, unmatched, _ = pw.plugin_view(BEEF_VARIANTS, entries, {15631, 9}, set())
+        self.assertEqual(pages["Beef"], {"ids": [15631], "raw_ids": [], "info": ["at a rate of 1/1,000"],
+                                         "rates": ["1/1000"]})
+        self.assertEqual(unmatched, [9])
+
+    def test_stale_pets_json_is_detected(self):
+        entries = {"15631": {"info": "x"}, "777": {"info": "removed pet"}}
+        _, _, mismatch = pw.plugin_view(BEEF_VARIANTS, entries, {15631, 15633}, set())
+        self.assertEqual(mismatch, {"not_in_pets_json": [15633], "only_in_pets_json": [777]})
+
+    def test_keys_that_are_not_plain_digits_are_ignored(self):
+        # "²".isdigit() is true, but int("²") raises
+        _, _, mismatch = pw.plugin_view(BEEF_VARIANTS, {"²": {"info": "x"}, "abc": {}}, set(), set())
+        self.assertEqual(mismatch["only_in_pets_json"], [])
+
+
+class TestDropSources(unittest.TestCase):
+    ROWS = (
+        {"item_name": "Beef", "page_name": "Brutus",
+         "drop_json": json.dumps({"Rarity": "1/1,000", "Approx": False, "Alt Rarity": ""})},
+        {"item_name": "Beef", "page_name": "Demonic Brutus",
+         "drop_json": json.dumps({"Rarity": "1/400", "Approx": True, "Alt Rarity": ""})},
+        {"item_name": "Nid", "page_name": "Araxxor",
+         "drop_json": json.dumps({"Rarity": "1/3,000", "Approx": False, "Alt Rarity": "1/1,500"})},
+        {"item_name": "Nid", "page_name": "Broken", "drop_json": "{not json"},
+    )
+
+    def test_rows_become_rates_per_source(self):
+        got = pw.parse_drop_rows(self.ROWS)
+        self.assertEqual([pw.source_label(e) for e in got["Beef"]],
+                         ["1/1000 (Brutus)", "~1/400 (Demonic Brutus)"])
+
+    def test_alt_rarity_is_a_second_rate(self):
+        got = pw.parse_drop_rows(self.ROWS)
+        self.assertEqual(sorted(e["rate"] for e in got["Nid"]), ["1/1500", "1/3000"])
+
+    def test_query_names_every_item(self):
+        q = pw.bucket_query(["Beef", "Lil' Zik"])
+        self.assertIn("{'item_name',\"Lil' Zik\"}", q)
+        self.assertTrue(q.endswith(".run()"))
+
+    def test_names_that_would_end_the_string_are_not_sent(self):
+        # nothing askable is left, so no request is made
+        self.assertEqual(pw.drop_sources(['Evil"}).run() --', "back\\slash"]), {})
+
+
+class TestPluginRawIds(unittest.TestCase):
+    def test_hard_coded_ids_are_found_and_constants_are_not(self):
+        d = temp_dir(self)
+        java = d / "PetJsonCreator.java"
+        java.write_text(
+            "new Pet(PetGroup.OTHER, 16385, CHOCOLATE + DOG_INFO),\n"
+            "new Pet(PetGroup.BOSS, NpcID.COWBOSS_PET, BEEF_INFO),\n"
+            "new Pet(PetGroup.OTHER, 16386)\n",
+            encoding="utf-8",
+        )
+        self.assertEqual(pw.plugin_raw_ids(java), {16385, 16386})
+
+
+def findings(missing=(), conflicts=(), pages=None, wiki_rates=None, **extra):
+    """A minimal petwatch --json result, as the commit check reads it."""
+    out = {
+        "all_missing": list(missing),
+        "all_rate_conflicts": list(conflicts),
+        "plugin_pages": pages or {},
+        "wiki_rates": wiki_rates or {},
+        "unresolved_constants": {},
+        "unmatched_ids": [],
+        "pets_json_mismatch": {},
+        "runelite": {"release": "1.12.38"},
+    }
+    out.update(extra)
+    return out
+
+
+def missing(page, variant, ids, status="no-constant", hardcoded=False, constants=()):
+    return {"page": page, "variant": variant, "ids": list(ids), "status": status,
+            "hardcoded": hardcoded, "constants": list(constants)}
+
+
+def view(ids=(), raw=(), info=(), rates=()):
+    return {"ids": list(ids), "raw_ids": list(raw), "info": list(info), "rates": list(rates)}
+
+
+BOTH = [review.CREATOR, review.PETS_JSON]
+GITHUB_ENV = {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "owner/repo", "GITHUB_API_URL": "https://api.github.com"}
+
+
+class TestCommitCheck(unittest.TestCase):
+    def test_fixing_a_rate_matches(self):
+        conflict = {"page": "Beef", "wiki": ["1/1000"], "plugin": ["1/1000", "1/500"], "sources": []}
+        base = findings(conflicts=[conflict], pages={"Beef": view([1], info=["a"], rates=["1/1000", "1/500"])})
+        head = findings(pages={"Beef": view([1], info=["b"], rates=["1/1000", "1/400"])},
+                        wiki_rates={"Beef": {"stated": ["1/1000"], "ambiguous": False, "sources": []}})
+        result = review.compare(base, head, BOTH)
+        self.assertEqual(result["verdict"][0], "ok")
+        self.assertIn("now matches", "\n".join(result["pages"][0][1].bullets()))
+
+    def test_a_wrong_rate_does_not_match(self):
+        conflict = {"page": "Beef", "wiki": ["1/1000"], "plugin": ["1/1000", "1/500"],
+                    "sources": ["~1/400 (Demonic Brutus)"]}
+        base = findings(pages={"Beef": view([1], info=["a"], rates=["1/1000", "1/400"])})
+        head = findings(conflicts=[conflict], pages={"Beef": view([1], info=["b"], rates=["1/1000", "1/500"])})
+        result = review.compare(base, head, BOTH)
+        self.assertEqual(result["verdict"][0], "bad")
+        self.assertIn("Demonic Brutus", "\n".join(result["pages"][0][1].bullets()))
+
+    def test_a_disagreement_the_change_did_not_touch_is_context_only(self):
+        conflict = {"page": "Beef", "wiki": ["1/1000"], "plugin": ["1/500"], "sources": []}
+        base = findings(conflicts=[conflict], pages={"Beef": view([1], info=["a"], rates=["1/500"])})
+        head = findings(conflicts=[conflict], pages={"Beef": view([1, 2], info=["a"], rates=["1/500"])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "info")
+
+    def test_adding_a_missing_variant_matches(self):
+        base = findings(missing=[missing("Beaver", "Camphor", [16000], "ready")],
+                        pages={"Beaver": view([1])})
+        head = findings(pages={"Beaver": view([1, 16000])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "ok")
+
+    def test_adding_one_variant_of_several_is_partial(self):
+        base = findings(missing=[missing("Dog", "Chocolate (Follower)", [1], "ready"),
+                                 missing("Dog", "Chocolate (POH)", [2], "ready")])
+        head = findings(missing=[missing("Dog", "Chocolate (POH)", [2], "ready")],
+                        pages={"Dog": view([1])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "warn")
+
+    def test_hard_coding_without_a_constant_matches(self):
+        base = findings(missing=[missing("Dog", "Merle", [16386])])
+        head = findings(missing=[missing("Dog", "Merle", [16386], hardcoded=True)],
+                        pages={"Dog": view(raw=[16386])})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "ok")
+
+    def test_hard_coding_when_a_constant_is_released_does_not_match(self):
+        base = findings(missing=[missing("Dog", "Merle", [16386], "ready", constants=["DOG_MERLE"])])
+        head = findings(missing=[missing("Dog", "Merle", [16386], "ready", True, ["DOG_MERLE"])],
+                        pages={"Dog": view(raw=[16386])})
+        result = review.compare(base, head, BOTH)
+        self.assertEqual(result["verdict"][0], "bad")
+        self.assertIn("NpcID.DOG_MERLE", "\n".join(result["pages"][0][1].bullets()))
+
+    def test_removing_a_variant_does_not_match(self):
+        base = findings(pages={"Vorki": view([8025])})
+        head = findings(missing=[missing("Vorki", "Vorki", [8025], "ready")])
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "bad")
+
+    def test_pets_untouched_by_the_change_are_left_out(self):
+        base = findings(missing=[missing("Other", "Other", [9])], pages={"Vorki": view([8025])})
+        head = findings(missing=[missing("Other", "Other", [9])], pages={"Vorki": view([8025])})
+        self.assertEqual(review.compare(base, head, BOTH)["pages"], [])
+
+    def test_stale_pets_json_does_not_match(self):
+        head = findings(pets_json_mismatch={"not_in_pets_json": [5], "only_in_pets_json": []})
+        self.assertEqual(review.compare(findings(), head, BOTH)["verdict"][0], "bad")
+
+    def test_creator_changed_alone_is_a_warning(self):
+        result = review.compare(findings(), findings(), [review.CREATOR])
+        self.assertEqual(result["verdict"][0], "warn")
+
+    def test_a_range_on_the_wiki_is_not_called_a_match(self):
+        base = findings(pages={"Olmlet": view([1], info=["a"], rates=["1/53"])})
+        head = findings(pages={"Olmlet": view([1], info=["b"], rates=["1/60"])},
+                        wiki_rates={"Olmlet": {"stated": ["1/53"], "ambiguous": True, "sources": []}})
+        self.assertEqual(review.compare(base, head, BOTH)["verdict"][0], "info")
+
+    def test_a_pull_request_is_commented_on_as_a_conversation(self):
+        listing, create, patch = review.comment_urls("https://api.github.com", "o/r", "a" * 40, "12")
+        self.assertTrue(listing.startswith("https://api.github.com/repos/o/r/issues/12/comments"))
+        self.assertEqual(create, "https://api.github.com/repos/o/r/issues/12/comments")
+        # editing an issue comment is not the same endpoint as creating one
+        self.assertEqual(patch, "https://api.github.com/repos/o/r/issues/comments/")
+
+    def test_without_a_pull_request_the_commit_is_commented_on(self):
+        listing, create, patch = review.comment_urls("https://api.github.com", "o/r", "a" * 40, "")
+        self.assertIn("/commits/" + "a" * 40 + "/comments", create)
+        self.assertEqual(patch, "https://api.github.com/repos/o/r/comments/")
+        self.assertIn("/commits/", listing)
+
+    def test_comment_is_marked_and_escapes_wiki_text(self):
+        base = findings(missing=[missing("Pet", "[x](http://evil)", [1], "ready")])
+        head = findings(pages={"Pet": view([1])})
+        body = review.render_comment(review.compare(base, head, BOTH), "a" * 40, "b" * 40, "1.12.38")
+        self.assertTrue(body.startswith(review.MARKER))
+        self.assertNotIn("](http://evil)", body)
+
+    def test_option_like_revisions_never_reach_git(self):
+        self.assertIsNone(review.commit_of(Path("."), "--output=/tmp/x"))
+
+    def test_own_comment_on_a_later_page_is_edited_not_duplicated(self):
+        others = [{"id": i, "body": "hi", "user": {"login": "someone"}} for i in range(100)]
+        mine = {"id": 555, "body": review.MARKER + " old", "user": {"login": review.BOT_LOGIN}}
+        calls = []
+
+        def fake_github(method, url, _token, _payload=None):
+            calls.append((method, url))
+            if method == "GET":
+                return others if url.endswith("page=1") else [mine]
+            return {}
+
+        with mock.patch.dict("os.environ", GITHUB_ENV), mock.patch.object(review, "github", fake_github):
+            review.post_comment("a" * 40, "body", pr="7")
+        self.assertIn(("PATCH", "https://api.github.com/repos/owner/repo/issues/comments/555"), calls)
+        self.assertNotIn("POST", [method for method, _ in calls])
+
+    def test_a_spoofed_marker_from_someone_else_is_not_edited(self):
+        spoof = {"id": 1, "body": review.MARKER, "user": {"login": "attacker"}}
+        calls = []
+
+        def fake_github(method, _url, _token, _payload=None):
+            calls.append(method)
+            return [spoof] if method == "GET" else {}
+
+        with mock.patch.dict("os.environ", GITHUB_ENV), mock.patch.object(review, "github", fake_github):
+            review.post_comment("a" * 40, "body")
+        self.assertEqual(calls, ["GET", "POST"])
+
+    def test_token_is_never_sent_over_plain_http(self):
+        env = dict(GITHUB_ENV, GITHUB_API_URL="http://api.github.com")
+        with mock.patch.dict("os.environ", env), self.assertRaises(RuntimeError):
+            review.post_comment("a" * 40, "body")
+
+    def test_long_lists_are_capped(self):
+        many = [missing("Dog", "V" + str(i), [i]) for i in range(40)]
+        head = findings(missing=[dict(m, hardcoded=True) for m in many], pages={"Dog": view(raw=range(40))})
+        lines = review.compare(findings(missing=many), head, BOTH)["pages"][0][1].bullets()
+        self.assertEqual(len(lines), 1)
+        self.assertIn("and 28 more", lines[0])
 
 
 if __name__ == "__main__":

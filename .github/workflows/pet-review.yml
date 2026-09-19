@@ -1,0 +1,74 @@
+name: Pet commit check
+
+# When a push or pull request to master changes the pet data, compares the change
+# with the OSRS Wiki and comments on whether it matches: does it add what petwatch
+# reported missing, bring a drop rate into line, or get something wrong? It only
+# reads - it opens no issue and records nothing - so it does not interfere with
+# the scheduled check. See tools/petwatch/README.md.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - src/test/java/com/micro/petinfo/PetJsonCreator.java
+      - pets.json
+  pull_request:
+    branches: [master]
+    paths:
+      - src/test/java/com/micro/petinfo/PetJsonCreator.java
+      - pets.json
+
+permissions:
+  # a pull request's conversation is an issue
+  pull-requests: write
+  # commit comments, for a push, are written under the contents permission
+  contents: write
+
+concurrency:
+  group: pet-review-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # both ends of the change are read from history
+          fetch-depth: 0
+          # review.py comments through the API with the token below, not git
+          persist-credentials: false
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      # Borrows the scheduled check's cache, read-only, so the wiki pages do not
+      # have to be downloaded again. Without it the check still works, once.
+      - name: Restore probe cache
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            tools/petwatch/state/cache.json
+            tools/petwatch/state/NpcID-*.java
+          key: petwatch-cache-${{ github.run_id }}
+          restore-keys: petwatch-cache-
+
+      - name: Run the tests
+        run: python -m unittest discover -s tools/petwatch
+
+      - name: Compare the change with the wiki
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PETWATCH_UA: 'PetInfoPlugin-petwatch/1.0 (https://github.com/${{ github.repository }})'
+          # a pull request is judged as a whole, from where it left master, and
+          # the comment goes in its conversation; a push has none, so the comment
+          # goes on the commit
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          python tools/petwatch/review.py --base "$BASE_SHA" --head "$HEAD_SHA" \
+            --report "$RUNNER_TEMP/review.md" --post --pr "$PR" --verbose
+          cat "$RUNNER_TEMP/review.md" >> "$GITHUB_STEP_SUMMARY"

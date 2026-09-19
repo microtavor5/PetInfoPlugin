@@ -21,6 +21,7 @@ import json
 import os
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -47,6 +48,9 @@ def summarise(findings: dict) -> str:
 
 
 def post(url: str, text: str) -> None:
+    # urlopen also opens file: and ftp: URLs; a webhook is only ever http(s)
+    if urllib.parse.urlsplit(url).scheme not in ("http", "https"):
+        raise ValueError("webhook URL must be http or https")
     # different services read different keys; send the common ones
     payload = {"text": text, "message": text, "content": text, "body": text}
     request = urllib.request.Request(
@@ -91,7 +95,7 @@ def main() -> int:
 
     try:
         post(args.url, text)
-    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
         # the run itself succeeded; say so loudly but let the caller decide
         print("notify: POST failed: " + str(exc), file=sys.stderr)
         return 1

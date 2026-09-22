@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-21T21:05:06Z",
+  "checked_at": "2026-09-22T20:11:51Z",
   "runelite_release": "1.12.39",
   "pages": [
     "Abyssal orphan",
@@ -128,5 +128,7 @@
     "Youngllef"
   ],
   "missing_keys": [],
-  "rate_keys": []
+  "rate_keys": [
+    "Maggot marquess::1/3500,1/1502.4;1/3500::1/3500"
+  ]
 }

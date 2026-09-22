@@ -495,7 +495,23 @@ class TestCommitCheck(unittest.TestCase):
 
     def test_creator_changed_alone_is_a_warning(self):
         result = review.compare(findings(), findings(), [review.CREATOR])
-        self.assertEqual(result["verdict"][0], "warn")
+        self.assertEqual(result["verdict"], ("warn", "check the plugin's own files"))
+
+    def test_a_plugin_wide_warning_is_not_worded_as_a_wiki_mismatch(self):
+        # every pet the change touched is right; only pets.json is outstanding
+        base = findings(missing=[missing("Beaver", "Camphor", [16000], "ready")])
+        head = findings(pages={"Beaver": view([16000])})
+        level, headline = review.compare(base, head, [review.CREATOR])["verdict"]
+        self.assertEqual(level, "warn")
+        self.assertEqual(headline, "this change matches the wiki, but check the plugin's own files")
+
+    def test_a_wiki_mismatch_and_a_plugin_warning_are_both_named(self):
+        base = findings(pages={"Vorki": view([8025])})
+        head = findings(missing=[missing("Vorki", "Vorki", [8025], "ready")])
+        level, headline = review.compare(base, head, [review.CREATOR])["verdict"]
+        self.assertEqual(level, "bad")
+        self.assertEqual(headline,
+                         "this change does not match the wiki, and check the plugin's own files")
 
     def test_a_range_on_the_wiki_is_not_called_a_match(self):
         base = findings(pages={"Olmlet": view([1], info=["a"], rates=["1/53"])})

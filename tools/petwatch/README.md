@@ -191,6 +191,10 @@ conversation, or on the commit when a push has no pull request:
 | ❌ | quotes a rate the wiki does not give, drops a variant the wiki lists, hard-codes ids a released constant exists for, uses a constant the released API lacks, or leaves the ids in `pets.json` out of step with `PetJsonCreator.java` |
 | ℹ️ | context, such as a disagreement the change left as it was, or ids on no wiki pet page (expected for pet-like NPCs) |
 
+The headline takes its icon from the worst finding, but words the two kinds
+apart: findings about the plugin's own files, such as a `pets.json` left to
+regenerate, are named as that rather than as a disagreement with the wiki.
+
 A pull request is judged as a whole, from where it branched off `master`. Re-runs
 replace the earlier comment instead of adding another. It opens no issue and
 records nothing, so it does not affect the scheduled check.

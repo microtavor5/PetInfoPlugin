@@ -52,11 +52,19 @@ MAX_LISTED = 12
 # anything in it reached.
 SEVERITY = ("bad", "warn", "ok", "info")
 ICON = {"bad": "❌", "warn": "⚠️", "ok": "✅", "info": "ℹ️"}
-VERDICT = {
+# Only the per-pet findings say anything about the wiki. The plugin-wide ones - a
+# pets.json left unregenerated, an id RuneLite has not released - still set the
+# icon, because they need acting on, but they get their own clause so the
+# headline never blames the wiki for something the wiki has no part in.
+WIKI_VERDICT = {
     "bad": "does not match the wiki",
     "warn": "partly matches the wiki",
     "ok": "matches the wiki",
     "info": "touches pet data petwatch cannot check against the wiki",
+}
+PLUGIN_VERDICT = {
+    "bad": "the plugin's own files need fixing",
+    "warn": "check the plugin's own files",
 }
 
 
@@ -304,6 +312,31 @@ def plugin_wide_notes(base: dict, head: dict, changed_files: list) -> Notes:
     return notes
 
 
+def verdict(pet_levels: set, plugin_levels: set) -> tuple:
+    """The headline icon level and wording, the two kinds of finding kept apart.
+
+    `pet_levels` are the levels reached across the pets the change touched and
+    `plugin_levels` those of the plugin-wide findings. The icon is the worst of
+    either, so nothing that needs acting on is hidden behind a tick, but the
+    wording names each half for what it is: a change can match the wiki exactly
+    and still leave `pets.json` to regenerate.
+    """
+    pet = min(pet_levels, key=SEVERITY.index) if pet_levels else None
+    plugin = min(plugin_levels, key=SEVERITY.index) if plugin_levels else None
+    reached = [level for level in (pet, plugin) if level]
+    worst = min(reached, key=SEVERITY.index) if reached else "info"
+
+    if plugin not in PLUGIN_VERDICT:
+        # nothing to say about the plugin's files, so the wiki has the headline
+        return worst, "this change " + WIKI_VERDICT[pet or "info"]
+    if pet is None:
+        # the change touched no pet petwatch can speak for: only the files
+        return worst, PLUGIN_VERDICT[plugin]
+    # "matches the wiki, but check ..." against "does not match ..., and check ..."
+    joiner = ", but " if pet in ("ok", "info") else ", and "
+    return worst, "this change " + WIKI_VERDICT[pet] + joiner + PLUGIN_VERDICT[plugin]
+
+
 def compare(base: dict, head: dict, changed_files: list) -> dict:
     """What the change did to each pet it touched, judged against the wiki.
 
@@ -341,17 +374,17 @@ def compare(base: dict, head: dict, changed_files: list) -> dict:
             pages.append((page, notes))
 
     general = plugin_wide_notes(base, head, changed_files)
-    levels = set().union(general.levels(), *(notes.levels() for _, notes in pages))
-    worst = min(levels, key=SEVERITY.index) if levels else "info"
-    return {"pages": pages, "general": general, "verdict": (worst, VERDICT[worst])}
+    pet_levels = set().union(*(notes.levels() for _, notes in pages)) if pages else set()
+    return {"pages": pages, "general": general,
+            "verdict": verdict(pet_levels, general.levels())}
 
 
 def render_comment(result: dict, base: str, head: str, release: str) -> str:
     """The comment body: a verdict, then the findings for each pet touched."""
-    level, verdict = result["verdict"]
+    level, headline = result["verdict"]
     lines = [
         MARKER,
-        "### " + ICON[level] + " petwatch: this change " + verdict,
+        "### " + ICON[level] + " petwatch: " + headline,
         "",
         "Compared `" + base[:7] + "..." + head[:7] + "` with the OSRS Wiki and RuneLite `" + release
         + "`, for the pets the change touched.",

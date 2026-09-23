@@ -102,7 +102,7 @@ public class PetJsonCreator
 	private static final String LIL_VIATHAN = "is obtained by killing The Leviathan, at a rate of 1/2,500.";
 	private static final String LIL_ZIK_INFO = "is obtained by completing the Theater of Blood, at a rate of 1/650 (with optimal performance).";
 	private static final String LITTLE_NIGHTMARE_INFO = "is dropped by The Nightmare, at varying rates from 1/4,000 to 1/800 (based on team size), or from the Phosani's Nightmare at a rate of 1/1,400.";
-	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3,500.";
+	private static final String MAGGOT_MARQUESS = "is dropped by the Maggot King (from The Blood Moon Rises), at a rate of 1/3,500 when choosing \"Open-Stomach\" or an effective rate of 1/1,502.4 when choosing \"Take-eggs\".";
 	private static final String MAYOR_OF_CATHERBY_INFO = "is obtained from the 'Current' quest.";
 	private static final String MAZ_INFO = "isn't a true pet, but you can get in her good graces by giving her an acorn.";
 	private static final String MIDNIGHT_INFO = "is a metamorphosized variant of Noon, which is dropped by the Grotesque Guardians, at a rate of 1/3,000.";

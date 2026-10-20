@@ -113,6 +113,7 @@ public class PetJsonCreator
 	private static final String NID_INFO = "is dropped by Araxxor at a base rate of 1/3,000 when harvesting Araxxor's corpse, or 1/1,500 when destroying the corpse instead of harvesting.";
 	private static final String NOON_INFO = "is dropped by the Grotesque Guardians, at a rate of 1/3,000.";
 	private static final String OLMLET_INFO = "is dropped by the Great Olm, at a rate of 1/53 per received broadcasted unique item.";
+	private static final String ORION_INFO = "is the new pet from The Fractured Archive (Raids 4).";
 	private static final String OVERGROWN_CAT_INFO = "is obtained by letting a pet Cat grow for about 2-3 hours.";
 	private static final String OVERGROWN_HELLCAT_INFO = "is obtained by letting a pet Hellcat grow for about 2-3 hours.";
 	private static final String PET_ROCK_INFO = "can be received from Askeladden after The Fremennik Trials.";
@@ -237,6 +238,8 @@ public class PetJsonCreator
 	private static final String YORKIE = " In order to unlock this variant, you must first track down and rescue the Yorkie who is wandering around the Summer Shore.";
 
 	private static final String OLMLET_CM_VARIANTS = " This is a COX Challenge Mode variant of the Olmlet. Obtained by causing any variant of the Olmlet to metamorphosize, after having used metamorphic dust on the Olmlet.";
+
+	private static final String ORION_ROBED = " This is the robed variant.";
 
 	private static Pet[] pets1 = {
   		new Pet(PetGroup.BOSS, NpcID.POH_MAD_ANGEL_PET, AGGY_INFO),
@@ -537,6 +540,12 @@ public class PetJsonCreator
 
 			new Pet(PetGroup.BOSS, NpcID.POH_VESPULA_FLYING_PET, OLMLET_INFO + OLMLET_CM_VARIANTS),
 			new Pet(PetGroup.BOSS, NpcID.VESPULA_FLYING_PET, OLMLET_INFO + OLMLET_CM_VARIANTS),
+
+			new Pet(PetGroup.BOSS, NpcID.OCELLUS_PET, ORION_INFO),
+			new Pet(PetGroup.BOSS, NpcID.POH_OCELLUS_PET, ORION_INFO),
+
+			new Pet(PetGroup.BOSS, NpcID.OCELLUS_PET_VARIANT_1, ORION_INFO + ORION_ROBED),
+			new Pet(PetGroup.BOSS, NpcID.POH_OCELLUS_PET_VARIANT_1, ORION_INFO + ORION_ROBED),
 
 			new Pet(PetGroup.SKILLING, NpcID.POH_SKILLPET_WC_FOX, BEAVER_INFO + FOX),
 			new Pet(PetGroup.SKILLING, NpcID.SKILLPET_WC_FOX, BEAVER_INFO + FOX),

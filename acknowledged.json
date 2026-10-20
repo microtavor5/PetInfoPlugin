@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-19T21:32:05Z",
-  "runelite_release": "1.13.2",
+  "checked_at": "2026-10-20T20:35:23Z",
+  "runelite_release": "1.13.3",
   "pages": [
     "Abyssal orphan",
     "Abyssal protector",
@@ -70,6 +70,7 @@
     "Nieve (item)",
     "Noon",
     "Olmlet",
+    "Orion",
     "Overgrown cat",
     "Pet Dagannoth Prime",
     "Pet Dagannoth Rex",
@@ -128,6 +129,9 @@
     "Yorkie puppy",
     "Youngllef"
   ],
-  "missing_keys": [],
+  "missing_keys": [
+    "Orion::Orion (robed)::ready",
+    "Orion::Orion::ready"
+  ],
   "rate_keys": []
 }
